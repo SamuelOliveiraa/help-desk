@@ -1,8 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-
   /*  if (!TOKEN && !pathname.startsWith("/login")) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
