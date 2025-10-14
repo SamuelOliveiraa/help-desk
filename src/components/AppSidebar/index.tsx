@@ -1,4 +1,5 @@
 "use client";
+import { UserRoleProps } from "@/app/(private)/layout";
 import {
   BriefcaseBusiness,
   ClipboardList,
@@ -19,7 +20,6 @@ import {
   SidebarGroupLabel,
   SidebarMenu
 } from "../ui/sidebar";
-import { UserRoleProps } from "/src/app/(private)/layout";
 
 export default function AppSidebar({ userRole }: UserRoleProps) {
   const pathname = usePathname();

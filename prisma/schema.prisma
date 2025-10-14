@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Tabela Usuario
+model User {
+  id Int @id @default(autoincrement())
+  avatar String?
+  name String
+  email String @unique
+  password String 
+  role Role @default(client)
+  workingHours WorkingHours[]
+
+  tickets Ticket[] @relation("UserTickets") // tickets criados pelo usuário
+  assigned Ticket[] @relation("TechTickets") // tickets atribuídos como técnico
+    
+  createdAt DateTime @default(now())
+}
+
+// Tabela Usuario
+model WorkingHours {
+  id Int @id @default(autoincrement())
+  time String
+  active Boolean
+  userID Int
+  user User @relation(fields: [userID], references: [id])
+}
+
+enum Role {
+  admin
+  client
+  technician
+}
+
+// Tabela Chamados
+model Ticket {
+  id Int @id @default(autoincrement())
+  publicID Int @unique
+
+  title String
+  description String
+  status Status @default(open)
+
+  categoryID Int
+  category Category @relation("CategoryTickets",fields: [categoryID], references: [id])
+
+  subCategories SubCategory[] @relation("SubCategoryTicketsOnTicket")
+  
+  userID Int
+  user User @relation("UserTickets",fields: [userID], references: [id])
+  
+  technicianID Int?
+  technician User? @relation("TechTickets", fields: [technicianID], references: [id])
+  
+  createdAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
+}
+
+enum Status {
+  open
+  finished
+  inProgress
+}
+
+// Tabela Categorias
+model Category {
+  id Int @id @default(autoincrement())
+  title String @unique
+  value Float
+  status Boolean @default(true)
+
+  tickets Ticket[] @relation("CategoryTickets")
+}
+
+// Tabela de Servicos Adicionais
+model SubCategory {
+  id Int @id @default(autoincrement())
+  title String @unique
+  value Float
+
+  tickets Ticket[] @relation("SubCategoryTicketsOnTicket")
+}

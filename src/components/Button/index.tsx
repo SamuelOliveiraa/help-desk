@@ -1,29 +1,29 @@
-type ButtonProps = React.HTMLAttributes<HTMLDivElement> & {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
-  type?: "primary" | "secondary" | "link";
+  variant?: "primary" | "secondary" | "link";
   fullWidth?: boolean;
 };
 
 export default function Button({
   children,
   fullWidth,
-  type = "primary",
+  variant = "primary",
   ...rest
 }: ButtonProps) {
   return (
-    <div
+    <button
       className={`py-3 px-4 flex items-center justify-center gap-3 rounded-md cursor-pointer ${
         fullWidth ? "w-full" : "w-fit"
       } ${
-        type === "secondary"
+        variant === "secondary"
           ? "bg-gray-500 text-gray-200 hover:bg-gray-400 hover:text-gray-100"
-          : type === "link"
+          : variant === "link"
           ? "bg-transparent text-gray-300 hover:bg-gray-500 hover:text-gray-100"
           : "bg-gray-200 text-gray-600 hover:bg-gray-100"
       }`}
       {...rest}
     >
       {children}
-    </div>
+    </button>
   );
 }

@@ -22,7 +22,7 @@ export default function NotFound() {
       </p>
 
       <div className="flex mt-6 justify-center gap-4">
-        <Button type="primary" fullWidth>
+        <Button variant="primary" fullWidth>
           <Link href={"/login"}>Login</Link>
         </Button>
       </div>

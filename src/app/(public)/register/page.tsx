@@ -1,9 +1,65 @@
+"use client";
+
+import Button from "@/components/Button";
+import ContentContainer from "@/components/ContentContainer";
+import { createUser } from "@/lib/api/users";
+import { Role } from "@/types/user";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "/src/components/Button";
-import ContentContainer from "/src/components/ContentContainer";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+type FormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export default function Register() {
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<FormValues>();
+
+  async function handleSubmitForm(data: FormValues) {
+    try {
+      const newData = {
+        ...data,
+        role: "admin" as Role
+      };
+      const result = await createUser(newData);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error(
+          "Erro interno de servidor, por favor contate a equipe de suporte"
+        );
+      }
+    }
+
+    /*  
+    try {
+      const result = await loginUser(data);
+      localStorage.setItem("token", result.token);
+      toast.success("");
+      console.log("Usuario logado: ", result);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error(
+          "Erro interno de servidor, por favor contate a equipe de suporte"
+        );
+      }
+    }
+      */
+  }
+
   return (
     <div className="w-full h-full bg-[url('/background.png')] bg-cover bg-center flex items-center justify-end md:overflow-hidden ">
       <div className="flex flex-1 max-w-2xl rounded-3xl bg-white h-full px-6 py-8 md:px-0 relative -bottom-10 md:items-center justify-center md:-bottom-4 md:-right-5 ">
@@ -16,21 +72,33 @@ export default function Register() {
           />
 
           <ContentContainer>
-            <form className="flex flex-col gap-4">
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={handleSubmit(handleSubmitForm)}
+            >
               <div>
                 <h2>Cire sua conta</h2>
                 <p>Informe seu nome, e-mail e senha</p>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="uppercase text-xs">
+                <label htmlFor="name" className="uppercase text-xs">
                   Nome
                 </label>
                 <input
+                  {...register("name", {
+                    required: "O nome é obrigatorio"
+                  })}
+                  name="name"
                   type="text"
                   className="border p-3 border-gray-200 rounded-md"
                   placeholder="Digite o nome completo"
                 />
+                {errors.email && (
+                  <span className="text-sm text-red-500">
+                    {errors.name?.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col gap-2">
@@ -38,10 +106,22 @@ export default function Register() {
                   E-mail
                 </label>
                 <input
+                  {...register("email", {
+                    required: "O e-mail é obrigatorio",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
+                      message: "Digite um e-mail válido"
+                    }
+                  })}
                   type="email"
                   className="border p-3 border-gray-200 rounded-md"
                   placeholder="exemplo@mail.com"
                 />
+                {errors.email && (
+                  <span className="text-sm text-red-500">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col gap-2">
@@ -49,13 +129,25 @@ export default function Register() {
                   senha
                 </label>
                 <input
+                  {...register("password", {
+                    required: "A senha  é obrigatorio",
+                    minLength: {
+                      value: 8,
+                      message: "A senha deve ter mais de 8 caracteres"
+                    }
+                  })}
                   type="password"
                   className="p-3 border border-gray-200 rounded-md"
                   placeholder="Digite sua senha"
                 />
+                {errors.password && (
+                  <span className="text-sm text-red-500">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
 
-              <Button type="secondary" fullWidth>
+              <Button variant="secondary" fullWidth type="submit">
                 <span className="font-bold">Cadastrar</span>
               </Button>
             </form>

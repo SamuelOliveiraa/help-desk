@@ -1,0 +1,19 @@
+export type Role = "admin" | "client" | "technician";
+
+export interface User {
+  id: number;
+  avatar?: string | null;
+  name: string;
+  email: string;
+  password: string;
+  role: Role;
+  workingHours: WorkingHours[]; // array vazio se não for technician
+  createdAt: string; // string pois vem do JSON
+}
+
+export interface WorkingHours {
+  id: number;
+  time: string; // ex: "07:00"
+  active: boolean;
+  userID: number;
+}
