@@ -86,7 +86,8 @@ export async function POST(req: NextRequest) {
           name: newUser.name,
           email: newUser.email,
           role: newUser.role
-        }
+        },
+        message: "Usuário criado com sucesso!"
       },
       { status: 201 }
     );

@@ -1,7 +1,7 @@
-export default function DashboardAdmin() {
+export default function Customers() {
   return (
-    <div className="fle flex-col flex-1 items-center justify-center bg-gray-700 w-full h-full">
-      <h1 className="text-4xl text-white">Dashboard Admin</h1>
+    <div className="flex items-center justify-center bg-gray-700 w-full h-full">
+      <h1 className="text-4xl text-white">Pagina de Admin</h1>
     </div>
   );
 }

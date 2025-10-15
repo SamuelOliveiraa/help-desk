@@ -1,5 +1,7 @@
 "use client";
-import { UserRoleProps } from "@/app/(private)/layout";
+
+import { Role } from "@/types/user";
+import { getTokenRole } from "@/utils/cookies";
 import {
   BriefcaseBusiness,
   ClipboardList,
@@ -10,6 +12,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import SidebarItem from "../SidebarItem";
 import {
   Sidebar,
@@ -20,8 +23,9 @@ import {
   SidebarGroupLabel,
   SidebarMenu
 } from "../ui/sidebar";
+import UserMenu from "../UserMenu";
 
-export default function AppSidebar({ userRole }: UserRoleProps) {
+export default function AppSidebar() {
   const pathname = usePathname();
   const links = [
     { href: "/dashboard/admin", title: "Chamados", Icon: ClipboardList, id: 1 },
@@ -44,13 +48,21 @@ export default function AppSidebar({ userRole }: UserRoleProps) {
       id: 4
     }
   ];
+  const [role, setRole] = useState<Role | null>(null);
+
+  useEffect(() => {
+    getTokenRole().then(setRole);
+  }, []);
 
   return (
     <Sidebar>
       <SidebarContent className="bg-gray-100">
         <SidebarGroup className="flex flex-col h-full gap-4 p-0">
           <SidebarGroupLabel className="flex py-4 px-3 border-b border-gray-400/10 rounded-none min-h-24">
-            <Link href={"/login"} className="flex gap-3 items-center">
+            <Link
+              href={`/dashboard/${role}`}
+              className="flex gap-3 items-center"
+            >
               <Image
                 src={"/logo.svg"}
                 alt="Logo help desk"
@@ -60,7 +72,11 @@ export default function AppSidebar({ userRole }: UserRoleProps) {
               <div>
                 <h2 className="text-gray-600 text-xl">HelpDesk</h2>
                 <span className="uppercase text-blue-100 text-xs">
-                  {userRole}
+                  {role === "user"
+                    ? "Cliente"
+                    : role === "technician"
+                    ? "Tecnico"
+                    : role}
                 </span>
               </div>
             </Link>
@@ -68,13 +84,13 @@ export default function AppSidebar({ userRole }: UserRoleProps) {
 
           <SidebarGroupContent className="flex flex-1 px-4">
             <SidebarMenu className="flex flex-col gap-2">
-              {userRole === "client" ? (
+              {role === "user" ? (
                 <>
                   <SidebarItem
                     title="Meus chamados"
-                    href="/dashboard/user/tickets"
+                    href="/dashboard/user"
                     Icon={ClipboardList}
-                    active={pathname === "/dashboard/user/tickets"}
+                    active={pathname === "/dashboard/user"}
                   />
 
                   <SidebarItem
@@ -84,13 +100,13 @@ export default function AppSidebar({ userRole }: UserRoleProps) {
                     active={pathname === "/dashboard/user/newticket"}
                   />
                 </>
-              ) : userRole === "technical" ? (
+              ) : role === "technician" ? (
                 <>
                   <SidebarItem
                     title="Meus chamados"
-                    href="/dashboard/technical/tickets"
+                    href="/dashboard/technician"
                     Icon={ClipboardList}
-                    active={pathname === "/dashboard//tickets"}
+                    active={pathname === "/dashboard/technician"}
                   />
                 </>
               ) : (
@@ -107,8 +123,8 @@ export default function AppSidebar({ userRole }: UserRoleProps) {
             </SidebarMenu>
           </SidebarGroupContent>
 
-          <SidebarFooter className="py-5 px-4">
-            <h1>Footer aqui</h1>
+          <SidebarFooter className="py-5 px-4 border-t border-gray-400/10">
+            <UserMenu />
           </SidebarFooter>
         </SidebarGroup>
       </SidebarContent>

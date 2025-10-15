@@ -24,7 +24,9 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(user);
+    const {password, ...userWithoutPassword} = user
+
+    return NextResponse.json(userWithoutPassword);
   } catch (error) {
     console.error(error);
     return NextResponse.json(

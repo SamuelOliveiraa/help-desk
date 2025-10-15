@@ -21,7 +21,7 @@ model User {
   name String
   email String @unique
   password String 
-  role Role @default(client)
+  role Role @default(user)
   workingHours WorkingHours[]
 
   tickets Ticket[] @relation("UserTickets") // tickets criados pelo usuário
@@ -41,7 +41,7 @@ model WorkingHours {
 
 enum Role {
   admin
-  client
+  user
   technician
 }
 

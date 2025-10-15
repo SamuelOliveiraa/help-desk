@@ -1,16 +1,15 @@
 import { Role } from "@/types/user";
-import { JWT_SECRET } from "@/utils/auth";
 import { JWTPayload, jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
+import { JWT_SECRET } from "./utils/auth";
 
 const PUBLICK_PAGES = ["/login", "/register"];
 
-interface CustomJWTPayload extends JWTPayload {
+export interface CustomJWTPayload extends JWTPayload {
   role: Role;
   id: string;
   email: string;
 }
-
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;
@@ -20,6 +19,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
+  // Paginas publicas
   if (PUBLICK_PAGES.includes(pathname)) {
     if (token) {
       try {
@@ -29,7 +29,9 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(
           new URL(`/dashboard/${payload.role}`, req.url)
         );
-      } catch {}
+      } catch {
+        return NextResponse.next();
+      }
     }
     return NextResponse.next();
   }
@@ -43,7 +45,7 @@ export async function middleware(req: NextRequest) {
     // Verificar token
     await jwtVerify(token, JWT_SECRET_CONVERTED);
     return NextResponse.next();
-  } catch (err) {
+  } catch {
     // Token invalido ou expirado
     return NextResponse.redirect(new URL("/login", req.url));
   }
@@ -54,7 +56,8 @@ export const config = {
     // Aplica o middleware em tudo, exceto:
     // - assets internos (_next)
     // - favicon
-    // - arquivos do public (ex: .png, .jpg, .svg, .ico)
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|svg|ico|gif|webp)).*)"
+    // - arquivos estáticos
+    // - rotas da API
+    "/((?!_next/static|_next/image|favicon.ico|api/.*|.*\\.(?:png|jpg|jpeg|svg|ico|gif|webp)).*)"
   ]
 };

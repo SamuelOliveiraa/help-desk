@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
+import { CircleCheckBig, CircleX } from "lucide-react";
 import { Lato } from "next/font/google";
 
 const lato = Lato({
@@ -15,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`w-screen h-screen ${lato.className}`}>
+      <body className={`w-screen h-screen overflow-x-hidden ${lato.className}`}>
         {children}
         <Toaster
           position="top-right"
@@ -27,15 +28,17 @@ export default function RootLayout({
             },
             success: {
               style: {
-                background: "#00ffa1", // verde neon
-                color: "#0d1117" // texto escuro
-              }
+                background: "#508B26",
+                color: "#fff"
+              },
+              icon: <CircleCheckBig />
             },
             error: {
               style: {
                 background: "#ff4d4f", // vermelho
                 color: "#fff"
-              }
+              },
+              icon: <CircleX />
             },
             loading: {
               style: {

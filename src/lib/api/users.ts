@@ -1,5 +1,5 @@
 import { Role, User } from "@/types/user";
-import { saveToken } from "@/utils/cookies";
+import { getUserByToken, saveToken } from "@/utils/cookies";
 import axios, { AxiosError } from "axios";
 
 //GET todos os usuarios
@@ -23,20 +23,18 @@ export async function createUser(data: {
   password: string;
 }) {
   try {
-    const res = await axios.post<{ token: string; user: User }>(
-      "/api/users",
-      data
-    );
-    const { token, user } = res.data;
+    const res = await axios.post<{
+      token: string;
+      user: User;
+      message: string;
+    }>("/api/users", data);
+
+    const { token, user, message } = res.data;
 
     saveToken(token);
 
-    return user;
+    return { token, user, message };
   } catch (error: unknown) {
-    /*  console.error("Erro ao criar usuario: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    ); */
     if (error instanceof AxiosError) {
       throw error;
     } else {
@@ -59,6 +57,27 @@ export async function loginUser(data: { email: string; password: string }) {
     }>("/api/auth/login", { email, password });
 
     saveToken(res.data.token);
+
+    return res.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    } else {
+      throw new Error(
+        error instanceof Error ? error.message : "Erro desconhecido"
+      );
+    }
+  }
+}
+
+// Pega o atual usuario que esta logado
+export async function getCurrentUser() {
+  try {
+    const user = await getUserByToken();
+
+    if (!user || !user.id) return null;
+
+    const res = await axios.get(`/api/users/${user?.id}`);
 
     return res.data;
   } catch (error) {

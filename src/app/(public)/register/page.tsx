@@ -7,6 +7,8 @@ import { Role } from "@/types/user";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -19,19 +21,25 @@ type FormValues = {
 export default function Register() {
   const {
     register,
-    control,
     handleSubmit,
-    reset,
     formState: { errors }
   } = useForm<FormValues>();
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   async function handleSubmitForm(data: FormValues) {
+    setLoading(true);
     try {
       const newData = {
         ...data,
-        role: "admin" as Role
+        role: "technician" as Role
       };
-      const result = await createUser(newData);
+      const { message, token, user } = await createUser(newData);
+      if (token) {
+        router.push(`/dashboard/${user.role}`);
+      }
+      toast.success(message);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -40,24 +48,9 @@ export default function Register() {
           "Erro interno de servidor, por favor contate a equipe de suporte"
         );
       }
+    } finally {
+      setLoading(false);
     }
-
-    /*  
-    try {
-      const result = await loginUser(data);
-      localStorage.setItem("token", result.token);
-      toast.success("");
-      console.log("Usuario logado: ", result);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      } else {
-        toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
-        );
-      }
-    }
-      */
   }
 
   return (
@@ -147,7 +140,12 @@ export default function Register() {
                 )}
               </div>
 
-              <Button variant="secondary" fullWidth type="submit">
+              <Button
+                fullWidth
+                type="submit"
+                loading={loading}
+                variant="secondary"
+              >
                 <span className="font-bold">Cadastrar</span>
               </Button>
             </form>
@@ -160,9 +158,9 @@ export default function Register() {
               <p>Entre agora mesmo</p>
             </div>
 
-            <Button fullWidth>
-              <Link href={"/login"}>Acessar Conta</Link>
-            </Button>
+            <Link href={"/login"}>
+              <Button fullWidth>Acessar Conta</Button>
+            </Link>
           </ContentContainer>
         </div>
       </div>

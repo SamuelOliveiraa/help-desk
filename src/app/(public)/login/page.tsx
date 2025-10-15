@@ -6,6 +6,8 @@ import { loginUser } from "@/lib/api/users";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -20,11 +22,18 @@ export default function Login() {
     handleSubmit,
     formState: { errors }
   } = useForm<FormValues>();
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   async function handleSubmitForm(data: FormValues) {
+    setLoading(true);
     try {
-      const result = await loginUser(data);
-      toast.success(result.message);
+      const { message, token, user } = await loginUser(data);
+      if (token) {
+        router.push(`/dashboard/${user.role}`);
+      }
+      toast.success(message);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -33,6 +42,8 @@ export default function Login() {
           "Erro interno de servidor, por favor contate a equipe de suporte"
         );
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -80,6 +91,7 @@ export default function Login() {
                   </span>
                 )}
               </div>
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="uppercase text-xs">
                   Senha
@@ -103,7 +115,12 @@ export default function Login() {
                 )}
               </div>
 
-              <Button fullWidth variant="secondary" type="submit">
+              <Button
+                fullWidth
+                variant="secondary"
+                type="submit"
+                loading={loading}
+              >
                 <span className="font-bold">Entrar</span>
               </Button>
             </form>
@@ -116,9 +133,9 @@ export default function Login() {
               <p>Cadastre agora mesmo</p>
             </div>
 
-            <Button fullWidth>
-              <Link href={"/register"}>Criar Conta</Link>
-            </Button>
+            <Link href={"/register"}>
+              <Button fullWidth>Criar Conta</Button>
+            </Link>
           </ContentContainer>
         </div>
       </div>
