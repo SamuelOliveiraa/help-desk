@@ -8,18 +8,27 @@ import {
 } from "@/components/ui/dialog";
 import { deleteToken } from "@/utils/cookies";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ProfileDialog({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  function handleLogOut() {
-    deleteToken();
-    router.replace("/login");
+  async function handleLogOut() {
+    setLoading(true);
+    try {
+      deleteToken();
+      router.replace("/login");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   }
+
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
@@ -31,7 +40,12 @@ export default function ProfileDialog({
           <DialogTrigger asChild>
             <Button fullWidth>Não</Button>
           </DialogTrigger>
-          <Button fullWidth variant="delete" onClick={handleLogOut}>
+          <Button
+            fullWidth
+            variant="delete"
+            onClick={handleLogOut}
+            loading={loading}
+          >
             Sim
           </Button>
         </div>

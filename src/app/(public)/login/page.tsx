@@ -32,8 +32,8 @@ export default function Login() {
       const { message, token, user } = await loginUser(data);
       if (token) {
         router.push(`/dashboard/${user.role}`);
+        toast.success(message);
       }
-      toast.success(message);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -42,7 +42,6 @@ export default function Login() {
           "Erro interno de servidor, por favor contate a equipe de suporte"
         );
       }
-    } finally {
       setLoading(false);
     }
   }
@@ -63,7 +62,7 @@ export default function Login() {
               className="flex flex-col gap-4"
               onSubmit={handleSubmit(handleSubmitForm)}
             >
-              <div>
+              <div className="flex flex-col gap-2">
                 <h2>Acesse o portal</h2>
                 <p>Entre usando seu e-mail e senha cadastrados</p>
               </div>

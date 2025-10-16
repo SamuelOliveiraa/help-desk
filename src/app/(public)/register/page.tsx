@@ -48,7 +48,6 @@ export default function Register() {
           "Erro interno de servidor, por favor contate a equipe de suporte"
         );
       }
-    } finally {
       setLoading(false);
     }
   }
@@ -69,9 +68,11 @@ export default function Register() {
               className="flex flex-col gap-4"
               onSubmit={handleSubmit(handleSubmitForm)}
             >
-              <div>
-                <h2>Cire sua conta</h2>
-                <p>Informe seu nome, e-mail e senha</p>
+              <div className="flex flex-col gap-1">
+                <h2 className="text-2xl font-bold">Acesse o portal</h2>
+                <p className="text-gray-300 text-sm">
+                  Entre usando seu e-mail e senha cadastrados
+                </p>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -82,7 +83,7 @@ export default function Register() {
                   {...register("name", {
                     required: "O nome é obrigatorio"
                   })}
-                  name="name"
+                  id="name"
                   type="text"
                   className="border p-3 border-gray-200 rounded-md"
                   placeholder="Digite o nome completo"
@@ -95,10 +96,11 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="uppercase text-xs">
+                <label htmlFor="email" className="uppercase text-xs">
                   E-mail
                 </label>
                 <input
+                  id="email"
                   {...register("email", {
                     required: "O e-mail é obrigatorio",
                     pattern: {
@@ -118,10 +120,11 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="uppercase text-xs">
+                <label htmlFor="password" className="uppercase text-xs">
                   senha
                 </label>
                 <input
+                  id="password"
                   {...register("password", {
                     required: "A senha  é obrigatorio",
                     minLength: {
@@ -136,6 +139,11 @@ export default function Register() {
                 {errors.password && (
                   <span className="text-sm text-red-500">
                     {errors.password.message}
+                  </span>
+                )}
+                {!errors.password && (
+                  <span className="text-sm text-gray-400 italic">
+                    Minimo de 8 digitos
                   </span>
                 )}
               </div>

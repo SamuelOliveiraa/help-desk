@@ -16,9 +16,9 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`py-3 px-4 flex items-center justify-center gap-3 rounded-md cursor-pointer ${
+      className={`flex items-center justify-center gap-3 rounded-md cursor-pointer transition-colors duration-200 ${
         loading && "cursor-not-allowed opacity-60"
-      } ${fullWidth ? "w-full" : "w-fit"} ${
+      } ${fullWidth ? "w-full py-3 px-4 " : "w-fit p-2"} ${
         variant === "secondary"
           ? "bg-gray-500 text-gray-200 hover:bg-gray-400 hover:text-gray-100"
           : variant === "link"

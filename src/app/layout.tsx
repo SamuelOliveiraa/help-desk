@@ -2,12 +2,36 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 import { CircleCheckBig, CircleX } from "lucide-react";
+import { Metadata } from "next";
 import { Lato } from "next/font/google";
 
 const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
   subsets: ["latin"]
 });
+
+export const metadata: Metadata = {
+  title: "HelpDesk",
+  description:
+    "Ferramenta de Help Desk que organiza solicitações, facilita a comunicação com clientes e melhora a experiência de suporte.",
+  robots: "index, follow",
+  openGraph: {
+    title: "HelpDesk",
+    description:
+      "Ferramenta de Help Desk que organiza solicitações, facilita a comunicação com clientes e melhora a experiência de suporte.",
+    url: "https://site-blog-rho.vercel.app/og-image.png",
+    siteName: "HelpDesk",
+    locale: "pt-BR",
+    images: [
+      {
+        url: "https://site-blog-rho.vercel.app/og-image.png",
+        width: 800,
+        height: 600,
+        alt: "HelpDesk"
+      }
+    ]
+  }
+};
 
 export default function RootLayout({
   children

@@ -76,7 +76,9 @@ export default function AppSidebar() {
                     ? "Cliente"
                     : role === "technician"
                     ? "Tecnico"
-                    : role}
+                    : role === "admin"
+                    ? "Admin"
+                    : ""}
                 </span>
               </div>
             </Link>

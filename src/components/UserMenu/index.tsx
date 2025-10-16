@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/api/users";
 import { User } from "@/types/user";
+import { getInitialNames } from "@/utils/getInitialNames";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import OptionsDropDownMenu from "./OptionsDropDownMenu";
@@ -21,7 +22,7 @@ export default function UserMenu() {
             <Image alt="Usuario image" src={user.avatar} />
           ) : (
             <div className="w-full h-full rounded-full bg-blue-500 flex text-gray-600 uppercase items-center justify-center">
-              <span>AL</span>
+              {user && <span> {getInitialNames(user?.name)} </span>}
             </div>
           )}
         </div>
