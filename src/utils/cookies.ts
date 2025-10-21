@@ -11,10 +11,7 @@ export function saveToken(token: string) {
 // Retorna o token
 export async function getToken() {
   const token = Cookies.get("token");
-
-  if (!token) return null;
-
-  return token;
+  return token || null;
 }
 
 // Retorna o token

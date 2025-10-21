@@ -9,6 +9,7 @@ import {
 import { deleteToken } from "@/utils/cookies";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function ProfileDialog({
   children
@@ -23,8 +24,11 @@ export default function ProfileDialog({
     try {
       deleteToken();
       router.replace("/login");
+      toast.success("Sessão encerrada com sucesso! Até a próxima 👋");
     } catch (error) {
       console.log(error);
+      toast.error("Ops! Não conseguimos encerrar sua sessão. Tente novamente.");
+
       setLoading(false);
     }
   }

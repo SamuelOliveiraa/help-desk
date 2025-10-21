@@ -20,24 +20,16 @@ model User {
   avatar String?
   name String
   email String @unique
-  password String 
+  password String
   role Role @default(user)
-  workingHours WorkingHours[]
+  workingHours Json?
 
   tickets Ticket[] @relation("UserTickets") // tickets criados pelo usuário
   assigned Ticket[] @relation("TechTickets") // tickets atribuídos como técnico
-    
+
   createdAt DateTime @default(now())
 }
 
-// Tabela Usuario
-model WorkingHours {
-  id Int @id @default(autoincrement())
-  time String
-  active Boolean
-  userID Int
-  user User @relation(fields: [userID], references: [id])
-}
 
 enum Role {
   admin
@@ -58,13 +50,13 @@ model Ticket {
   category Category @relation("CategoryTickets",fields: [categoryID], references: [id])
 
   subCategories SubCategory[] @relation("SubCategoryTicketsOnTicket")
-  
+
   userID Int
   user User @relation("UserTickets",fields: [userID], references: [id])
-  
+
   technicianID Int?
   technician User? @relation("TechTickets", fields: [technicianID], references: [id])
-  
+
   createdAt DateTime @updatedAt
   updatedAt DateTime @default(now())
 }

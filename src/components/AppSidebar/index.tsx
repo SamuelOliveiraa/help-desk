@@ -29,6 +29,13 @@ export default function AppSidebar() {
   const pathname = usePathname();
   const links = [
     { href: "/dashboard/admin", title: "Chamados", Icon: ClipboardList, id: 1 },
+
+    {
+      href: "/dashboard/admin/technicals",
+      title: "Técnicos",
+      Icon: Wrench,
+      id: 4
+    },
     {
       href: "/dashboard/admin/customers",
       title: "Clientes",
@@ -40,12 +47,6 @@ export default function AppSidebar() {
       title: "Serviços",
       Icon: BriefcaseBusiness,
       id: 3
-    },
-    {
-      href: "/dashboard/admin/technicals",
-      title: "Técnicos",
-      Icon: Wrench,
-      id: 4
     }
   ];
   const [role, setRole] = useState<Role | null>(null);

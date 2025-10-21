@@ -1,5 +1,5 @@
 import { Role, User } from "@/types/user";
-import { getUserByToken, saveToken } from "@/utils/cookies";
+import { getToken, getUserByToken, saveToken } from "@/utils/cookies";
 import axios, { AxiosError } from "axios";
 
 //GET todos os usuarios
@@ -15,6 +15,28 @@ export async function getUsers(): Promise<User[]> {
   }
 }
 
+// GET os usuarios pela role
+export async function getUsersByRole(role: Role): Promise<User[] | null> {
+  try {
+    const token = await getToken();
+
+    if (!role) return null;
+    if (!token) return null;
+
+    const res = await axios.get(`/api/users/by-role/${role}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar usuarios: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
+  }
+}
 // POST criar usuario
 export async function createUser(data: {
   name: string;
@@ -74,10 +96,15 @@ export async function loginUser(data: { email: string; password: string }) {
 export async function getCurrentUser() {
   try {
     const user = await getUserByToken();
+    const token = await getToken();
 
     if (!user || !user.id) return null;
 
-    const res = await axios.get(`/api/users/${user?.id}`);
+    const res = await axios.get(`/api/users/${user?.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
     return res.data;
   } catch (error) {

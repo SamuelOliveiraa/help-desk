@@ -10,6 +10,7 @@ export interface CustomJWTPayload extends JWTPayload {
   id: string;
   email: string;
 }
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;

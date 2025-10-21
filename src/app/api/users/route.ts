@@ -1,58 +1,81 @@
 "use server";
 
-import { verifyToken } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
 import { JWT_SECRET } from "@/utils/auth";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
+import { Role } from "@/types/user";
 
+// Lista todos os usuarios do sistema
 export async function GET(req: NextRequest) {
   try {
-    const authHeader = req.headers.get("authorization");
-
-    // Verifico se o authHeader realmente veio
-    if (!authHeader) {
-      return NextResponse.json(
-        { message: "Token não fornecido" },
-        { status: 401 }
-      );
-    }
-
-    // Removo o Bearer do token
-    const token = authHeader.replace("Bearer ", "");
-    const user = await verifyToken(token);
-
-    // Apos verificar o token, vejo se é valido
-    if (!user) {
-      return NextResponse.json({ message: "Token invalido" }, { status: 401 });
-    }
-
-    // Verifico se o usuario tem permissão para acessar
-    if (user.role !== "admin") {
-      return NextResponse.json({ message: "Acesso negado" }, { status: 403 });
-    }
+    // Faz todas as verificações necessarias do token
+    const authUser = await requireAuth(req, "admin");
+    if (authUser instanceof NextResponse) return authUser;
 
     // Se passou em todas as verificacoes, pode buscar os usuarios
     const users = await prisma.user.findMany();
-    return NextResponse.json(users);
+
+    // Remove senha antes de retornar
+    const usersWithoutPassword = users.map(({ password, ...rest }) => rest);
+
+    return NextResponse.json(usersWithoutPassword);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, tente novamente mais tarde." },
       { status: 500 }
     );
   }
 }
 
+// Cria um usuario, que por padrao é "user"
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, role } = await req.json();
+    // Faz todas as verificações necessarias do token
+    /*     const user = await requireAuth(req);
+    if (user instanceof NextResponse) return user; */
+
+    // Se passou em todas as verificacoes, pode buscar os usuarios
+    const {
+      name,
+      email,
+      password,
+      role
+    }: { name: string; email: string; password: string; role?: Role } =
+      await req.json();
+
+    const defaultHours = [
+      "07:00",
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00"
+    ].map((time, index) => ({
+      id: index,
+      time,
+      active: true
+    }));
 
     // Verificar se o usuario ja existe
     const existingUser = await prisma.user.findUnique({
       where: { email }
     });
+
     if (existingUser) {
       return NextResponse.json(
         { message: "Usuario já existe" },
@@ -67,7 +90,10 @@ export async function POST(req: NextRequest) {
         email,
         name,
         password: hashedPassword,
-        role
+        role,
+        ...(role === "technician" && {
+          workingHours: defaultHours
+        })
       }
     });
 
