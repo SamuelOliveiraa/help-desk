@@ -1,4 +1,4 @@
-import { Role, User } from "@/types/user";
+import { Role, User, WorkingHours } from "@/types/user";
 import { getToken, getUserByToken, saveToken } from "@/utils/cookies";
 import axios, { AxiosError } from "axios";
 
@@ -37,12 +37,38 @@ export async function getUsersByRole(role: Role): Promise<User[] | null> {
     );
   }
 }
-// POST criar usuario
+
+// GET os usuarios pelo ID
+export async function getUsersByID(id: string): Promise<User | null> {
+  try {
+    const token = await getToken();
+
+    if (!id) return null;
+    if (!token) return null;
+
+    const res = await axios.get(`/api/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar usuarios: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
+  }
+}
+
+// POST criar usuario / Register do usuario
 export async function createUser(data: {
   name: string;
   email: string;
   role: Role;
   password: string;
+  workingHours: WorkingHours[];
+  redirectUser?: boolean;
 }) {
   try {
     const res = await axios.post<{
@@ -53,7 +79,9 @@ export async function createUser(data: {
 
     const { token, user, message } = res.data;
 
-    saveToken(token);
+    if (data.redirectUser) {
+      saveToken(token);
+    }
 
     return { token, user, message };
   } catch (error: unknown) {

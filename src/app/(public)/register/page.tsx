@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import ContentContainer from "@/components/ContentContainer";
+import InputForm from "@/components/InputForm";
 import { createUser } from "@/lib/api/users";
 import { Role } from "@/types/user";
 import { AxiosError } from "axios";
@@ -33,6 +34,8 @@ export default function Register() {
     try {
       const newData = {
         ...data,
+        redirectUser: true,
+        workingHours: [],
         role: "technician" as Role
       };
       const { message, token, user } = await createUser(newData);
@@ -75,78 +78,47 @@ export default function Register() {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="uppercase text-xs">
-                  Nome
-                </label>
-                <input
-                  {...register("name", {
-                    required: "O nome é obrigatorio"
-                  })}
-                  id="name"
-                  type="text"
-                  className="border p-3 border-gray-200 rounded-md"
-                  placeholder="Digite o nome completo"
-                />
-                {errors.email && (
-                  <span className="text-sm text-red-500">
-                    {errors.name?.message}
-                  </span>
-                )}
-              </div>
+              <InputForm
+                type="text"
+                inputID="name"
+                label="Nome"
+                placeholder="Digite o nome completo"
+                register={register("name", {
+                  required: "O nome é obrigatorio"
+                })}
+                error={errors.name}
+              />
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="uppercase text-xs">
-                  E-mail
-                </label>
-                <input
-                  id="email"
-                  {...register("email", {
-                    required: "O e-mail é obrigatorio",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-                      message: "Digite um e-mail válido"
-                    }
-                  })}
-                  type="email"
-                  className="border p-3 border-gray-200 rounded-md"
-                  placeholder="exemplo@mail.com"
-                />
-                {errors.email && (
-                  <span className="text-sm text-red-500">
-                    {errors.email.message}
-                  </span>
-                )}
-              </div>
+              <InputForm
+                inputID="email"
+                label="E-mail"
+                placeholder="Digite o e-mail completo"
+                register={register("email", {
+                  required: "O e-mail é obrigatorio",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
+                    message: "Digite um e-mail válido"
+                  }
+                })}
+                type="email"
+                error={errors.email}
+              />
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="password" className="uppercase text-xs">
-                  senha
-                </label>
-                <input
-                  id="password"
-                  {...register("password", {
-                    required: "A senha  é obrigatorio",
-                    minLength: {
-                      value: 8,
-                      message: "A senha deve ter mais de 8 caracteres"
-                    }
-                  })}
-                  type="password"
-                  className="p-3 border border-gray-200 rounded-md"
-                  placeholder="Digite sua senha"
-                />
-                {errors.password && (
-                  <span className="text-sm text-red-500">
-                    {errors.password.message}
-                  </span>
-                )}
-                {!errors.password && (
-                  <span className="text-sm text-gray-400 italic">
-                    Minimo de 8 digitos
-                  </span>
-                )}
-              </div>
+              <InputForm
+                inputID="password"
+                label="Senha"
+                placeholder="Digite sua senha"
+                register={register("password", {
+                  required: "A senha  é obrigatorio",
+                  minLength: {
+                    value: 8,
+                    message: "A senha deve ter mais de 8 caracteres"
+                  }
+                })}
+                type="password"
+                error={errors.password}
+                helperText="Minimo de 8 digitos"
+              />
 
               <Button
                 fullWidth

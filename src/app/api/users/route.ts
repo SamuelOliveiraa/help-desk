@@ -6,7 +6,8 @@ import { JWT_SECRET } from "@/utils/auth";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
-import { Role } from "@/types/user";
+import { Role, WorkingHours } from "@/types/user";
+import { JsonArray } from "@/generated/prisma/runtime/library";
 
 // Lista todos os usuarios do sistema
 export async function GET(req: NextRequest) {
@@ -43,33 +44,39 @@ export async function POST(req: NextRequest) {
       name,
       email,
       password,
+      workingHours,
       role
-    }: { name: string; email: string; password: string; role?: Role } =
-      await req.json();
+    }: {
+      name: string;
+      email: string;
+      password: string;
+      workingHours: JsonArray;
+      role?: Role;
+    } = await req.json();
 
-    const defaultHours = [
-      "07:00",
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "12:00",
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-      "20:00",
-      "21:00",
-      "22:00",
-      "23:00"
-    ].map((time, index) => ({
-      id: index,
-      time,
-      active: true
-    }));
+    // const defaultHours = [
+    //   "07:00",
+    //   "08:00",
+    //   "09:00",
+    //   "10:00",
+    //   "11:00",
+    //   "12:00",
+    //   "13:00",
+    //   "14:00",
+    //   "15:00",
+    //   "16:00",
+    //   "17:00",
+    //   "18:00",
+    //   "19:00",
+    //   "20:00",
+    //   "21:00",
+    //   "22:00",
+    //   "23:00"
+    // ].map((time, index) => ({
+    //   id: index,
+    //   time,
+    //   active: true
+    // }));
 
     // Verificar se o usuario ja existe
     const existingUser = await prisma.user.findUnique({
@@ -91,9 +98,7 @@ export async function POST(req: NextRequest) {
         name,
         password: hashedPassword,
         role,
-        ...(role === "technician" && {
-          workingHours: defaultHours
-        })
+        workingHours
       }
     });
 

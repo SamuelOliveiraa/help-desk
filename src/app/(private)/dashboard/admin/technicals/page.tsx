@@ -87,9 +87,8 @@ export default function Technicals() {
                           {user?.workingHours.slice(0, 5).map(hour => (
                             <TagTime
                               key={hour.id}
-                              id={hour.id}
                               text={hour?.time}
-                              selected={hour.active}
+                              selected={false}
                             />
                           ))}
 
@@ -107,7 +106,12 @@ export default function Technicals() {
 
                   <TableCell className="flex items-center justify-end gap-3">
                     <Button variant="secondary">
-                      <PenLine className="cursor-pointer" />
+                      <PenLine
+                        className="cursor-pointer"
+                        onClick={() =>
+                          router.push(`/dashboard/admin/technicals/${user.id}`)
+                        }
+                      />
                     </Button>
                   </TableCell>
                 </TableRow>

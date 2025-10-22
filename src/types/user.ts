@@ -15,5 +15,4 @@ export interface WorkingHours {
   id: number;
   time: string; // ex: "07:00"
   active: boolean;
-  userID: number;
 }

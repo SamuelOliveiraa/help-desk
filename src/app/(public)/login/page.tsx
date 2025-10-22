@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import ContentContainer from "@/components/ContentContainer";
+import InputForm from "@/components/InputForm";
 import { loginUser } from "@/lib/api/users";
 import { AxiosError } from "axios";
 import Image from "next/image";
@@ -67,52 +68,36 @@ export default function Login() {
                 <p>Entre usando seu e-mail e senha cadastrados</p>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="uppercase text-xs">
-                  E-mail
-                </label>
-                <input
-                  {...register("email", {
-                    required: "O e-mail é obrigatorio",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-                      message: "Digite um e-mail válido"
-                    }
-                  })}
-                  name="email"
-                  type="email"
-                  className="border p-3 border-gray-200 rounded-md"
-                  placeholder="exemplo@mail.com"
-                />
-                {errors.email && (
-                  <span className="text-sm text-red-500">
-                    {errors.email.message}
-                  </span>
-                )}
-              </div>
+              <InputForm
+                type="email"
+                inputID="email"
+                label="E-mail"
+                placeholder="exemplo@mail.com"
+                register={register("email", {
+                  required: "O e-mail é obrigatorio",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
+                    message: "Digite um e-mail válido"
+                  }
+                })}
+                error={errors.email}
+              />
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="" className="uppercase text-xs">
-                  Senha
-                </label>
-                <input
-                  {...register("password", {
-                    required: "A senha  é obrigatorio",
-                    minLength: {
-                      value: 8,
-                      message: "A senha deve ter mais de 8 caracteres"
-                    }
-                  })}
-                  type="password"
-                  className="p-3 border border-gray-200 rounded-md"
-                  placeholder="Digite sua senha"
-                />
-                {errors.password && (
-                  <span className="text-sm text-red-500">
-                    {errors.password.message}
-                  </span>
-                )}
-              </div>
+              <InputForm
+                isPassword={true}
+                inputID="password"
+                label="Senha"
+                placeholder="Digite sua senha"
+                register={register("password", {
+                  required: "A senha  é obrigatorio",
+                  minLength: {
+                    value: 8,
+                    message: "A senha deve ter mais de 8 caracteres"
+                  }
+                })}
+                error={errors.password}
+                helperText="A senha deve ter mais de 8 caracteres"
+              />
 
               <Button
                 fullWidth

@@ -30,7 +30,6 @@ model User {
   createdAt DateTime @default(now())
 }
 
-
 enum Role {
   admin
   user

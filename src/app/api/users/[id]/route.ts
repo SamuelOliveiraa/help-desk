@@ -1,11 +1,12 @@
 import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { use } from "react";
 
 // Pega o usuario conforme o ID informado.
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -13,7 +14,8 @@ export async function GET(
     if (authUser instanceof NextResponse) return authUser;
 
     // Se passou em todas as verificacoes, pode buscar o usuario
-    const { id } = params;
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
     const userId = Number(id);
 
     // Se o ID não existir retorna

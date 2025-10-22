@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import ChangePasswordDialog from "../ChangePasswordDialog";
+import InputForm from "@/components/InputForm";
 
 type FormValues = {
   name: string;
@@ -79,83 +80,42 @@ export default function ProfileDialog({
           <DialogTitle>Perfil</DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-3 justify-between">
-          <div className="flex flex-col-reverse gap-2">
-            {errors.name && (
-              <span className="text-sm text-red-500">
-                {errors.name.message}
-              </span>
-            )}
+          <InputForm
+            type="text"
+            inputID="name"
+            label="Nome"
+            placeholder="Digite seu nome"
+            register={register("name", {
+              required: "O nome é obrigatorio"
+            })}
+            error={errors.name}
+          />
 
-            <input
-              id="name"
-              {...register("name", {
-                required: "O nome é obrigatorio"
-              })}
-              className={`peer outline-none border-b border-gray-400/20 pb-2 focus:border-blue-400 ${
-                errors.name && "border-red-500 focus:border-red-500"
-              }`}
-              type="text"
-              defaultValue={user?.name}
-            />
+          <InputForm
+            type="email"
+            inputID="email"
+            label="E-mail"
+            placeholder="exemplo@mail.com"
+            register={register("email", {
+              required: "O e-mail é obrigatorio",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
+                message: "Digite um e-mail válido"
+              }
+            })}
+            error={errors.email}
+          />
 
-            <label
-              htmlFor="name"
-              className={`text-gray-300 peer-focus:text-blue-400 ${
-                errors.name && " text-red-500 peer-focus:text-red-500"
-              }`}
-            >
-              Nome
-            </label>
-          </div>
-
-          <div className="flex flex-col-reverse gap-2">
-            {errors.email && (
-              <span className="text-sm text-red-500">
-                {errors.email.message}
-              </span>
-            )}
-
-            <input
-              id="email"
-              {...register("email", {
-                required: "O e-mail é obrigatorio",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-                  message: "Digite um e-mail válido"
-                }
-              })}
-              className={`peer outline-none border-b border-gray-400/20 pb-2 focus:border-blue-400 ${
-                errors.email && "border-red-500 focus:border-red-500"
-              }`}
-              type="email"
-              defaultValue={user?.email}
-            />
-
-            <label
-              htmlFor="email"
-              className={`text-gray-300 peer-focus:text-blue-400 ${
-                errors.email && " text-red-500 peer-focus:text-red-500"
-              }`}
-            >
-              E-mail
-            </label>
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="password" className="text-gray-300">
-              Senha
-            </label>
-            <div className="flex w-full border-b border-gray-400/20 pb-2 items-center">
-              <input
-                type="password"
-                id="password"
-                className="outline-none flex-1 disabled:bg-transparent"
-                value={user?.name}
-                disabled
-              />
-              <ChangePasswordDialog>Alterar</ChangePasswordDialog>
-            </div>
-          </div>
+          <InputForm
+            disabled
+            type="password"
+            inputID="password"
+            label="Senha"
+            placeholder="*********"
+            helperText="A senha deve ter mais de 8 caracteres"
+          >
+            <ChangePasswordDialog>Alterar</ChangePasswordDialog>
+          </InputForm>
 
           <Button
             fullWidth

@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import InputForm from "@/components/InputForm";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -28,9 +29,6 @@ export default function ChangePasswordDialog({
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
-  const [passwordView, setPasswordView] = useState(true);
-  const [newPasswordView, setNewPasswordView] = useState(true);
-
   async function handleSubmitForm(data: FormValues) {
     setLoading(true);
     try {
@@ -59,17 +57,11 @@ export default function ChangePasswordDialog({
     };
   }, [reset]);
 
-  function toggleNewPasswordView() {
-    setNewPasswordView(!newPasswordView);
-  }
-
-  function togglePasswordView() {
-    setPasswordView(!passwordView);
-  }
-
   return (
     <AlertDialog>
-      <AlertDialogTrigger>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger className="absolute right-0 bottom-10">
+        {children}
+      </AlertDialogTrigger>
 
       <AlertDialogContent className="max-w-md w-full min-h-[400px]" forceMount>
         <header className="flex items-center gap-2">
@@ -84,102 +76,36 @@ export default function ChangePasswordDialog({
           </AlertDialogTrigger>
         </header>
         <form className="flex flex-col gap-3 justify-between">
-          <div className="flex flex-col-reverse gap-2">
-            {errors.password && (
-              <span className="text-sm text-red-500">
-                {errors.password.message}
-              </span>
-            )}
+          <InputForm
+            isPassword={true}
+            inputID="actualPassword"
+            label="Senha atual"
+            placeholder="Digite sua senha atual"
+            register={register("password", {
+              required: "A senha é obrigatória",
+              minLength: {
+                value: 8,
+                message: "A senha atual deve ter 8 ou mais caracteres"
+              }
+            })}
+            error={errors.password}
+          />
 
-            <div className="flex relative ">
-              <input
-                id="actualPassword"
-                {...register("password", {
-                  required: "A senha é obrigatorio",
-                  minLength: {
-                    value: 8,
-                    message: "A senha atual tem 8 ou mais caracteres"
-                  }
-                })}
-                className={`peer outline-none border-b border-gray-400/20 pb-2 focus:border-blue-400 flex-1 pr-7 ${
-                  errors.password && "border-red-500 focus:border-red-500"
-                }`}
-                type={passwordView ? "password" : "text"}
-                placeholder="Digite sua senha atual"
-              />
-              {passwordView ? (
-                <EyeClosed
-                  className="absolute right-0"
-                  onClick={togglePasswordView}
-                />
-              ) : (
-                <Eye
-                  className="absolute right-0"
-                  onClick={togglePasswordView}
-                />
-              )}
-            </div>
-
-            <label
-              htmlFor="actualPassword"
-              className={`text-gray-300 peer-focus:text-blue-400 ${
-                errors.password && " text-red-500 peer-focus:text-red-500"
-              }`}
-            >
-              Senha atual
-            </label>
-          </div>
-
-          <div className="flex flex-col-reverse gap-2">
-            {errors.newPassword && (
-              <span className="text-sm text-red-500">
-                {errors.newPassword.message}
-              </span>
-            )}
-            {!errors.newPassword && (
-              <span className="text-sm text-gray-400 italic">
-                Minimo de 8 digitos
-              </span>
-            )}
-
-            <div className="flex relative">
-              <input
-                id="newPassword"
-                {...register("newPassword", {
-                  required: "A nova senha é obrigatorio",
-                  minLength: {
-                    value: 8,
-                    message: "A nova senha deve ter mais de 8 caracteres"
-                  }
-                })}
-                className={`peer outline-none border-b border-gray-400/20 pb-2 focus:border-blue-400 flex-1 pr-7 ${
-                  errors.newPassword && "border-red-500 focus:border-red-500"
-                }`}
-                type={newPasswordView ? "password" : "text"}
-                placeholder="Digite sua nova senha"
-              />
-              {newPasswordView ? (
-                <EyeClosed
-                  className="absolute right-0"
-                  onClick={toggleNewPasswordView}
-                />
-              ) : (
-                <Eye
-                  className="absolute right-0"
-                  onClick={toggleNewPasswordView}
-                />
-              )}
-            </div>
-
-            <label
-              htmlFor="newPassword"
-              className={`text-gray-300 peer-focus:text-blue-400 ${
-                errors.newPassword && " text-red-500 peer-focus:text-red-500"
-              }`}
-            >
-              Nova senha
-            </label>
-          </div>
+          <InputForm
+            isPassword={true}
+            inputID="newPassword"
+            label="Nova senha"
+            placeholder="Digite sua nova senha"
+            register={register("newPassword", {
+              required: "A senha é obrigatória",
+              minLength: {
+                value: 8,
+                message: "A senha deve ter 8 ou mais caracteres"
+              }
+            })}
+            error={errors.newPassword}
+            helperText="Minimo de 8 digitos"
+          />
 
           <Button
             fullWidth
