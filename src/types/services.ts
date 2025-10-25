@@ -1,14 +1,14 @@
 import { Ticket } from "./tickets";
 
-export interface Category {
+export interface Service {
   id: number;
   title: string;
   value: number;
   status: boolean;
-  tickets?: Ticket[]; // opcional para evitar loop infinito
+  tickets?: Ticket[];
 }
 
-export interface SubCategory {
+export interface SubService {
   id: number;
   title: string;
   value: number;

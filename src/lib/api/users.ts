@@ -2,7 +2,7 @@ import { Role, User, WorkingHours } from "@/types/user";
 import { getToken, getUserByToken, saveToken } from "@/utils/cookies";
 import axios, { AxiosError } from "axios";
 
-//GET todos os usuarios
+// GET todos os usuarios
 export async function getUsers(): Promise<User[]> {
   try {
     const res = await axios.get<User[]>("/api/users");

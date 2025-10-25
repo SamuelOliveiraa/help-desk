@@ -32,11 +32,15 @@ export default function InputForm({
 
   return (
     <div className="flex flex-col gap-2 relative">
-      <div className="flex flex-col-reverse">
+      <div className="flex flex-col-reverse relative">
+        {inputID === "value" && (
+          <span className="text-base absolute top-[28px]">R$</span>
+        )}
+
         <input
           id={inputID}
           {...register}
-          className={`peer transition-colors duration-200 py-3 border-b border-gray-500 focus:outline-none focus:border-blue-200 disabled:bg-transparent ${error && "border-red-500"}`}
+          className={`peer transition-colors duration-200 py-3 border-b border-gray-500 focus:outline-none focus:border-blue-200 disabled:bg-transparent ${error && "border-red-500"} ${inputID === "value" && "pl-6"}`}
           placeholder={placeholder}
           type={
             passwordView && isPassword

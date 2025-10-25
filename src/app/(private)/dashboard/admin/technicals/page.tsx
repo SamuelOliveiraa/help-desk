@@ -17,7 +17,7 @@ import { Loader2, PenLine, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Technicals() {
+export default function TechnicalsPage() {
   const [data, setData] = useState<User[] | null>(null);
   const router = useRouter();
 
@@ -121,6 +121,17 @@ export default function Technicals() {
                 <TableCell colSpan={3} className="text-center">
                   <div className="flex items-center justify-center">
                     <Loader2 className="animate-spin" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+            {data?.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center">
+                  <div className="flex items-center justify-center">
+                    <span className="text-base text-gray-200">
+                      Nenhum tecnico localizado.
+                    </span>
                   </div>
                 </TableCell>
               </TableRow>

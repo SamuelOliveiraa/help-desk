@@ -2,7 +2,7 @@ import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-// Pega o usuario conforme o ID informado.
+// Pega o serviço conforme o ID informado.
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -12,17 +12,17 @@ export async function GET(
     const authUser = await requireAuth(req);
     if (authUser instanceof NextResponse) return authUser;
 
-    // Se passou em todas as verificacoes, pode buscar o usuario
+    // Se passou em todas as verificacoes, pode buscar o serviço
     const { id } = await params;
-    const userId = Number(id);
+    const serviceId = Number(id);
 
     // Se o ID não existir retorna
-    if (isNaN(userId)) {
+    if (isNaN(serviceId)) {
       return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
     }
 
-    // Somente o admin pode pesquisar um usuario, o user/tecnico so pode ver seu proprio usuario/conta
-    if (authUser.role !== "admin" && authUser.id !== userId) {
+    // Somente o admin pode pesquisar um serviço,
+    if (authUser.role !== "admin") {
       return NextResponse.json(
         {
           message: "Acesso negado"
@@ -31,23 +31,20 @@ export async function GET(
       );
     }
 
-    // Busca o usuario no DB
-    const user = await prisma.user.findUnique({
-      where: { id: userId }
+    // Busca o servico no DB
+    const service = await prisma.service.findUnique({
+      where: { id: serviceId }
     });
 
-    // Se o usuario não existir retorna
-    if (!user) {
+    // Se o serviço não existir retorna
+    if (!service) {
       return NextResponse.json(
-        { message: "Usuario não encontrado" },
+        { message: "Serviço não localizado" },
         { status: 404 }
       );
     }
 
-    // Remove senha antes de retornar
-    const { password, ...userWithoutPassword } = user;
-
-    return NextResponse.json(userWithoutPassword);
+    return NextResponse.json(service);
   } catch (error) {
     console.error(error);
     return NextResponse.json(

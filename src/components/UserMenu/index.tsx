@@ -18,7 +18,7 @@ export default function UserMenu() {
       <div className="flex gap-3 w-full h-full items-center">
         <Avatar name={user?.name || ""} avatar={user?.avatar || null} />
         <div className="hidden md:flex gap-1 flex-col flex-1 items-start">
-          <h2 className="text-gray-600">{user?.name}</h2>
+          <h2 className="text-gray-600 text-left">{user?.name}</h2>
           <span className="text-gray-400 text-sm">{user?.email}</span>
         </div>
       </div>

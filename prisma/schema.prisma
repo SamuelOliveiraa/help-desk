@@ -45,10 +45,10 @@ model Ticket {
   description String
   status Status @default(open)
 
-  categoryID Int
-  category Category @relation("CategoryTickets",fields: [categoryID], references: [id])
+  serviceID Int
+  service Service @relation("ServiceTickets",fields: [serviceID], references: [id])
 
-  subCategories SubCategory[] @relation("SubCategoryTicketsOnTicket")
+  subService SubService[] @relation("SubServiceTicketsOnTicket")
 
   userID Int
   user User @relation("UserTickets",fields: [userID], references: [id])
@@ -66,21 +66,21 @@ enum Status {
   inProgress
 }
 
-// Tabela Categorias
-model Category {
+// Tabela Servicos
+model Service {
   id Int @id @default(autoincrement())
   title String @unique
   value Float
   status Boolean @default(true)
 
-  tickets Ticket[] @relation("CategoryTickets")
+  tickets Ticket[] @relation("ServiceTickets")
 }
 
 // Tabela de Servicos Adicionais
-model SubCategory {
+model SubService {
   id Int @id @default(autoincrement())
   title String @unique
   value Float
 
-  tickets Ticket[] @relation("SubCategoryTicketsOnTicket")
+  tickets Ticket[] @relation("SubServiceTicketsOnTicket")
 }

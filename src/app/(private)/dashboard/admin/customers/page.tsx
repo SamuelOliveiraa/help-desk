@@ -15,7 +15,7 @@ import { User } from "@/types/user";
 import { Loader2, PenLine, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function Customers() {
+export default function CustomersPage() {
   const [data, setData] = useState<User[] | null>(null);
 
   useEffect(() => {
@@ -78,6 +78,18 @@ export default function Customers() {
                 <TableCell colSpan={3} className="text-center">
                   <div className="flex items-center justify-center">
                     <Loader2 className="animate-spin" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+
+            {data?.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center">
+                  <div className="flex items-center justify-center">
+                    <span className="text-base text-gray-200">
+                      Nenhum cliente localizado.
+                    </span>
                   </div>
                 </TableCell>
               </TableRow>
