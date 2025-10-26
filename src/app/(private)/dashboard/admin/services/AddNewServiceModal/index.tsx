@@ -29,9 +29,19 @@ type FormValues = {
 };
 
 export default function AddNewServiceModal({
-  children
+  children,
+  onConfirm,
+  id,
+  title,
+  value,
+  status
 }: {
   children: React.ReactNode;
+  onConfirm: () => void;
+  id?: number;
+  title?: string;
+  value?: number;
+  status?: "true" | "false";
 }) {
   const {
     register,
@@ -39,7 +49,13 @@ export default function AddNewServiceModal({
     reset,
     control,
     formState: { errors }
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      title,
+      value,
+      status
+    }
+  });
 
   async function handleSubmitForm(data: FormValues) {
     try {
@@ -56,6 +72,7 @@ export default function AddNewServiceModal({
       if (dataBack) {
         toast.success(dataBack.message);
         reset();
+        onConfirm();
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -79,7 +96,9 @@ export default function AddNewServiceModal({
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
         <DialogHeader>
-          <DialogTitle>Cadastro de Serviço</DialogTitle>
+          <DialogTitle>
+            {id ? `Editar Serviço - "${title}"` : "Cadastro de Serviço"}
+          </DialogTitle>
         </DialogHeader>
         <form
           className="flex flex-col gap-4 justify-between"
@@ -116,7 +135,10 @@ export default function AddNewServiceModal({
             control={control}
             rules={{ required: "O status é obrigatório" }}
             render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                value={field.value || status}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Selecione um Status" />
                 </SelectTrigger>

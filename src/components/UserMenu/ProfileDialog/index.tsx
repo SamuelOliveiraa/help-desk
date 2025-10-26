@@ -6,10 +6,10 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
-import { getCurrentUser } from "@/lib/api/users";
+import { getCurrentUser, updateUser } from "@/lib/api/users";
 import { User } from "@/types/user";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -22,9 +22,11 @@ type FormValues = {
 };
 
 export default function ProfileDialog({
-  children
+  children,
+  onConfirm
 }: {
   children: React.ReactNode;
+  onConfirm: () => void;
 }) {
   const {
     register,
@@ -33,23 +35,32 @@ export default function ProfileDialog({
     formState: { errors }
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
-
-  const router = useRouter();
+  const [user, setUser] = useState<User>();
 
   async function handleSubmitForm(data: FormValues) {
     setLoading(true);
     try {
-      /* const { message, token, user } = await loginUser(data);
-      if (token) {
-        router.push(`/dashboard/${user.role}`);
-        toast.success(message);
-      } */
+      const dataToSend = {
+        id: user?.id,
+        name: data.name,
+        email: data.email,
+        avatar: user?.avatar || ""
+      };
+      const id = user?.id;
+      if (!id) return;
+
+      const response = await updateUser(dataToSend);
+      if (!response) return toast.error("Erro ao atualizar perfil");
+
+      toast.success("Perfil atualizado com sucesso");
+      onConfirm();
     } catch (error) {
+      console.log(error);
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
+          "Não foi possível atualizar o perfil, por favor contate a equipe de suporte"
         );
       }
     } finally {
@@ -58,7 +69,6 @@ export default function ProfileDialog({
   }
 
   // Pega os dados do usuario atual
-  const [user, setUser] = useState<User>();
   useEffect(() => {
     getCurrentUser()
       .then(data => setUser(data))
@@ -89,6 +99,7 @@ export default function ProfileDialog({
               required: "O nome é obrigatorio"
             })}
             error={errors.name}
+            defaultValue={user?.name}
           />
 
           <InputForm
@@ -104,6 +115,7 @@ export default function ProfileDialog({
               }
             })}
             error={errors.email}
+            defaultValue={user?.email}
           />
 
           <InputForm
@@ -112,14 +124,18 @@ export default function ProfileDialog({
             inputID="password"
             label="Senha"
             placeholder="*********"
+            defaultValue={user?.name}
             helperText="A senha deve ter mais de 8 caracteres"
           >
-            <ChangePasswordDialog>Alterar</ChangePasswordDialog>
+            {user && user.id && (
+              <ChangePasswordDialog id={user.id}>Alterar</ChangePasswordDialog>
+            )}
           </InputForm>
 
           <Button
             fullWidth
             type="submit"
+            loading={loading}
             onClick={handleSubmit(handleSubmitForm)}
           >
             Salvar

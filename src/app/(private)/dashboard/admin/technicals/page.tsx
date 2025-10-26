@@ -26,7 +26,6 @@ export default function TechnicalsPage() {
       try {
         const technicals = await getUsersByRole("technician");
         setData(technicals);
-        console.log(technicals);
       } catch (err) {
         console.error("Erro ao buscar usuários:", err);
       }

@@ -90,11 +90,9 @@ export default function DetailsTechnicals({ id }: { id: string }) {
     getCurrentUser()
       .then((data: User) => {
         setUser(data);
-
         if (data.workingHours) {
           setWorkingHours(data.workingHours);
         }
-        console.log("Working Hours:", data.workingHours);
       })
       .catch(() => console.log("Deu erro"));
   }, [id, reset]);

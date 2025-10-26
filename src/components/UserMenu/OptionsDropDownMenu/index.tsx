@@ -9,9 +9,11 @@ import LogOutDialog from "../LogOutDialog";
 import ProfileDialog from "../ProfileDialog";
 
 export default function OptionsDropDownMenu({
-  children
+  children,
+  onConfirm
 }: {
   children: React.ReactNode;
+  onConfirm: () => void;
 }) {
   return (
     <DropdownMenu>
@@ -24,8 +26,11 @@ export default function OptionsDropDownMenu({
         <label className="uppercase text-gray-400/60 text-xs ml-2">
           Opções
         </label>
-        <ProfileDialog>
-          <DropdownMenuItem  onSelect={e => e.preventDefault()} className="text-gray-600 text-lg cursor-pointer">
+        <ProfileDialog onConfirm={onConfirm}>
+          <DropdownMenuItem
+            onSelect={e => e.preventDefault()}
+            className="text-gray-600 text-lg cursor-pointer"
+          >
             <UserCircle />
             Perfil
           </DropdownMenuItem>

@@ -16,6 +16,7 @@ import { Service } from "@/types/services";
 import { getServices } from "@/lib/api/services";
 import ServiceStatus from "@/components/ServiceStatus";
 import { formatToBRL } from "@/utils/formatToBRL";
+import RemoveServiceModal from "./RemoveServiceModal";
 
 export default function ServicesPage() {
   const [data, setData] = useState<Service[] | null>(null);
@@ -24,7 +25,6 @@ export default function ServicesPage() {
     try {
       const services = await getServices();
       setData(services);
-      console.log(services);
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
     }
@@ -39,7 +39,11 @@ export default function ServicesPage() {
       <div className="flex w-full items-center justify-between">
         <h2 className="text-3xl text-blue-500 font-bold">Serviços</h2>
 
-        <AddNewServiceModal>
+        <AddNewServiceModal
+          onConfirm={() => {
+            fetchServices();
+          }}
+        >
           <Button>
             <Plus />
             Novo
@@ -81,12 +85,30 @@ export default function ServicesPage() {
                   </TableCell>
 
                   <TableCell className="flex items-center justify-end gap-3">
-                    <Button variant="secondary">
-                      <Trash className="cursor-pointer text-red-400" />
-                    </Button>
-                    <Button variant="secondary">
-                      <PenLine className="cursor-pointer" />
-                    </Button>
+                    <RemoveServiceModal
+                      title={service.title}
+                      id={service.id}
+                      onConfirm={() => {
+                        fetchServices();
+                      }}
+                    >
+                      <Button variant="secondary">
+                        <Trash className="cursor-pointer text-red-400" />
+                      </Button>
+                    </RemoveServiceModal>
+                    <AddNewServiceModal
+                      id={service.id}
+                      title={service.title}
+                      value={service.value}
+                      status={service.status ? "true" : "false"}
+                      onConfirm={() => {
+                        fetchServices();
+                      }}
+                    >
+                      <Button variant="secondary">
+                        <PenLine className="cursor-pointer" />
+                      </Button>
+                    </AddNewServiceModal>
                   </TableCell>
                 </TableRow>
               ))

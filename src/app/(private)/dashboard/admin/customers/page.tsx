@@ -13,23 +13,24 @@ import {
 import { getUsersByRole } from "@/lib/api/users";
 import { User } from "@/types/user";
 import { Loader2, PenLine, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import RemoveUserModal from "./RemoveUserModal";
 
 export default function CustomersPage() {
   const [data, setData] = useState<User[] | null>(null);
 
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const users = await getUsersByRole("user");
-        setData(users);
-      } catch (err) {
-        console.error("Erro ao buscar usuários:", err);
-      }
+  const fetchUsers = useCallback(async () => {
+    try {
+      const users = await getUsersByRole("user");
+      setData(users);
+    } catch (err) {
+      console.error("Erro ao buscar usuários:", err);
     }
-
-    fetchUsers();
   }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
     <div className="flex flex-col w-full h-full gap-10">
@@ -64,9 +65,15 @@ export default function CustomersPage() {
                     </span>
                   </TableCell>
                   <TableCell className="flex items-center justify-end gap-3">
-                    <Button variant="secondary">
-                      <Trash className="cursor-pointer text-red-400" />
-                    </Button>
+                    <RemoveUserModal
+                      name={user.name}
+                      id={user.id}
+                      onConfirm={() => fetchUsers()}
+                    >
+                      <Button variant="secondary">
+                        <Trash className="cursor-pointer text-red-400" />
+                      </Button>
+                    </RemoveUserModal>
                     <Button variant="secondary">
                       <PenLine className="cursor-pointer" />
                     </Button>

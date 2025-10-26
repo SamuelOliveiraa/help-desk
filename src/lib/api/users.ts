@@ -1,4 +1,4 @@
-import { Role, User, WorkingHours } from "@/types/user";
+import { Role, UpdateUserType, User, WorkingHours } from "@/types/user";
 import { getToken, getUserByToken, saveToken } from "@/utils/cookies";
 import axios, { AxiosError } from "axios";
 
@@ -143,5 +143,91 @@ export async function getCurrentUser() {
         error instanceof Error ? error.message : "Erro desconhecido"
       );
     }
+  }
+}
+
+// DELETA o usuario pelo ID
+export async function deleteUser(id: number) {
+  try {
+    const token = await getToken();
+
+    if (!id) return null;
+    if (!token) return null;
+
+    const res = await axios.delete<{ user: User; message: string }>(
+      `/api/users/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar servicos: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
+  }
+}
+
+// Atualiza o usuario pelo ID
+export async function updateUser(
+  data: UpdateUserType
+): Promise<{ user: User; message: string } | null> {
+  try {
+    const token = await getToken();
+
+    if (!data.id) return null;
+    if (!token) return null;
+
+    const res = await axios.put<{ user: User; message: string }>(
+      `/api/users`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar servicos: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
+  }
+}
+
+// Atualiza a senha do usuario
+export async function updatePasswordUser(
+  id: number,
+  password: string,
+  newPassword: string
+): Promise<{ message: string } | null> {
+  try {
+    const token = await getToken();
+
+    if (!id) return null;
+    if (!token) return null;
+
+    const res = await axios.patch<{ message: string }>(
+      `/api/users`,
+      { id, password, newPassword },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar servicos: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
   }
 }

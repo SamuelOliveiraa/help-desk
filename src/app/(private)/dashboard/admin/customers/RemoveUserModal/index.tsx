@@ -6,28 +6,28 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
-import { deleteService } from "@/lib/api/services";
+import { deleteUser } from "@/lib/api/users";
 
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function RemoveServiceModal({
+export default function RemoveUserModal({
   children,
   id,
-  title,
+  name,
   onConfirm
 }: {
   children: React.ReactNode;
   id: number;
-  title: string;
+  name: string;
   onConfirm: () => void;
 }) {
   const [loading, setLoading] = useState(false);
 
-  async function handleDeleteService() {
+  async function handleDeleteUser() {
     setLoading(true);
     try {
-      const response = await deleteService(id);
+      const response = await deleteUser(id);
       if (response?.message) {
         toast.success(response?.message);
         onConfirm();
@@ -46,12 +46,12 @@ export default function RemoveServiceModal({
       <DialogContent className="max-w-md w-full flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle className="text-xl">
-            Excluir Serviço {`"${title}"`}?
+            Excluir Usuario {`"${name}"`}?
           </DialogTitle>
         </DialogHeader>
         <p className="text-base">
-          Tem certeza que deseja excluir este serviço? Esta ação é irreversível.
-          Após a exclusão, o serviço sera excluido permanentemente.
+          Tem certeza que deseja excluir este usuario? Esta ação é irreversível.
+          Após a exclusão, o usuario sera excluido permanentemente.
         </p>
 
         <div className="flex gap-2">
@@ -66,7 +66,7 @@ export default function RemoveServiceModal({
               fullWidth
               loading={loading}
               variant="delete"
-              onClick={handleDeleteService}
+              onClick={handleDeleteUser}
             >
               Sim
             </Button>

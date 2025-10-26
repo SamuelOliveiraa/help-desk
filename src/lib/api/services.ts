@@ -45,6 +45,32 @@ export async function getServicesByID(id: string): Promise<Service | null> {
   }
 }
 
+// DELETA o serviço por ID
+export async function deleteService(id: number) {
+  try {
+    const token = await getToken();
+
+    if (!id) return null;
+    if (!token) return null;
+
+    const res = await axios.delete<{ service: Service; message: string }>(
+      `/api/services/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar servicos: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
+  }
+}
+
 // POST criar Servico
 export async function createService(data: {
   title: string;

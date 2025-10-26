@@ -6,7 +6,7 @@ import { JWT_SECRET } from "@/utils/auth";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
-import { Role } from "@/types/user";
+import { Role, WorkingHours } from "@/types/user";
 import { JsonArray } from "@/generated/prisma/runtime/library";
 
 // Lista todos os usuarios do sistema
@@ -97,6 +97,151 @@ export async function POST(req: NextRequest) {
         message: "Usuário criado com sucesso!"
       },
       { status: 201 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+// Atualiza algumas informação do usuario
+export async function PUT(req: NextRequest) {
+  try {
+    // Faz todas as verificações necessarias do token
+    const userAuth = await requireAuth(req);
+    if (userAuth instanceof NextResponse) return userAuth;
+
+    const {
+      id,
+      name,
+      email,
+      avatar,
+      password,
+      workingHours
+    }: {
+      id: number;
+      name?: string;
+      email?: string;
+      avatar?: string;
+      password?: string;
+      workingHours?: WorkingHours[];
+    } = await req.json();
+
+    // Verificar se o email já existe
+    const ifEmailsAlredyExists = await prisma.user.findUnique({
+      where: { email }
+    });
+    if (ifEmailsAlredyExists && ifEmailsAlredyExists.id !== id) {
+      return NextResponse.json(
+        { message: "Email já cadastrado" },
+        { status: 400 }
+      );
+    }
+
+    // Verificar se o usuario é valido
+    const existingUser = await prisma.user.findUnique({
+      where: { id }
+    });
+    if (!existingUser) {
+      return NextResponse.json(
+        { message: "Usuario não existe" },
+        { status: 400 }
+      );
+    }
+
+    // Se passou em todas as validações pode atualizar o usuario
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        name: name || existingUser.name,
+        email: email || existingUser.email,
+        avatar: avatar || existingUser.avatar,
+        password: password
+          ? await bcrypt.hash(password, 10)
+          : existingUser.password,
+        workingHours: workingHours
+          ? JSON.parse(JSON.stringify(workingHours))
+          : existingUser.workingHours
+      }
+    });
+
+    return NextResponse.json(
+      {
+        user: {
+          id: updatedUser.id,
+          name: updatedUser.name,
+          email: updatedUser.email
+        },
+        message: "Usuário atualizado com sucesso!"
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+// Atualiza a senha do usuario
+export async function PATCH(req: NextRequest) {
+  try {
+    // Faz todas as verificações necessarias do token
+    const userAuth = await requireAuth(req);
+    if (userAuth instanceof NextResponse) return userAuth;
+
+    const {
+      id,
+      password,
+      newPassword
+    }: {
+      id: number;
+      password?: string;
+      newPassword?: string;
+    } = await req.json();
+
+    // Verificar se o usuario é valido
+    const existingUser = await prisma.user.findUnique({
+      where: { id }
+    });
+    if (!existingUser) {
+      return NextResponse.json(
+        { message: "Usuario não existe" },
+        { status: 400 }
+      );
+    }
+
+    const ifPasswordIsCorrect =
+      password && (await bcrypt.compare(password, existingUser.password));
+
+    // Verificar se a senha atual está correta
+    if (!ifPasswordIsCorrect) {
+      return NextResponse.json(
+        { message: "Senha atual incorreta" },
+        { status: 400 }
+      );
+    }
+
+    // Se passou em todas as validações pode atualizar a senha do usuario
+    await prisma.user.update({
+      where: { id },
+      data: {
+        password: newPassword
+          ? await bcrypt.hash(newPassword, 10)
+          : existingUser.password
+      }
+    });
+
+    return NextResponse.json(
+      {
+        message: "Senha atualizada com sucesso!"
+      },
+      { status: 200 }
     );
   } catch (error) {
     console.error(error);

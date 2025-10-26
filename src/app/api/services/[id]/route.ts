@@ -53,3 +53,61 @@ export async function GET(
     );
   }
 }
+
+// Deleta o serviço conforme o ID informado.
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    // Faz todas as verificações necessarias do token
+    const authUser = await requireAuth(req);
+    if (authUser instanceof NextResponse) return authUser;
+
+    // Se passou em todas as verificacoes, pode deletar o serviço
+    const { id } = await params;
+    const serviceId = Number(id);
+
+    // Se o ID não existir retorna
+    if (isNaN(serviceId)) {
+      return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
+    }
+
+    // Somente o admin pode excluir um serviço,
+    if (authUser.role !== "admin") {
+      return NextResponse.json(
+        {
+          message: "Acesso negado"
+        },
+        { status: 403 }
+      );
+    }
+
+    // Busca o servico no DB
+    const service = await prisma.service.delete({
+      where: { id: serviceId }
+    });
+
+    return NextResponse.json(
+      {
+        service,
+        message: `Serviço "${service.title}" excluído com sucesso!`
+      },
+      { status: 201 }
+    );
+
+    return NextResponse.json(service);
+  } catch (error: any) {
+    console.error(error);
+    if (error?.code === "P2025")
+      return NextResponse.json(
+        { message: "Serviço não localizado" },
+        { status: 404 }
+      );
+
+    return NextResponse.json(
+      { message: "Erro interno de servidor, por favor tente novamente." },
+      { status: 500 }
+    );
+  }
+}

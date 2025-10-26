@@ -20,7 +20,15 @@ const eslintConfig = [
       "next-env.d.ts",
       "src/generated/",
       "prisma/"
-    ]
+    ],
+    rules: {
+      // detecta variáveis ou imports não usados
+      "no-unused-vars": "off", // desativa regra JS nativa
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_" }
+      ]
+    }
   }
 ];
 

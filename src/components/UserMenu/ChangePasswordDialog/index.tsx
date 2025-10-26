@@ -3,10 +3,12 @@ import InputForm from "@/components/InputForm";
 import {
   AlertDialog,
   AlertDialogContent,
+  AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
+import { updatePasswordUser } from "@/lib/api/users";
 import { AxiosError } from "axios";
-import { ArrowLeft, Eye, EyeClosed, X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -17,9 +19,11 @@ type FormValues = {
 };
 
 export default function ChangePasswordDialog({
-  children
+  children,
+  id
 }: {
   children: React.ReactNode;
+  id: number;
 }) {
   const {
     register,
@@ -32,11 +36,15 @@ export default function ChangePasswordDialog({
   async function handleSubmitForm(data: FormValues) {
     setLoading(true);
     try {
-      /* const { message, token, user } = await loginUser(data);
-      if (token) {
-        router.push(`/dashboard/${user.role}`);
-        toast.success(message);
-      } */
+      const response = await updatePasswordUser(
+        id,
+        data.password,
+        data.newPassword
+      );
+
+      if (response?.message) {
+        toast.success(response.message);
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -65,11 +73,13 @@ export default function ChangePasswordDialog({
 
       <AlertDialogContent className="max-w-md w-full min-h-[400px]" forceMount>
         <header className="flex items-center gap-2">
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <ArrowLeft className="text-gray-400 size-6" />
           </AlertDialogTrigger>
 
-          <h2 className="font-bold text-xl flex-1">Alterar senha</h2>
+          <AlertDialogTitle className="font-bold text-xl flex-1">
+            Alterar senha
+          </AlertDialogTitle>
 
           <AlertDialogTrigger>
             <X className="text-gray-400 size-4" />
@@ -110,6 +120,7 @@ export default function ChangePasswordDialog({
           <Button
             fullWidth
             type="submit"
+            loading={loading}
             onClick={handleSubmit(handleSubmitForm)}
           >
             Salvar

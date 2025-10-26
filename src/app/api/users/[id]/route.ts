@@ -56,3 +56,53 @@ export async function GET(
     );
   }
 }
+
+// Pega o usuario conforme o ID informado.
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    // Faz todas as verificações necessarias do token
+    const authUser = await requireAuth(req);
+    if (authUser instanceof NextResponse) return authUser;
+
+    // Se passou em todas as verificacoes, pode excluir o usuario
+    const { id } = await params;
+    const userId = Number(id);
+
+    // Se o ID não existir retorna
+    if (isNaN(userId)) {
+      return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
+    }
+
+    // Somente o admin pode excluir um usuario usuario/conta
+    if (authUser.role !== "admin") {
+      return NextResponse.json(
+        {
+          message: "Acesso negado"
+        },
+        { status: 403 }
+      );
+    }
+
+    // Busca o usuario no DB
+    const user = await prisma.user.delete({
+      where: { id: userId }
+    });
+
+    return NextResponse.json(
+      {
+        user,
+        message: `Usuario "${user.name}" excluído com sucesso!`
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Erro interno de servidor, por favor tente novamente." },
+      { status: 500 }
+    );
+  }
+}
