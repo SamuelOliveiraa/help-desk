@@ -15,6 +15,7 @@ import { User } from "@/types/user";
 import { Loader2, PenLine, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import RemoveUserModal from "./RemoveUserModal";
+import EditUserModal from "./EditUserModal";
 
 export default function CustomersPage() {
   const [data, setData] = useState<User[] | null>(null);
@@ -74,9 +75,16 @@ export default function CustomersPage() {
                         <Trash className="cursor-pointer text-red-400" />
                       </Button>
                     </RemoveUserModal>
-                    <Button variant="secondary">
-                      <PenLine className="cursor-pointer" />
-                    </Button>
+                    <EditUserModal
+                      id={user.id}
+                      name={user.name}
+                      email={user.email}
+                      onConfirm={() => fetchUsers()}
+                    >
+                      <Button variant="secondary">
+                        <PenLine className="cursor-pointer" />
+                      </Button>
+                    </EditUserModal>
                   </TableCell>
                 </TableRow>
               ))

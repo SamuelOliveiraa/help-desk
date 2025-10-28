@@ -83,13 +83,16 @@ export default function TechnicalsPage() {
                     <div className="flex flex-wrap gap-2">
                       {user?.workingHours.length !== 0 ? (
                         <>
-                          {user?.workingHours.slice(0, 5).map(hour => (
-                            <TagTime
-                              key={hour.id}
-                              text={hour?.time}
-                              selected={false}
-                            />
-                          ))}
+                          {user?.workingHours
+                            .sort((a, b) => a.id - b.id)
+                            .slice(0, 5)
+                            .map(hour => (
+                              <TagTime
+                                key={hour.id}
+                                text={hour?.time}
+                                selected={false}
+                              />
+                            ))}
 
                           {user.workingHours.length > 5 && (
                             <TagTime

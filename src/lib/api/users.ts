@@ -54,7 +54,7 @@ export async function getUsersByID(id: string): Promise<User | null> {
 
     return res.data;
   } catch (error: unknown) {
-    console.error("Erro ao buscar usuarios: ", error);
+    console.error("Erro ao buscar usuario: ", error);
     throw new Error(
       error instanceof Error ? error?.message : "Erro desconhecido"
     );
@@ -165,7 +165,7 @@ export async function deleteUser(id: number) {
 
     return res.data;
   } catch (error: unknown) {
-    console.error("Erro ao buscar servicos: ", error);
+    console.error("Erro ao deletar usuario: ", error);
     throw new Error(
       error instanceof Error ? error?.message : "Erro desconhecido"
     );
@@ -191,10 +191,12 @@ export async function updateUser(
         }
       }
     );
-
     return res.data;
   } catch (error: unknown) {
-    console.error("Erro ao buscar servicos: ", error);
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    console.error("Erro ao atualizar o usuario: ", error);
     throw new Error(
       error instanceof Error ? error?.message : "Erro desconhecido"
     );
@@ -225,7 +227,7 @@ export async function updatePasswordUser(
 
     return res.data;
   } catch (error: unknown) {
-    console.error("Erro ao buscar servicos: ", error);
+    console.error("Erro ao atualizar a senha do usuario: ", error);
     throw new Error(
       error instanceof Error ? error?.message : "Erro desconhecido"
     );

@@ -4,12 +4,17 @@ import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import InputForm from "@/components/InputForm";
 import TagTime from "@/components/TagTime";
-import { createUser, getCurrentUser, getUsersByID } from "@/lib/api/users";
+import {
+  createUser,
+  getCurrentUser,
+  getUsersByID,
+  updateUser
+} from "@/lib/api/users";
 import { Role, User, WorkingHours } from "@/types/user";
 import { AxiosError } from "axios";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -62,31 +67,47 @@ export default function DetailsTechnicals({ id }: { id: string }) {
 
   const idPage = id === "details" ? "" : id;
 
-  useEffect(() => {
-    if (!id) return;
+  const fetchUsers = useCallback(async () => {
+    try {
+      if (id === "details") return;
 
-    async function fetchUsers() {
-      try {
-        if (!id) return;
-        const user = await getUsersByID(id);
-        if (user) {
-          reset({
-            name: user.name,
-            email: user.email
-          });
-        }
-        setUser(user);
+      const user = await getUsersByID(id);
+      if (!user) return;
 
-        if (user?.workingHours) {
-          setWorkingHours(user.workingHours);
-        }
-      } catch (err) {
-        console.error("Erro ao buscar usuários:", err);
+      reset({
+        name: user.name,
+        email: user.email
+      });
+
+      setUser(user);
+
+      if (user?.workingHours) {
+        setWorkingHoursSelected(user.workingHours);
+
+        setWorkingHours(prev =>
+          prev.map(hour => {
+            const found = user.workingHours?.find(
+              h => h.id === hour.id && h.active
+            );
+            return found
+              ? { ...hour, active: true }
+              : { ...hour, active: false };
+          })
+        );
       }
+    } catch (err) {
+      console.error("Erro ao buscar usuários:", err);
     }
+  }, [id, reset]);
 
+  // Edição — carrega o técnico pelo ID
+  useEffect(() => {
     fetchUsers();
+  }, [fetchUsers]);
 
+  // Criação de usuário - carrega o usuario logado atualmente
+  useEffect(() => {
+    if (id !== "details") return;
     getCurrentUser()
       .then((data: User) => {
         setUser(data);
@@ -94,8 +115,8 @@ export default function DetailsTechnicals({ id }: { id: string }) {
           setWorkingHours(data.workingHours);
         }
       })
-      .catch(() => console.log("Deu erro"));
-  }, [id, reset]);
+      .catch(() => console.log("Erro ao buscar usuário logado"));
+  }, [id]);
 
   function handleAddWorkingHours(selectedHour: WorkingHours) {
     setWorkingHours(prev =>
@@ -116,30 +137,78 @@ export default function DetailsTechnicals({ id }: { id: string }) {
     });
   }
 
-  async function handleSubmitForm(data: FormValues) {
-    if (workingHoursSelected.length < 4) {
-      toast.error(
-        "Horários de atendimento não podem estar vazios, selecione pelo menos 4 horários."
-      );
+  async function handleEditTechnican({
+    name,
+    email,
+    workingHours
+  }: {
+    name: string;
+    email: string;
+    workingHours: WorkingHours[];
+  }) {
+    const data = await updateUser({
+      id: Number(id),
+      name,
+      email,
+      workingHours
+    });
+
+    if (data !== null) {
+      router.back();
+      toast.success(data.message);
     }
-    setLoading(true);
+  }
 
-    if (!data.password) return null;
+  async function handleCreateTechnican({
+    name,
+    email,
+    password,
+    workingHours
+  }: {
+    name: string;
+    email: string;
+    password: string;
+    workingHours: WorkingHours[];
+  }) {
+    const { message, token } = await createUser({
+      name,
+      email,
+      password,
+      workingHours,
+      role: "technician" as Role
+    });
 
+    if (token) {
+      router.back();
+    }
+
+    toast.success(message);
+  }
+
+  async function handleSubmitForm(data: FormValues) {
     try {
-      const newData = {
-        ...data,
-        password: data.password,
-        workingHours: workingHoursSelected,
-        role: "technician" as Role
-      };
+      setLoading(true);
 
-      const { message, token } = await createUser(newData);
-
-      if (token) {
-        router.back();
+      if (workingHoursSelected.length < 4) {
+        toast.error(
+          "Horários de atendimento não podem estar vazios, selecione pelo menos 4 horários."
+        );
+        return;
       }
-      toast.success(message);
+
+      if (id !== "details") {
+        await handleEditTechnican({
+          name: data.name,
+          email: data.email,
+          workingHours: workingHoursSelected
+        });
+      } else {
+        await handleCreateTechnican({
+          ...data,
+          password: data.password || "",
+          workingHours: workingHoursSelected
+        });
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -149,7 +218,13 @@ export default function DetailsTechnicals({ id }: { id: string }) {
         );
       }
       setLoading(false);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  function handleBack() {
+    router.back();
   }
 
   return (
@@ -157,17 +232,21 @@ export default function DetailsTechnicals({ id }: { id: string }) {
       <header>
         <div
           className="w-fit flex items-center gap-2 cursor-pointer"
-          onClick={() => router.back()}
+          onClick={handleBack}
         >
           <ArrowLeft />
           <span>Voltar</span>
         </div>
         <div className="flex items-center justify-between w-full">
           <h2 className="text-2xl text-blue-400 font-bold">
-            Perfil de Técnico
+            {id !== "details"
+              ? "Editar Perfil de Técnico"
+              : "Criar  Perfil de Técnico"}
           </h2>
           <div className="flex items-center gap-2">
-            <Button variant="secondary">Cancelar</Button>
+            <Button variant="secondary" onClick={handleBack}>
+              Cancelar
+            </Button>
             <Button
               loading={loading}
               type="submit"

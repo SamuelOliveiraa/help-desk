@@ -25,7 +25,8 @@ export async function GET(
     if (authUser.role !== "admin") {
       return NextResponse.json(
         {
-          message: "Acesso negado"
+          message:
+            "Acesso negado! Você não tem permissão para pesquisar serviços."
         },
         { status: 403 }
       );
@@ -77,7 +78,8 @@ export async function DELETE(
     if (authUser.role !== "admin") {
       return NextResponse.json(
         {
-          message: "Acesso negado"
+          message:
+            "Acesso negado! Você não tem permissão para excluir serviços."
         },
         { status: 403 }
       );

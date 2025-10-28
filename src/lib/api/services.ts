@@ -17,7 +17,7 @@ export async function getServices(): Promise<Service[] | null> {
   } catch (error: unknown) {
     console.error("Erro ao buscar servicos: ", error);
     throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
+      error instanceof Error ? error?.message : `Erro desconhecido: ${error}`
     );
   }
 }
@@ -99,5 +99,30 @@ export async function createService(data: {
         error instanceof Error ? error.message : "Erro desconhecido"
       );
     }
+  }
+}
+
+// Atualiza o serviço pelo ID
+export async function updateService(
+  data: Service
+): Promise<{ message: string } | null> {
+  try {
+    const token = await getToken();
+
+    if (!data.id) return null;
+    if (!token) return null;
+
+    const res = await axios.put<{ message: string }>(`/api/services`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return res.data;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar servicos: ", error);
+    throw new Error(
+      error instanceof Error ? error?.message : "Erro desconhecido"
+    );
   }
 }

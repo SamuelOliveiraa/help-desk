@@ -29,8 +29,8 @@ export default function RemoveServiceModal({
     try {
       const response = await deleteService(id);
       if (response?.message) {
-        toast.success(response?.message);
         onConfirm();
+        toast.success(response?.message);
       }
     } catch (error) {
       console.error(error);
@@ -51,7 +51,7 @@ export default function RemoveServiceModal({
         </DialogHeader>
         <p className="text-base">
           Tem certeza que deseja excluir este serviço? Esta ação é irreversível.
-          Após a exclusão, o serviço sera excluido permanentemente.
+          Após a exclusão, o serviço será excluido permanentemente.
         </p>
 
         <div className="flex gap-2">
@@ -62,12 +62,7 @@ export default function RemoveServiceModal({
           </DialogTrigger>
 
           <DialogTrigger asChild>
-            <Button
-              fullWidth
-              loading={loading}
-              variant="delete"
-              onClick={handleDeleteService}
-            >
+            <Button fullWidth loading={loading} onClick={handleDeleteService}>
               Sim
             </Button>
           </DialogTrigger>

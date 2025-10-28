@@ -19,7 +19,7 @@ export async function GET(
     // Verificar se role existe
     if (!role) {
       return NextResponse.json(
-        { message: "Role é obrigatória" },
+        { message: "Campo role é obrigatório! Por favor, informe a role." },
         { status: 400 }
       );
     }
@@ -28,7 +28,8 @@ export async function GET(
     if (authUser.role !== "admin") {
       return NextResponse.json(
         {
-          message: "Acesso negado"
+          message:
+            "Acesso negado! Você não tem permissão para pesquisar usuários."
         },
         { status: 403 }
       );
@@ -36,7 +37,13 @@ export async function GET(
 
     // Converto a string role para o Enum do banco e valido se esta certo
     if (!Object.values(Role).includes(role as Role)) {
-      return NextResponse.json({ message: "Role Invalida" }, { status: 400 });
+      return NextResponse.json(
+        {
+          message:
+            "A role informada é inválida. Por favor, informe uma role válida."
+        },
+        { status: 400 }
+      );
     }
 
     const users = await prisma.user.findMany({
@@ -56,7 +63,7 @@ export async function GET(
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, por favor tente novamente." },
       { status: 500 }
     );
   }

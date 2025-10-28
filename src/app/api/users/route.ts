@@ -61,7 +61,10 @@ export async function POST(req: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { message: "Usuario já existe" },
+        {
+          message:
+            "E-mail informado já está sendo utilizado. Por favor, informe outro."
+        },
         { status: 400 }
       );
     }
@@ -101,7 +104,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, por favor tente novamente." },
       { status: 500 }
     );
   }
@@ -136,7 +139,10 @@ export async function PUT(req: NextRequest) {
     });
     if (ifEmailsAlredyExists && ifEmailsAlredyExists.id !== id) {
       return NextResponse.json(
-        { message: "Email já cadastrado" },
+        {
+          message:
+            "E-mail informado já está sendo utilizado. Por favor, informe outro."
+        },
         { status: 400 }
       );
     }
@@ -147,7 +153,9 @@ export async function PUT(req: NextRequest) {
     });
     if (!existingUser) {
       return NextResponse.json(
-        { message: "Usuario não existe" },
+        {
+          message: "Usuario informado não existe. Por favor, tente novamente."
+        },
         { status: 400 }
       );
     }
@@ -175,14 +183,14 @@ export async function PUT(req: NextRequest) {
           name: updatedUser.name,
           email: updatedUser.email
         },
-        message: "Usuário atualizado com sucesso!"
+        message: `Usuário "${updatedUser.name}" atualizado com sucesso!`
       },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, por favor tente novamente." },
       { status: 500 }
     );
   }
@@ -211,7 +219,9 @@ export async function PATCH(req: NextRequest) {
     });
     if (!existingUser) {
       return NextResponse.json(
-        { message: "Usuario não existe" },
+        {
+          message: "Usuario informado não existe. Por favor, tente novamente."
+        },
         { status: 400 }
       );
     }
@@ -222,7 +232,9 @@ export async function PATCH(req: NextRequest) {
     // Verificar se a senha atual está correta
     if (!ifPasswordIsCorrect) {
       return NextResponse.json(
-        { message: "Senha atual incorreta" },
+        {
+          message: "Senha informada não é válida. Por favor, tente novamente."
+        },
         { status: 400 }
       );
     }
@@ -246,7 +258,7 @@ export async function PATCH(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, por favor tente novamente." },
       { status: 500 }
     );
   }

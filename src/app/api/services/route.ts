@@ -2,6 +2,7 @@
 
 import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
+import { Service } from "@/types/services";
 import { NextRequest, NextResponse } from "next/server";
 
 // Lista todos os serviços do sistema
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
     const authUser = await requireAuth(req);
     if (authUser instanceof NextResponse) return authUser;
 
-    // Se passou em todas as verificacoes, pode buscar os usuarios
+    // Se passou em todas as verificacoes, pode buscar os servicos
     const {
       title,
       value,
@@ -81,7 +82,53 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, por favor tente novamente." },
+      { status: 500 }
+    );
+  }
+}
+
+// Atualiza algumas informação do servico
+export async function PUT(req: NextRequest) {
+  try {
+    // Faz todas as verificações necessarias do token
+    const userAuth = await requireAuth(req);
+    if (userAuth instanceof NextResponse) return userAuth;
+
+    const { id, title, value, status }: Service = await req.json();
+
+    // Verificar se o serviço ja existe
+    const existingService = await prisma.service.findFirst({
+      where: { id }
+    });
+
+    if (!existingService) {
+      return NextResponse.json(
+        { message: "Servico não existe, por favor tente novamente." },
+        { status: 400 }
+      );
+    }
+
+    // Se passou em todas as validações pode atualizar o usuario
+    await prisma.service.update({
+      where: { id },
+      data: {
+        title: title ?? existingService.title,
+        value: value ?? existingService.value,
+        status: status !== undefined ? status : existingService.status
+      }
+    });
+
+    return NextResponse.json(
+      {
+        message: "Serviço atualizado com sucesso!"
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Erro ao atualizar serviço" },
       { status: 500 }
     );
   }

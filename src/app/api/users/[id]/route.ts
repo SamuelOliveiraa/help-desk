@@ -25,7 +25,8 @@ export async function GET(
     if (authUser.role !== "admin" && authUser.id !== userId) {
       return NextResponse.json(
         {
-          message: "Acesso negado"
+          message:
+            "Acesso negado! Você não tem permissão para pesquisar usuários."
         },
         { status: 403 }
       );
@@ -57,7 +58,7 @@ export async function GET(
   }
 }
 
-// Pega o usuario conforme o ID informado.
+// Deleta o usuario conforme o ID informado.
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -80,7 +81,8 @@ export async function DELETE(
     if (authUser.role !== "admin") {
       return NextResponse.json(
         {
-          message: "Acesso negado"
+          message:
+            "Acesso negado! Você não tem permissão para excluir usuários."
         },
         { status: 403 }
       );

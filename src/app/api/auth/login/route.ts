@@ -16,7 +16,10 @@ export async function POST(req: NextRequest) {
     });
     if (!user) {
       return NextResponse.json(
-        { message: "Usuário não encontrado" },
+        {
+          message:
+            "Usuário não encontrado. Por favor, verifique o email ou cadastre-se."
+        },
         { status: 404 }
       );
     }
@@ -45,7 +48,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Erro interno de servidor, por favor tente novamente." },
       { status: 500 }
     );
   }

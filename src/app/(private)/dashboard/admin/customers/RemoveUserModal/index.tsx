@@ -46,12 +46,12 @@ export default function RemoveUserModal({
       <DialogContent className="max-w-md w-full flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle className="text-xl">
-            Excluir Usuario {`"${name}"`}?
+            Deseja realmente excluir {`"${name}"`}?
           </DialogTitle>
         </DialogHeader>
         <p className="text-base">
-          Tem certeza que deseja excluir este usuario? Esta ação é irreversível.
-          Após a exclusão, o usuario sera excluido permanentemente.
+          Ao excluir, todos os chamados deste cliente serão removidos e esta
+          ação não poderá ser desfeita.
         </p>
 
         <div className="flex gap-2">
@@ -62,12 +62,7 @@ export default function RemoveUserModal({
           </DialogTrigger>
 
           <DialogTrigger asChild>
-            <Button
-              fullWidth
-              loading={loading}
-              variant="delete"
-              onClick={handleDeleteUser}
-            >
+            <Button fullWidth loading={loading} onClick={handleDeleteUser}>
               Sim
             </Button>
           </DialogTrigger>

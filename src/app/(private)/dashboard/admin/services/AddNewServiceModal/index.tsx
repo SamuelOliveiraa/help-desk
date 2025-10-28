@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import InputForm from "@/components/InputForm";
-import { createService } from "@/lib/api/services";
+import { createService, updateService } from "@/lib/api/services";
 import {
   Select,
   SelectContent,
@@ -59,18 +59,23 @@ export default function AddNewServiceModal({
 
   async function handleSubmitForm(data: FormValues) {
     try {
-      const formattedData = {
+      const formattedValue = parseFloat(
+        data.value.toString().replace(/\./g, "").replace(",", ".")
+      );
+      const formattedStatus = data.status === "true" ? true : false;
+
+      const payload = {
         ...data,
-        value: parseFloat(
-          data.value.toString().replace(/\./g, "").replace(",", ".")
-        ),
-        status: data.status === "true"
+        value: formattedValue,
+        status: formattedStatus
       };
 
-      const dataBack = await createService(formattedData);
+      const dataBackend = id
+        ? await updateService({ id, ...payload })
+        : await createService(payload);
 
-      if (dataBack) {
-        toast.success(dataBack.message);
+      if (dataBackend) {
+        toast.success(dataBackend.message);
         reset();
         onConfirm();
       }
@@ -84,6 +89,7 @@ export default function AddNewServiceModal({
       }
     }
   }
+
   // Quando o componente for desmontado, reseta o form
   useEffect(() => {
     return () => {
@@ -97,7 +103,7 @@ export default function AddNewServiceModal({
       <DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle>
-            {id ? `Editar Serviço - "${title}"` : "Cadastro de Serviço"}
+            {id ? `Editar Serviço "${title}"` : "Cadastro de Serviço"}
           </DialogTitle>
         </DialogHeader>
         <form
