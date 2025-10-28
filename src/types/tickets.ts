@@ -1,4 +1,4 @@
-import { Category, SubCategory } from "./categories";
+import { Service, SubService } from "./services";
 import { User } from "./user";
 
 export type Status = "open" | "finished" | "inProgress";
@@ -9,9 +9,9 @@ export interface Ticket {
   title: string;
   description: string;
   status: Status;
-  categoryID: number;
-  category: Category;
-  subCategories: SubCategory[];
+  serviceID: number;
+  service: Service;
+  subServices: SubService[];
   userID: number;
   user: User;
   technicianID?: number;
