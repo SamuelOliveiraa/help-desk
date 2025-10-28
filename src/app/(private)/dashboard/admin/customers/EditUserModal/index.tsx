@@ -9,19 +9,10 @@ import {
 
 import { AxiosError } from "axios";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import InputForm from "@/components/InputForm";
-import { createService, updateService } from "@/lib/api/services";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
 import { updateUser } from "@/lib/api/users";
+import { useForm } from "react-hook-form";
 
 type FormValues = {
   name: string;
@@ -45,7 +36,6 @@ export default function EditUserModal({
     register,
     handleSubmit,
     reset,
-    control,
     formState: { errors }
   } = useForm<FormValues>({
     defaultValues: {

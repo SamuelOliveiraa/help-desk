@@ -99,13 +99,8 @@ export async function DELETE(
     );
 
     return NextResponse.json(service);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    if (error?.code === "P2025")
-      return NextResponse.json(
-        { message: "Serviço não localizado" },
-        { status: 404 }
-      );
 
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },

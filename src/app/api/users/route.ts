@@ -5,9 +5,10 @@ import { prisma } from "@/lib/prisma";
 import { JWT_SECRET } from "@/utils/auth";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { NextRequest, NextResponse } from "next/server";
-import { Role, WorkingHours } from "@/types/user";
-import { JsonArray } from "@/generated/prisma/runtime/library";
+import type { Role, WorkingHours } from "@/types/user";
+import type { JsonArray } from "@/generated/prisma/runtime/library";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 // Lista todos os usuarios do sistema
 export async function GET(req: NextRequest) {
@@ -20,7 +21,9 @@ export async function GET(req: NextRequest) {
     const users = await prisma.user.findMany();
 
     // Remove senha antes de retornar
-    const usersWithoutPassword = users.map(({ password, ...rest }) => rest);
+    const usersWithoutPassword = users.map(
+      ({ password: _password, ...rest }) => rest
+    );
 
     return NextResponse.json(usersWithoutPassword);
   } catch (error) {

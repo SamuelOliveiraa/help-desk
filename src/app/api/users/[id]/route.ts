@@ -1,6 +1,7 @@
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
 
 // Pega o usuario conforme o ID informado.
 export async function GET(
@@ -17,7 +18,7 @@ export async function GET(
     const userId = Number(id);
 
     // Se o ID não existir retorna
-    if (isNaN(userId)) {
+    if (Number.isNaN(userId)) {
       return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
     }
 
@@ -46,7 +47,7 @@ export async function GET(
     }
 
     // Remove senha antes de retornar
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
 
     return NextResponse.json(userWithoutPassword);
   } catch (error) {
@@ -73,7 +74,7 @@ export async function DELETE(
     const userId = Number(id);
 
     // Se o ID não existir retorna
-    if (isNaN(userId)) {
+    if (Number.isNaN(userId)) {
       return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
     }
 
