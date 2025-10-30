@@ -43,11 +43,27 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    // Verificar token
-    await jwtVerify(token, JWT_SECRET_CONVERTED);
+    const { payload } = (await jwtVerify(token, JWT_SECRET_CONVERTED)) as {
+      payload: CustomJWTPayload;
+    };
+    const role = payload.role;
+
+    if (role === "admin" && !pathname.startsWith("/dashboard/admin")) {
+      return NextResponse.redirect(new URL("/dashboard/admin", req.url));
+    }
+    if (role === "user" && !pathname.startsWith("/dashboard/user")) {
+      return NextResponse.redirect(new URL("/dashboard/user", req.url));
+    }
+    if (
+      role === "technician" &&
+      !pathname.startsWith("/dashboard/technician")
+    ) {
+      return NextResponse.redirect(new URL("/dashboard/technician", req.url));
+    }
+
     return NextResponse.next();
-  } catch {
-    // Token invalido ou expirado
+  } catch (error) {
+    console.error(error);
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }

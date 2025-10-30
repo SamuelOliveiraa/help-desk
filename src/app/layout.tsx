@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`w-screen h-screen overflow-x-hidden ${lato.className}`}>
+      <body className={`w-screen h-screen flex flex-col  ${lato.className}`}>
         {children}
         <Toaster
           position="top-right"

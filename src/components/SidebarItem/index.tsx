@@ -22,7 +22,7 @@ export default function SidebarItem({
       } `}
     >
       <Icon size={24} />
-      <span className="hidden md:block">{title}</span>
+      <span className="block">{title}</span>
     </Link>
   );
 }

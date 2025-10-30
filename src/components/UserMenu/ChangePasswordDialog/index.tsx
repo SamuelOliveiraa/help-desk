@@ -67,7 +67,7 @@ export default function ChangePasswordDialog({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="absolute right-0 bottom-10">
+      <AlertDialogTrigger className="absolute right-0 bottom-10" asChild>
         {children}
       </AlertDialogTrigger>
 
@@ -81,7 +81,7 @@ export default function ChangePasswordDialog({
             Alterar senha
           </AlertDialogTitle>
 
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <X className="text-gray-400 size-4" />
           </AlertDialogTrigger>
         </header>

@@ -10,18 +10,20 @@ import ProfileDialog from "../ProfileDialog";
 
 export default function OptionsDropDownMenu({
   children,
-  onConfirm
+  onConfirm,
+  isMobile
 }: {
   children: React.ReactNode;
   onConfirm: () => void;
+  isMobile?: boolean;
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
-        side="left"
-        sideOffset={28}
-        className="w-48 bg-gray-100 flex flex-col gap-2 py-3 border-none mb-2"
+        side={isMobile ? "bottom" : "left"}
+        sideOffset={isMobile ? 38 : 20}
+        className="w-48  bg-gray-100 flex flex-col gap-2 py-3 border-none mb-2"
       >
         <label className="uppercase text-gray-400/60 text-xs ml-2">
           Opções

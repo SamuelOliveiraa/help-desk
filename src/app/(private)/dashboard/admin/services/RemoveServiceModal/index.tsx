@@ -42,7 +42,7 @@ export default function RemoveServiceModal({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle className="text-xl">

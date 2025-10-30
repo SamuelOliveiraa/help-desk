@@ -9,7 +9,7 @@ export default function Avatar({
   avatar: string | null;
 }) {
   return (
-    <div className="w-10 h-10 rounded-full">
+    <div className="w-12 h-12 rounded-full">
       {avatar ? (
         <Image alt="Usuario image" src={avatar} width={100} height={100} />
       ) : (

@@ -34,7 +34,7 @@ export default function CustomersPage() {
   }, [fetchUsers]);
 
   return (
-    <div className="flex flex-col w-full h-full gap-10">
+    <div className="flex flex-col w-full h-full gap-10 rounded-t-3xl rounded-b-none p-4">
       <h2 className="text-3xl text-blue-500 font-bold">Clientes</h2>
 
       <div className="border rounded-lg">

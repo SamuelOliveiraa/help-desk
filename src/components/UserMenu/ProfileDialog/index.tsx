@@ -84,7 +84,7 @@ export default function ProfileDialog({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full min-h-[400px]">
         <DialogHeader>
           <DialogTitle>Perfil</DialogTitle>

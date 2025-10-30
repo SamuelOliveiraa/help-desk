@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Avatar from "../Avatar";
 import OptionsDropDownMenu from "./OptionsDropDownMenu";
 
-export default function UserMenu() {
+export default function UserMenu({ isMobile }: { isMobile?: boolean }) {
   const [user, setUser] = useState<User>();
 
   const fectchUser = useCallback(() => {
@@ -18,7 +18,7 @@ export default function UserMenu() {
   }, [fectchUser]);
 
   return (
-    <OptionsDropDownMenu onConfirm={fectchUser}>
+    <OptionsDropDownMenu isMobile={isMobile} onConfirm={fectchUser}>
       <div className="flex gap-3 w-full h-full items-center">
         <Avatar name={user?.name || ""} avatar={user?.avatar || null} />
         <div className="hidden md:flex gap-1 flex-col flex-1 items-start">

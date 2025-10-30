@@ -35,7 +35,7 @@ export default function ProfileDialog({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-96">
         <DialogHeader>
           <DialogTitle>Você tem certeza que deseja sair?</DialogTitle>

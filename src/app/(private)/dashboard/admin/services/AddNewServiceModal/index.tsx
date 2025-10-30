@@ -99,7 +99,7 @@ export default function AddNewServiceModal({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle>
@@ -145,7 +145,7 @@ export default function AddNewServiceModal({
                 onValueChange={field.onChange}
                 value={field.value || status}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full" asChild>
                   <SelectValue placeholder="Selecione um Status" />
                 </SelectTrigger>
                 <SelectContent>

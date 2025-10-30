@@ -7,12 +7,17 @@
     "lineWidth": 100
   },
   "organizeImports": {
-    "enabled": true
+    "enabled": true,
+    "error": "error",
+    "ignore": []
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "organizeImports": "error"
+      }
     }
   },
   "javascript": {

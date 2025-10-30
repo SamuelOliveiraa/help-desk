@@ -76,7 +76,7 @@ export default function EditUserModal({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full min-h-[300px] flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle>Editar Cliente</DialogTitle>
