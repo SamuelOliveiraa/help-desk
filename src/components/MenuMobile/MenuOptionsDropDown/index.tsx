@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import SidebarMenuItens from "@/components/SidebarMenuItens";
+import SidebarMenuItens from "@/components/SidebarMenuItens"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Role } from "@/types/user";
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import type { Role } from "@/types/user"
 
 export default function MenuOptionsDropDown({
   children,
-  role
+  role,
 }: {
-  children: React.ReactNode;
-  role: Role | null;
+  children: React.ReactNode
+  role: Role | null
 }) {
   return (
     <DropdownMenu>
@@ -27,5 +27,5 @@ export default function MenuOptionsDropDown({
         <SidebarMenuItens role={role || "technician"} />
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

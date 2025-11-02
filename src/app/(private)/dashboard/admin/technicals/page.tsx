@@ -1,47 +1,45 @@
-"use client";
+"use client"
 
-import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
-import TagTime from "@/components/TagTime";
+import { Loader2, PenLine, Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import Avatar from "@/components/Avatar"
+import Button from "@/components/Button"
+import TagTime from "@/components/TagTime"
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { getUsersByRole } from "@/lib/api/users";
-import { User } from "@/types/user";
-import { Loader2, PenLine, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+  TableRow,
+} from "@/components/ui/table"
+import { getUsersByRole } from "@/lib/api/users"
+import type { User } from "@/types/user"
 
 export default function TechnicalsPage() {
-  const [data, setData] = useState<User[] | null>(null);
-  const router = useRouter();
+  const [data, setData] = useState<User[] | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     async function fetchTechnicals() {
       try {
-        const technicals = await getUsersByRole("technician");
-        setData(technicals);
+        const technicals = await getUsersByRole("technician")
+        setData(technicals)
       } catch (err) {
-        console.error("Erro ao buscar usuários:", err);
+        console.error("Erro ao buscar usuários:", err)
       }
     }
 
-    fetchTechnicals();
-  }, []);
+    fetchTechnicals()
+  }, [])
 
   return (
     <div className="flex flex-col w-full h-full gap-10">
       <div className="flex w-full items-center justify-between">
         <h2 className="text-3xl text-blue-500 font-bold">Técnicos</h2>
 
-        <Button
-          onClick={() => router.push("/dashboard/admin/technicals/details")}
-        >
+        <Button onClick={() => router.push("/dashboard/admin/technicals/details")}>
           <Plus />
           Novo
         </Button>
@@ -53,30 +51,21 @@ export default function TechnicalsPage() {
             <TableRow className="h-12">
               <TableHead className="w-[30%] text-base">Nome</TableHead>
               <TableHead className="w-[20%] text-base">Email</TableHead>
-              <TableHead className="w-[50%] text-base">
-                Disponibilidade
-              </TableHead>
+              <TableHead className="w-[50%] text-base">Disponibilidade</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {data ? (
-              data?.map(user => (
-                <TableRow
-                  key={user.id}
-                  className="transition-colors hover:bg-muted/50 h-16"
-                >
+              data?.map((user) => (
+                <TableRow key={user.id} className="transition-colors hover:bg-muted/50 h-16">
                   <TableCell className="font-medium flex items-center gap-2">
                     <Avatar name={user.name} avatar={user.avatar || null} />
-                    <span className="text-base text-gray-200 font-bold">
-                      {user.name}
-                    </span>
+                    <span className="text-base text-gray-200 font-bold">{user.name}</span>
                   </TableCell>
 
                   <TableCell>
-                    <span className="text-base text-gray-200">
-                      {user.email}
-                    </span>
+                    <span className="text-base text-gray-200">{user.email}</span>
                   </TableCell>
 
                   <TableCell>
@@ -86,18 +75,12 @@ export default function TechnicalsPage() {
                           {user?.workingHours
                             .sort((a, b) => a.id - b.id)
                             .slice(0, 5)
-                            .map(hour => (
-                              <TagTime
-                                key={hour.id}
-                                text={hour?.time}
-                                selected={false}
-                              />
+                            .map((hour) => (
+                              <TagTime key={hour.id} text={hour?.time} selected={false} />
                             ))}
 
                           {user.workingHours.length > 5 && (
-                            <TagTime
-                              text={`+${user.workingHours.length - 5}`}
-                            />
+                            <TagTime text={`+${user.workingHours.length - 5}`} />
                           )}
                         </>
                       ) : (
@@ -110,9 +93,7 @@ export default function TechnicalsPage() {
                     <Button variant="secondary">
                       <PenLine
                         className="cursor-pointer"
-                        onClick={() =>
-                          router.push(`/dashboard/admin/technicals/${user.id}`)
-                        }
+                        onClick={() => router.push(`/dashboard/admin/technicals/${user.id}`)}
                       />
                     </Button>
                   </TableCell>
@@ -131,9 +112,7 @@ export default function TechnicalsPage() {
               <TableRow>
                 <TableCell colSpan={3} className="text-center">
                   <div className="flex items-center justify-center">
-                    <span className="text-base text-gray-200">
-                      Nenhum tecnico localizado.
-                    </span>
+                    <span className="text-base text-gray-200">Nenhum tecnico localizado.</span>
                   </div>
                 </TableCell>
               </TableRow>
@@ -142,5 +121,5 @@ export default function TechnicalsPage() {
         </Table>
       </div>
     </div>
-  );
+  )
 }

@@ -1,37 +1,37 @@
-"use client";
+"use client"
 
-import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
+import { Loader2, PenLine, Trash } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
+import Avatar from "@/components/Avatar"
+import Button from "@/components/Button"
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { getUsersByRole } from "@/lib/api/users";
-import { User } from "@/types/user";
-import { Loader2, PenLine, Trash } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import RemoveUserModal from "./RemoveUserModal";
-import EditUserModal from "./EditUserModal";
+  TableRow,
+} from "@/components/ui/table"
+import { getUsersByRole } from "@/lib/api/users"
+import type { User } from "@/types/user"
+import EditUserModal from "./EditUserModal"
+import RemoveUserModal from "./RemoveUserModal"
 
 export default function CustomersPage() {
-  const [data, setData] = useState<User[] | null>(null);
+  const [data, setData] = useState<User[] | null>(null)
 
   const fetchUsers = useCallback(async () => {
     try {
-      const users = await getUsersByRole("user");
-      setData(users);
+      const users = await getUsersByRole("user")
+      setData(users)
     } catch (err) {
-      console.error("Erro ao buscar usuários:", err);
+      console.error("Erro ao buscar usuários:", err)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchUsers()
+  }, [fetchUsers])
 
   return (
     <div className="flex flex-col w-full h-full gap-10 rounded-t-3xl rounded-b-none p-4">
@@ -49,28 +49,17 @@ export default function CustomersPage() {
 
           <TableBody>
             {data ? (
-              data?.map(user => (
-                <TableRow
-                  key={user.id}
-                  className="transition-colors hover:bg-muted/50 h-16"
-                >
+              data?.map((user) => (
+                <TableRow key={user.id} className="transition-colors hover:bg-muted/50 h-16">
                   <TableCell className="font-medium flex items-center gap-2">
                     <Avatar name={user.name} avatar={user.avatar || null} />
-                    <span className="text-base text-gray-200 font-bold">
-                      {user.name}
-                    </span>
+                    <span className="text-base text-gray-200 font-bold">{user.name}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-base text-gray-200">
-                      {user.email}
-                    </span>
+                    <span className="text-base text-gray-200">{user.email}</span>
                   </TableCell>
                   <TableCell className="flex items-center justify-end gap-3">
-                    <RemoveUserModal
-                      name={user.name}
-                      id={user.id}
-                      onConfirm={() => fetchUsers()}
-                    >
+                    <RemoveUserModal name={user.name} id={user.id} onConfirm={() => fetchUsers()}>
                       <Button variant="secondary">
                         <Trash className="cursor-pointer text-red-400" />
                       </Button>
@@ -102,9 +91,7 @@ export default function CustomersPage() {
               <TableRow>
                 <TableCell colSpan={3} className="text-center">
                   <div className="flex items-center justify-center">
-                    <span className="text-base text-gray-200">
-                      Nenhum cliente localizado.
-                    </span>
+                    <span className="text-base text-gray-200">Nenhum cliente localizado.</span>
                   </div>
                 </TableCell>
               </TableRow>
@@ -113,5 +100,5 @@ export default function CustomersPage() {
         </Table>
       </div>
     </div>
-  );
+  )
 }

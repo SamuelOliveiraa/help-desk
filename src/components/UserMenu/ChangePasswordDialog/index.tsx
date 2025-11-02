@@ -1,69 +1,63 @@
-import Button from "@/components/Button";
-import InputForm from "@/components/InputForm";
+import { AxiosError } from "axios"
+import { ArrowLeft, X } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import Button from "@/components/Button"
+import InputForm from "@/components/InputForm"
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
-import { updatePasswordUser } from "@/lib/api/users";
-import { AxiosError } from "axios";
-import { ArrowLeft, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { updatePasswordUser } from "@/lib/api/users"
 
 type FormValues = {
-  password: string;
-  newPassword: string;
-};
+  password: string
+  newPassword: string
+}
 
 export default function ChangePasswordDialog({
   children,
-  id
+  id,
 }: {
-  children: React.ReactNode;
-  id: number;
+  children: React.ReactNode
+  id: number
 }) {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors }
-  } = useForm<FormValues>();
-  const [loading, setLoading] = useState(false);
+    formState: { errors },
+  } = useForm<FormValues>()
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmitForm(data: FormValues) {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await updatePasswordUser(
-        id,
-        data.password,
-        data.newPassword
-      );
+      const response = await updatePasswordUser(id, data.password, data.newPassword)
 
       if (response?.message) {
-        toast.success(response.message);
+        toast.success(response.message)
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.response?.data.message)
       } else {
-        toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
-        );
+        toast.error("Erro interno de servidor, por favor contate a equipe de suporte")
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   // Quando o componente for desmontado, reseta o form
   useEffect(() => {
     return () => {
-      reset();
-    };
-  }, [reset]);
+      reset()
+    }
+  }, [reset])
 
   return (
     <AlertDialog>
@@ -77,9 +71,7 @@ export default function ChangePasswordDialog({
             <ArrowLeft className="text-gray-400 size-6" />
           </AlertDialogTrigger>
 
-          <AlertDialogTitle className="font-bold text-xl flex-1">
-            Alterar senha
-          </AlertDialogTitle>
+          <AlertDialogTitle className="font-bold text-xl flex-1">Alterar senha</AlertDialogTitle>
 
           <AlertDialogTrigger asChild>
             <X className="text-gray-400 size-4" />
@@ -95,8 +87,8 @@ export default function ChangePasswordDialog({
               required: "A senha é obrigatória",
               minLength: {
                 value: 8,
-                message: "A senha atual deve ter 8 ou mais caracteres"
-              }
+                message: "A senha atual deve ter 8 ou mais caracteres",
+              },
             })}
             error={errors.password}
           />
@@ -110,8 +102,8 @@ export default function ChangePasswordDialog({
               required: "A senha é obrigatória",
               minLength: {
                 value: 8,
-                message: "A senha deve ter 8 ou mais caracteres"
-              }
+                message: "A senha deve ter 8 ou mais caracteres",
+              },
             })}
             error={errors.newPassword}
             helperText="Minimo de 8 digitos"
@@ -128,5 +120,5 @@ export default function ChangePasswordDialog({
         </form>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

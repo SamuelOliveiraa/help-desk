@@ -1,42 +1,41 @@
-import Button from "@/components/Button";
+import { useState } from "react"
+import toast from "react-hot-toast"
+import Button from "@/components/Button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import { deleteUser } from "@/lib/api/users";
-
-import { useState } from "react";
-import toast from "react-hot-toast";
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { deleteUser } from "@/lib/api/users"
 
 export default function RemoveUserModal({
   children,
   id,
   name,
-  onConfirm
+  onConfirm,
 }: {
-  children: React.ReactNode;
-  id: number;
-  name: string;
-  onConfirm: () => void;
+  children: React.ReactNode
+  id: number
+  name: string
+  onConfirm: () => void
 }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   async function handleDeleteUser() {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await deleteUser(id);
+      const response = await deleteUser(id)
       if (response?.message) {
-        toast.success(response?.message);
-        onConfirm();
+        toast.success(response?.message)
+        onConfirm()
       }
     } catch (error) {
-      console.error(error);
-      setLoading(false);
+      console.error(error)
+      setLoading(false)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -45,13 +44,11 @@ export default function RemoveUserModal({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full flex flex-col gap-5">
         <DialogHeader>
-          <DialogTitle className="text-xl">
-            Deseja realmente excluir {`"${name}"`}?
-          </DialogTitle>
+          <DialogTitle className="text-xl">Deseja realmente excluir {`"${name}"`}?</DialogTitle>
         </DialogHeader>
         <p className="text-base">
-          Ao excluir, todos os chamados deste cliente serão removidos e esta
-          ação não poderá ser desfeita.
+          Ao excluir, todos os chamados deste cliente serão removidos e esta ação não poderá ser
+          desfeita.
         </p>
 
         <div className="flex gap-2">
@@ -69,5 +66,5 @@ export default function RemoveUserModal({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

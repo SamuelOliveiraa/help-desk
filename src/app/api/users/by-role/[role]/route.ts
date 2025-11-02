@@ -1,49 +1,44 @@
-import { Role } from "@/generated/prisma";
-import { requireAuth } from "@/lib/auth/requireAuth";
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server"
+import { Role } from "@/generated/prisma"
+import { requireAuth } from "@/lib/auth/requireAuth"
+import { prisma } from "@/lib/prisma"
 
 // Lista todos os usuarios por role
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ role: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ role: string }> }) {
   try {
     // Faz todas as verificações necessarias do token
-    const authUser = await requireAuth(req);
-    if (authUser instanceof NextResponse) return authUser;
+    const authUser = await requireAuth(req)
+    if (authUser instanceof NextResponse) return authUser
 
     // Se passou em todas as verificacoes, pode buscar o usuario
-    const { role } = await params;
+    const { role } = await params
 
     // Verificar se role existe
     if (!role) {
       return NextResponse.json(
         { message: "Campo role é obrigatório! Por favor, informe a role." },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     // Somente o admin pode pesquisar um usuario, o user/tecnico so pode ver seu proprio usuario/conta
     if (authUser.role !== "admin") {
       return NextResponse.json(
         {
-          message:
-            "Acesso negado! Você não tem permissão para pesquisar usuários."
+          message: "Acesso negado! Você não tem permissão para pesquisar usuários.",
         },
-        { status: 403 }
-      );
+        { status: 403 },
+      )
     }
 
     // Converto a string role para o Enum do banco e valido se esta certo
     if (!Object.values(Role).includes(role as Role)) {
       return NextResponse.json(
         {
-          message:
-            "A role informada é inválida. Por favor, informe uma role válida."
+          message: "A role informada é inválida. Por favor, informe uma role válida.",
         },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     const users = await prisma.user.findMany({
@@ -55,16 +50,16 @@ export async function GET(
         email: true,
         role: true,
         createdAt: true,
-        workingHours: true
-      }
-    });
+        workingHours: true,
+      },
+    })
 
-    return NextResponse.json(users);
+    return NextResponse.json(users)
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }

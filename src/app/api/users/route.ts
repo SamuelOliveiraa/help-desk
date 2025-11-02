@@ -1,37 +1,35 @@
-"use server";
+"use server"
 
-import { requireAuth } from "@/lib/auth/requireAuth";
-import { prisma } from "@/lib/prisma";
-import { JWT_SECRET } from "@/utils/auth";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import type { Role, WorkingHours } from "@/types/user";
-import type { JsonArray } from "@/generated/prisma/runtime/library";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server"
+import type { JsonArray } from "@/generated/prisma/runtime/library"
+import { requireAuth } from "@/lib/auth/requireAuth"
+import { prisma } from "@/lib/prisma"
+import type { Role, WorkingHours } from "@/types/user"
+import { JWT_SECRET } from "@/utils/auth"
 
 // Lista todos os usuarios do sistema
 export async function GET(req: NextRequest) {
   try {
     // Faz todas as verificações necessarias do token
-    const authUser = await requireAuth(req, "admin");
-    if (authUser instanceof NextResponse) return authUser;
+    const authUser = await requireAuth(req, "admin")
+    if (authUser instanceof NextResponse) return authUser
 
     // Se passou em todas as verificacoes, pode buscar os usuarios
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany()
 
     // Remove senha antes de retornar
-    const usersWithoutPassword = users.map(
-      ({ password: _password, ...rest }) => rest
-    );
+    const usersWithoutPassword = users.map(({ password: _password, ...rest }) => rest)
 
-    return NextResponse.json(usersWithoutPassword);
+    return NextResponse.json(usersWithoutPassword)
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, tente novamente mais tarde." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }
 
@@ -48,31 +46,30 @@ export async function POST(req: NextRequest) {
       email,
       password,
       workingHours,
-      role
+      role,
     }: {
-      name: string;
-      email: string;
-      password: string;
-      workingHours: JsonArray;
-      role?: Role;
-    } = await req.json();
+      name: string
+      email: string
+      password: string
+      workingHours: JsonArray
+      role?: Role
+    } = await req.json()
 
     // Verificar se o usuario ja existe
     const existingUser = await prisma.user.findUnique({
-      where: { email }
-    });
+      where: { email },
+    })
 
     if (existingUser) {
       return NextResponse.json(
         {
-          message:
-            "E-mail informado já está sendo utilizado. Por favor, informe outro."
+          message: "E-mail informado já está sendo utilizado. Por favor, informe outro.",
         },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10)
 
     const newUser = await prisma.user.create({
       data: {
@@ -80,16 +77,16 @@ export async function POST(req: NextRequest) {
         name,
         password: hashedPassword,
         role,
-        workingHours
-      }
-    });
+        workingHours,
+      },
+    })
 
     // Gerar JWT
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, role: newUser.role },
       JWT_SECRET,
-      { expiresIn: "3d" }
-    );
+      { expiresIn: "3d" },
+    )
 
     return NextResponse.json(
       {
@@ -98,18 +95,18 @@ export async function POST(req: NextRequest) {
           id: newUser.id,
           name: newUser.name,
           email: newUser.email,
-          role: newUser.role
+          role: newUser.role,
         },
-        message: "Usuário criado com sucesso!"
+        message: "Usuário criado com sucesso!",
       },
-      { status: 201 }
-    );
+      { status: 201 },
+    )
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }
 
@@ -117,8 +114,8 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     // Faz todas as verificações necessarias do token
-    const userAuth = await requireAuth(req);
-    if (userAuth instanceof NextResponse) return userAuth;
+    const userAuth = await requireAuth(req)
+    if (userAuth instanceof NextResponse) return userAuth
 
     const {
       id,
@@ -126,41 +123,40 @@ export async function PUT(req: NextRequest) {
       email,
       avatar,
       password,
-      workingHours
+      workingHours,
     }: {
-      id: number;
-      name?: string;
-      email?: string;
-      avatar?: string;
-      password?: string;
-      workingHours?: WorkingHours[];
-    } = await req.json();
+      id: number
+      name?: string
+      email?: string
+      avatar?: string
+      password?: string
+      workingHours?: WorkingHours[]
+    } = await req.json()
 
     // Verificar se o email já existe
     const ifEmailsAlredyExists = await prisma.user.findUnique({
-      where: { email }
-    });
+      where: { email },
+    })
     if (ifEmailsAlredyExists && ifEmailsAlredyExists.id !== id) {
       return NextResponse.json(
         {
-          message:
-            "E-mail informado já está sendo utilizado. Por favor, informe outro."
+          message: "E-mail informado já está sendo utilizado. Por favor, informe outro.",
         },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     // Verificar se o usuario é valido
     const existingUser = await prisma.user.findUnique({
-      where: { id }
-    });
+      where: { id },
+    })
     if (!existingUser) {
       return NextResponse.json(
         {
-          message: "Usuario informado não existe. Por favor, tente novamente."
+          message: "Usuario informado não existe. Por favor, tente novamente.",
         },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     // Se passou em todas as validações pode atualizar o usuario
@@ -170,32 +166,30 @@ export async function PUT(req: NextRequest) {
         name: name || existingUser.name,
         email: email || existingUser.email,
         avatar: avatar || existingUser.avatar,
-        password: password
-          ? await bcrypt.hash(password, 10)
-          : existingUser.password,
+        password: password ? await bcrypt.hash(password, 10) : existingUser.password,
         workingHours: workingHours
           ? JSON.parse(JSON.stringify(workingHours))
-          : existingUser.workingHours
-      }
-    });
+          : existingUser.workingHours,
+      },
+    })
 
     return NextResponse.json(
       {
         user: {
           id: updatedUser.id,
           name: updatedUser.name,
-          email: updatedUser.email
+          email: updatedUser.email,
         },
-        message: `Usuário "${updatedUser.name}" atualizado com sucesso!`
+        message: `Usuário "${updatedUser.name}" atualizado com sucesso!`,
       },
-      { status: 200 }
-    );
+      { status: 200 },
+    )
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }
 
@@ -203,66 +197,63 @@ export async function PUT(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     // Faz todas as verificações necessarias do token
-    const userAuth = await requireAuth(req);
-    if (userAuth instanceof NextResponse) return userAuth;
+    const userAuth = await requireAuth(req)
+    if (userAuth instanceof NextResponse) return userAuth
 
     const {
       id,
       password,
-      newPassword
+      newPassword,
     }: {
-      id: number;
-      password?: string;
-      newPassword?: string;
-    } = await req.json();
+      id: number
+      password?: string
+      newPassword?: string
+    } = await req.json()
 
     // Verificar se o usuario é valido
     const existingUser = await prisma.user.findUnique({
-      where: { id }
-    });
+      where: { id },
+    })
     if (!existingUser) {
       return NextResponse.json(
         {
-          message: "Usuario informado não existe. Por favor, tente novamente."
+          message: "Usuario informado não existe. Por favor, tente novamente.",
         },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
-    const ifPasswordIsCorrect =
-      password && (await bcrypt.compare(password, existingUser.password));
+    const ifPasswordIsCorrect = password && (await bcrypt.compare(password, existingUser.password))
 
     // Verificar se a senha atual está correta
     if (!ifPasswordIsCorrect) {
       return NextResponse.json(
         {
-          message: "Senha informada não é válida. Por favor, tente novamente."
+          message: "Senha informada não é válida. Por favor, tente novamente.",
         },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     // Se passou em todas as validações pode atualizar a senha do usuario
     await prisma.user.update({
       where: { id },
       data: {
-        password: newPassword
-          ? await bcrypt.hash(newPassword, 10)
-          : existingUser.password
-      }
-    });
+        password: newPassword ? await bcrypt.hash(newPassword, 10) : existingUser.password,
+      },
+    })
 
     return NextResponse.json(
       {
-        message: "Senha atualizada com sucesso!"
+        message: "Senha atualizada com sucesso!",
       },
-      { status: 200 }
-    );
+      { status: 200 },
+    )
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }

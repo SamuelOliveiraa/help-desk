@@ -1,6 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
-import type { Role } from "@/types/user";
+import Image from "next/image"
+import Link from "next/link"
+import type { Role } from "@/types/user"
 
 export default function HeaderLogo({ role }: { role: Role }) {
   return (
@@ -19,5 +19,5 @@ export default function HeaderLogo({ role }: { role: Role }) {
         </span>
       </div>
     </Link>
-  );
+  )
 }

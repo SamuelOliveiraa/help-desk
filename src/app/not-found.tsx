@@ -1,6 +1,6 @@
-import { FileQuestion } from "lucide-react";
-import Link from "next/link";
-import Button from "../components/Button";
+import { FileQuestion } from "lucide-react"
+import Link from "next/link"
+import Button from "../components/Button"
 
 export default function NotFound() {
   return (
@@ -17,9 +17,7 @@ export default function NotFound() {
         <span className="text-8xl font-bold text-white inline-block">4</span>
       </div>
 
-      <p className="mb-2 text-gray-500">
-        Pagina nao encontrada ou em desenvolvimento
-      </p>
+      <p className="mb-2 text-gray-500">Pagina nao encontrada ou em desenvolvimento</p>
 
       <div className="flex mt-6 justify-center gap-4">
         <Button variant="primary" fullWidth>
@@ -27,5 +25,5 @@ export default function NotFound() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

@@ -1,21 +1,21 @@
+import { LogOut, UserCircle } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { LogOut, UserCircle } from "lucide-react";
-import LogOutDialog from "../LogOutDialog";
-import ProfileDialog from "../ProfileDialog";
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import LogOutDialog from "../LogOutDialog"
+import ProfileDialog from "../ProfileDialog"
 
 export default function OptionsDropDownMenu({
   children,
   onConfirm,
-  isMobile
+  isMobile,
 }: {
-  children: React.ReactNode;
-  onConfirm: () => void;
-  isMobile?: boolean;
+  children: React.ReactNode
+  onConfirm: () => void
+  isMobile?: boolean
 }) {
   return (
     <DropdownMenu>
@@ -25,12 +25,10 @@ export default function OptionsDropDownMenu({
         sideOffset={isMobile ? 38 : 20}
         className="w-48  bg-gray-100 flex flex-col gap-2 py-3 border-none mb-2"
       >
-        <label className="uppercase text-gray-400/60 text-xs ml-2">
-          Opções
-        </label>
+        <label className="uppercase text-gray-400/60 text-xs ml-2">Opções</label>
         <ProfileDialog onConfirm={onConfirm}>
           <DropdownMenuItem
-            onSelect={e => e.preventDefault()}
+            onSelect={(e) => e.preventDefault()}
             className="text-gray-600 text-lg cursor-pointer"
           >
             <UserCircle />
@@ -40,7 +38,7 @@ export default function OptionsDropDownMenu({
 
         <LogOutDialog>
           <DropdownMenuItem
-            onSelect={e => e.preventDefault()}
+            onSelect={(e) => e.preventDefault()}
             className="text-red-500 text-lg hover:text-red-500 cursor-pointer"
           >
             <LogOut />
@@ -49,5 +47,5 @@ export default function OptionsDropDownMenu({
         </LogOutDialog>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

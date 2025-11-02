@@ -1,4 +1,4 @@
-import { Ban, CircleCheck } from "lucide-react";
+import { Ban, CircleCheck } from "lucide-react"
 
 export default function ServiceStatus({ status }: { status: boolean }) {
   return (
@@ -9,10 +9,10 @@ export default function ServiceStatus({ status }: { status: boolean }) {
         <Ban className="text-red-400 lg:hidden" />
       )}
       <span
-        className={`text-base font-bold rounded-full py-2 px-4 ${status ? "bg-green-400/20 text-green-400" : "bg-red-100 text-red-400"}`}
+        className={`hidden lg:block text-base font-bold rounded-full py-2 px-4 ${status ? "bg-green-400/20 text-green-400" : "bg-red-100 text-red-400"}`}
       >
         {status ? "Ativo" : "Inativo"}
       </span>
     </div>
-  );
+  )
 }

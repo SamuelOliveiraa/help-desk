@@ -1,13 +1,7 @@
-import {
-  BriefcaseBusiness,
-  ClipboardList,
-  PlusIcon,
-  Users,
-  Wrench
-} from "lucide-react";
-import SidebarItem from "../SidebarItem";
-import { usePathname } from "next/navigation";
-import { Role } from "@/types/user";
+import { BriefcaseBusiness, ClipboardList, PlusIcon, Users, Wrench } from "lucide-react"
+import { usePathname } from "next/navigation"
+import type { Role } from "@/types/user"
+import SidebarItem from "../SidebarItem"
 
 export default function SidebarMenuItens({ role }: { role: Role }) {
   const links = [
@@ -17,23 +11,23 @@ export default function SidebarMenuItens({ role }: { role: Role }) {
       href: "/dashboard/admin/technicals",
       title: "Técnicos",
       Icon: Wrench,
-      id: 4
+      id: 4,
     },
     {
       href: "/dashboard/admin/customers",
       title: "Clientes",
       Icon: Users,
-      id: 2
+      id: 2,
     },
     {
       href: "/dashboard/admin/services",
       title: "Serviços",
       Icon: BriefcaseBusiness,
-      id: 3
-    }
-  ];
+      id: 3,
+    },
+  ]
 
-  const pathname = usePathname();
+  const pathname = usePathname()
   return (
     <div className="w-full flex flex-col gap-2">
       {role === "user" ? (
@@ -62,7 +56,7 @@ export default function SidebarMenuItens({ role }: { role: Role }) {
           />
         </>
       ) : (
-        links.map(link => (
+        links.map((link) => (
           <SidebarItem
             title={link.title}
             href={link.href}
@@ -73,5 +67,5 @@ export default function SidebarMenuItens({ role }: { role: Role }) {
         ))
       )}
     </div>
-  );
+  )
 }

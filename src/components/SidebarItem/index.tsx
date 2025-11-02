@@ -1,19 +1,14 @@
-import { LucideIcon } from "lucide-react";
-import Link from "next/link";
+import type { LucideIcon } from "lucide-react"
+import Link from "next/link"
 
 type SidebarItemProps = {
-  title: string;
-  Icon: LucideIcon;
-  href: string;
-  active?: boolean;
-};
+  title: string
+  Icon: LucideIcon
+  href: string
+  active?: boolean
+}
 
-export default function SidebarItem({
-  title,
-  Icon,
-  href,
-  active
-}: SidebarItemProps) {
+export default function SidebarItem({ title, Icon, href, active }: SidebarItemProps) {
   return (
     <Link
       href={href}
@@ -24,5 +19,5 @@ export default function SidebarItem({
       <Icon size={24} />
       <span className="block">{title}</span>
     </Link>
-  );
+  )
 }

@@ -1,96 +1,88 @@
-import { Role, UpdateUserType, User, WorkingHours } from "@/types/user";
-import { getToken, getUserByToken, saveToken } from "@/utils/cookies";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError } from "axios"
+import type { Role, UpdateUserType, User, WorkingHours } from "@/types/user"
+import { getToken, getUserByToken, saveToken } from "@/utils/cookies"
 
 // GET todos os usuarios
 export async function getUsers(): Promise<User[]> {
   try {
-    const res = await axios.get<User[]>("/api/users");
-    return res.data;
+    const res = await axios.get<User[]>("/api/users")
+    return res.data
   } catch (error: unknown) {
-    console.error("Erro ao buscar usuarios: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    );
+    console.error("Erro ao buscar usuarios: ", error)
+    throw new Error(error instanceof Error ? error?.message : "Erro desconhecido")
   }
 }
 
 // GET os usuarios pela role
 export async function getUsersByRole(role: Role): Promise<User[] | null> {
   try {
-    const token = await getToken();
+    const token = await getToken()
 
-    if (!role) return null;
-    if (!token) return null;
+    if (!role) return null
+    if (!token) return null
 
     const res = await axios.get(`/api/users/by-role/${role}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-    return res.data;
+    return res.data
   } catch (error: unknown) {
-    console.error("Erro ao buscar usuarios: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    );
+    console.error("Erro ao buscar usuarios: ", error)
+    throw new Error(error instanceof Error ? error?.message : "Erro desconhecido")
   }
 }
 
 // GET os usuarios pelo ID
 export async function getUsersByID(id: string): Promise<User | null> {
   try {
-    const token = await getToken();
+    const token = await getToken()
 
-    if (!id) return null;
-    if (!token) return null;
+    if (!id) return null
+    if (!token) return null
 
     const res = await axios.get(`/api/users/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-    return res.data;
+    return res.data
   } catch (error: unknown) {
-    console.error("Erro ao buscar usuario: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    );
+    console.error("Erro ao buscar usuario: ", error)
+    throw new Error(error instanceof Error ? error?.message : "Erro desconhecido")
   }
 }
 
 // POST criar usuario / Register do usuario
 export async function createUser(data: {
-  name: string;
-  email: string;
-  role: Role;
-  password: string;
-  workingHours: WorkingHours[];
-  redirectUser?: boolean;
+  name: string
+  email: string
+  role: Role
+  password: string
+  workingHours: WorkingHours[]
+  redirectUser?: boolean
 }) {
   try {
     const res = await axios.post<{
-      token: string;
-      user: User;
-      message: string;
-    }>("/api/users", data);
+      token: string
+      user: User
+      message: string
+    }>("/api/users", data)
 
-    const { token, user, message } = res.data;
+    const { token, user, message } = res.data
 
     if (data.redirectUser) {
-      saveToken(token);
+      saveToken(token)
     }
 
-    return { token, user, message };
+    return { token, user, message }
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      throw error;
+      throw error
     } else {
-      throw new Error(
-        error instanceof Error ? error.message : "Erro desconhecido"
-      );
+      throw new Error(error instanceof Error ? error.message : "Erro desconhecido")
     }
   }
 }
@@ -98,24 +90,22 @@ export async function createUser(data: {
 // Fazer login do usuario
 export async function loginUser(data: { email: string; password: string }) {
   try {
-    const { email, password } = data;
+    const { email, password } = data
 
     const res = await axios.post<{
-      token: string;
-      user: User;
-      message: string;
-    }>("/api/auth/login", { email, password });
+      token: string
+      user: User
+      message: string
+    }>("/api/auth/login", { email, password })
 
-    saveToken(res.data.token);
+    saveToken(res.data.token)
 
-    return res.data;
+    return res.data
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error;
+      throw error
     } else {
-      throw new Error(
-        error instanceof Error ? error.message : "Erro desconhecido"
-      );
+      throw new Error(error instanceof Error ? error.message : "Erro desconhecido")
     }
   }
 }
@@ -123,25 +113,23 @@ export async function loginUser(data: { email: string; password: string }) {
 // Pega o atual usuario que esta logado
 export async function getCurrentUser() {
   try {
-    const user = await getUserByToken();
-    const token = await getToken();
+    const user = await getUserByToken()
+    const token = await getToken()
 
-    if (!user || !user.id) return null;
+    if (!user || !user.id) return null
 
     const res = await axios.get(`/api/users/${user?.id}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-    return res.data;
+    return res.data
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error;
+      throw error
     } else {
-      throw new Error(
-        error instanceof Error ? error.message : "Erro desconhecido"
-      );
+      throw new Error(error instanceof Error ? error.message : "Erro desconhecido")
     }
   }
 }
@@ -149,57 +137,46 @@ export async function getCurrentUser() {
 // DELETA o usuario pelo ID
 export async function deleteUser(id: number) {
   try {
-    const token = await getToken();
+    const token = await getToken()
 
-    if (!id) return null;
-    if (!token) return null;
+    if (!id) return null
+    if (!token) return null
 
-    const res = await axios.delete<{ user: User; message: string }>(
-      `/api/users/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+    const res = await axios.delete<{ user: User; message: string }>(`/api/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-    return res.data;
+    return res.data
   } catch (error: unknown) {
-    console.error("Erro ao deletar usuario: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    );
+    console.error("Erro ao deletar usuario: ", error)
+    throw new Error(error instanceof Error ? error?.message : "Erro desconhecido")
   }
 }
 
 // Atualiza o usuario pelo ID
 export async function updateUser(
-  data: UpdateUserType
+  data: UpdateUserType,
 ): Promise<{ user: User; message: string } | null> {
   try {
-    const token = await getToken();
+    const token = await getToken()
 
-    if (!data.id) return null;
-    if (!token) return null;
+    if (!data.id) return null
+    if (!token) return null
 
-    const res = await axios.put<{ user: User; message: string }>(
-      `/api/users`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-    return res.data;
+    const res = await axios.put<{ user: User; message: string }>(`/api/users`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res.data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      throw error;
+      throw error
     }
-    console.error("Erro ao atualizar o usuario: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    );
+    console.error("Erro ao atualizar o usuario: ", error)
+    throw new Error(error instanceof Error ? error?.message : "Erro desconhecido")
   }
 }
 
@@ -207,29 +184,27 @@ export async function updateUser(
 export async function updatePasswordUser(
   id: number,
   password: string,
-  newPassword: string
+  newPassword: string,
 ): Promise<{ message: string } | null> {
   try {
-    const token = await getToken();
+    const token = await getToken()
 
-    if (!id) return null;
-    if (!token) return null;
+    if (!id) return null
+    if (!token) return null
 
     const res = await axios.patch<{ message: string }>(
       `/api/users`,
       { id, password, newPassword },
       {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
 
-    return res.data;
+    return res.data
   } catch (error: unknown) {
-    console.error("Erro ao atualizar a senha do usuario: ", error);
-    throw new Error(
-      error instanceof Error ? error?.message : "Erro desconhecido"
-    );
+    console.error("Erro ao atualizar a senha do usuario: ", error)
+    throw new Error(error instanceof Error ? error?.message : "Erro desconhecido")
   }
 }

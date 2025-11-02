@@ -1,27 +1,27 @@
-"use server";
+"use server"
 
-import { requireAuth } from "@/lib/auth/requireAuth";
-import { prisma } from "@/lib/prisma";
-import { Service } from "@/types/services";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server"
+import { requireAuth } from "@/lib/auth/requireAuth"
+import { prisma } from "@/lib/prisma"
+import type { Service } from "@/types/services"
 
 // Lista todos os serviços do sistema
 export async function GET(req: NextRequest) {
   try {
     // Faz todas as verificações necessarias do token
-    const authUser = await requireAuth(req, "admin");
-    if (authUser instanceof NextResponse) return authUser;
+    const authUser = await requireAuth(req, "admin")
+    if (authUser instanceof NextResponse) return authUser
 
     // Se passou em todas as verificacoes, pode buscar os serviços
-    const services = await prisma.service.findMany();
+    const services = await prisma.service.findMany()
 
-    return NextResponse.json(services);
+    return NextResponse.json(services)
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, tente novamente mais tarde." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }
 
@@ -29,43 +29,43 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     // Faz todas as verificações necessarias do token
-    const authUser = await requireAuth(req);
-    if (authUser instanceof NextResponse) return authUser;
+    const authUser = await requireAuth(req)
+    if (authUser instanceof NextResponse) return authUser
 
     // Se passou em todas as verificacoes, pode buscar os servicos
     const {
       title,
       value,
-      status
+      status,
     }: {
-      title: string;
-      value: number;
-      status: boolean;
-    } = await req.json();
+      title: string
+      value: number
+      status: boolean
+    } = await req.json()
 
     // Verificar se o serviço ja existe
     const existingService = await prisma.service.findFirst({
       where: {
         title: {
-          equals: title.toLowerCase()
-        }
-      }
-    });
+          equals: title.toLowerCase(),
+        },
+      },
+    })
 
     if (existingService) {
       return NextResponse.json(
         { message: "Servico já existe, por favor crie serviços únicos." },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     const newService = await prisma.service.create({
       data: {
         title,
         value,
-        status
-      }
-    });
+        status,
+      },
+    })
 
     return NextResponse.json(
       {
@@ -73,18 +73,18 @@ export async function POST(req: NextRequest) {
           id: newService.id,
           title: newService.title,
           value: newService.value,
-          status: newService.status
+          status: newService.status,
         },
-        message: "Serviço criado com sucesso!"
+        message: "Serviço criado com sucesso!",
       },
-      { status: 201 }
-    );
+      { status: 201 },
+    )
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
-    );
+      { status: 500 },
+    )
   }
 }
 
@@ -92,21 +92,21 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     // Faz todas as verificações necessarias do token
-    const userAuth = await requireAuth(req);
-    if (userAuth instanceof NextResponse) return userAuth;
+    const userAuth = await requireAuth(req)
+    if (userAuth instanceof NextResponse) return userAuth
 
-    const { id, title, value, status }: Service = await req.json();
+    const { id, title, value, status }: Service = await req.json()
 
     // Verificar se o serviço ja existe
     const existingService = await prisma.service.findFirst({
-      where: { id }
-    });
+      where: { id },
+    })
 
     if (!existingService) {
       return NextResponse.json(
         { message: "Servico não existe, por favor tente novamente." },
-        { status: 400 }
-      );
+        { status: 400 },
+      )
     }
 
     // Se passou em todas as validações pode atualizar o usuario
@@ -115,21 +115,18 @@ export async function PUT(req: NextRequest) {
       data: {
         title: title ?? existingService.title,
         value: value ?? existingService.value,
-        status: status !== undefined ? status : existingService.status
-      }
-    });
+        status: status !== undefined ? status : existingService.status,
+      },
+    })
 
     return NextResponse.json(
       {
-        message: "Serviço atualizado com sucesso!"
+        message: "Serviço atualizado com sucesso!",
       },
-      { status: 200 }
-    );
+      { status: 200 },
+    )
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { message: "Erro ao atualizar serviço" },
-      { status: 500 }
-    );
+    console.error(error)
+    return NextResponse.json({ message: "Erro ao atualizar serviço" }, { status: 500 })
   }
 }

@@ -1,13 +1,7 @@
-import { getInitialNames } from "@/utils/getInitialNames";
-import Image from "next/image";
+import Image from "next/image"
+import { getInitialNames } from "@/utils/getInitialNames"
 
-export default function Avatar({
-  name,
-  avatar
-}: {
-  name: string;
-  avatar: string | null;
-}) {
+export default function Avatar({ name, avatar }: { name: string; avatar: string | null }) {
   return (
     <div className="w-12 h-12 rounded-full">
       {avatar ? (
@@ -18,5 +12,5 @@ export default function Avatar({
         </div>
       )}
     </div>
-  );
+  )
 }

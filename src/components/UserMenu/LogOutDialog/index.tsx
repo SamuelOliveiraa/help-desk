@@ -1,35 +1,31 @@
-import Button from "@/components/Button";
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import toast from "react-hot-toast"
+import Button from "@/components/Button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import { deleteToken } from "@/utils/cookies";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast from "react-hot-toast";
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { deleteToken } from "@/utils/cookies"
 
-export default function ProfileDialog({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+export default function ProfileDialog({ children }: { children: React.ReactNode }) {
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   async function handleLogOut() {
-    setLoading(true);
+    setLoading(true)
     try {
-      deleteToken();
-      router.replace("/login");
-      toast.success("Sessão encerrada com sucesso! Até a próxima 👋");
+      deleteToken()
+      router.replace("/login")
+      toast.success("Sessão encerrada com sucesso! Até a próxima 👋")
     } catch (error) {
-      console.log(error);
-      toast.error("Ops! Não conseguimos encerrar sua sessão. Tente novamente.");
+      console.log(error)
+      toast.error("Ops! Não conseguimos encerrar sua sessão. Tente novamente.")
 
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -44,16 +40,11 @@ export default function ProfileDialog({
           <DialogTrigger asChild>
             <Button fullWidth>Não</Button>
           </DialogTrigger>
-          <Button
-            fullWidth
-            variant="delete"
-            onClick={handleLogOut}
-            loading={loading}
-          >
+          <Button fullWidth variant="delete" onClick={handleLogOut} loading={loading}>
             Sim
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

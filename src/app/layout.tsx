@@ -1,14 +1,14 @@
-import { Toaster } from "react-hot-toast";
-import "./globals.css";
+import { Toaster } from "react-hot-toast"
+import "./globals.css"
 
-import { CircleCheckBig, CircleX } from "lucide-react";
-import { Metadata } from "next";
-import { Lato } from "next/font/google";
+import { CircleCheckBig, CircleX } from "lucide-react"
+import type { Metadata } from "next"
+import { Lato } from "next/font/google"
 
 const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
-  subsets: ["latin"]
-});
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: "HelpDesk",
@@ -27,17 +27,13 @@ export const metadata: Metadata = {
         url: "https://site-blog-rho.vercel.app/og-image.png",
         width: 800,
         height: 600,
-        alt: "HelpDesk"
-      }
-    ]
-  }
-};
+        alt: "HelpDesk",
+      },
+    ],
+  },
+}
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`w-screen h-screen flex flex-col  ${lato.className}`}>
@@ -48,32 +44,32 @@ export default function RootLayout({
             style: {
               borderRadius: "8px",
               background: "#333",
-              color: "#fff"
+              color: "#fff",
             },
             success: {
               style: {
                 background: "#508B26",
-                color: "#fff"
+                color: "#fff",
               },
-              icon: <CircleCheckBig />
+              icon: <CircleCheckBig />,
             },
             error: {
               style: {
                 background: "#ff4d4f", // vermelho
-                color: "#fff"
+                color: "#fff",
               },
-              icon: <CircleX />
+              icon: <CircleX />,
             },
             loading: {
               style: {
                 background: "#1e1e1e",
-                color: "#fff"
-              }
+                color: "#fff",
+              },
             },
-            duration: 3000
+            duration: 3000,
           }}
         />
       </body>
     </html>
-  );
+  )
 }

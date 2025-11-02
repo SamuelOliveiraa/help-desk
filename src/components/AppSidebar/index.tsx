@@ -1,15 +1,11 @@
-"use client";
+"use client"
 
-import {
-  BriefcaseBusiness,
-  ClipboardList,
-  PlusIcon,
-  Users,
-  Wrench
-} from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import SidebarItem from "../SidebarItem";
+import { useEffect, useState } from "react"
+import type { Role } from "@/types/user"
+import { getTokenRole } from "@/utils/cookies"
+import HeaderLogo from "../HeaderLogo"
+import SidebarMenuItens from "../SidebarMenuItens"
+import UserMenu from "../UserMenu"
 import {
   Sidebar,
   SidebarContent,
@@ -17,43 +13,15 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarMenu
-} from "../ui/sidebar";
-import HeaderLogo from "../HeaderLogo";
-import UserMenu from "../UserMenu";
-import type { Role } from "@/types/user";
-import { getTokenRole } from "@/utils/cookies";
-import SidebarMenuItens from "../SidebarMenuItens";
+} from "../ui/sidebar"
 
 export default function AppSidebar() {
-  const pathname = usePathname();
-  const links = [
-    { href: "/dashboard/admin", title: "Chamados", Icon: ClipboardList, id: 1 },
-
-    {
-      href: "/dashboard/admin/technicals",
-      title: "Técnicos",
-      Icon: Wrench,
-      id: 4
-    },
-    {
-      href: "/dashboard/admin/customers",
-      title: "Clientes",
-      Icon: Users,
-      id: 2
-    },
-    {
-      href: "/dashboard/admin/services",
-      title: "Serviços",
-      Icon: BriefcaseBusiness,
-      id: 3
-    }
-  ];
-  const [role, setRole] = useState<Role | null>(null);
+  const [role, setRole] = useState<Role | null>(null)
 
   useEffect(() => {
-    getTokenRole().then(setRole);
-  }, []);
+    const roleToken = getTokenRole()
+    setRole(roleToken)
+  }, [])
 
   return (
     <Sidebar>
@@ -73,5 +41,5 @@ export default function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  );
+  )
 }
