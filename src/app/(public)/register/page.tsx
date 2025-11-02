@@ -1,10 +1,5 @@
 "use client"
 
-import Button from "@/components/Button"
-import ContentContainer from "@/components/ContentContainer"
-import InputForm from "@/components/InputForm"
-import { createUser } from "@/lib/api/users"
-import type { Role } from "@/types/user"
 import { AxiosError } from "axios"
 import Image from "next/image"
 import Link from "next/link"
@@ -12,6 +7,11 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import Button from "@/components/Button"
+import ContentContainer from "@/components/ContentContainer"
+import InputForm from "@/components/InputForm"
+import { createUser } from "@/lib/api/users"
+import type { Role } from "@/types/user"
 
 type FormValues = {
   name: string
@@ -36,7 +36,7 @@ export default function Register() {
         ...data,
         redirectUser: true,
         workingHours: [],
-        role: "admin" as Role,
+        role: "user" as Role,
       }
       const { message, token, user } = await createUser(newData)
       if (token) {

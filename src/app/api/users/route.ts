@@ -36,10 +36,6 @@ export async function GET(req: NextRequest) {
 // Cria um usuario, que por padrao é "user"
 export async function POST(req: NextRequest) {
   try {
-    // Faz todas as verificações necessarias do token
-    /*     const user = await requireAuth(req);
-    if (user instanceof NextResponse) return user; */
-
     // Se passou em todas as verificacoes, pode buscar os usuarios
     const {
       name,
@@ -55,15 +51,41 @@ export async function POST(req: NextRequest) {
       role?: Role
     } = await req.json()
 
+    if (!role) {
+      return NextResponse.json(
+        { message: "Role é obrigatório. Por favor, informe a role do usuário." },
+        { status: 400 },
+      )
+    }
+
     // Verificar se o usuario ja existe
     const existingUser = await prisma.user.findUnique({
       where: { email },
     })
-
     if (existingUser) {
       return NextResponse.json(
         {
           message: "E-mail informado já está sendo utilizado. Por favor, informe outro.",
+        },
+        { status: 400 },
+      )
+    }
+
+    const roleLimits: Record<Role, number> = {
+      admin: 1,
+      user: 7,
+      technician: 3,
+    }
+
+    // Verificar se o limite de usuários para este tipo de role foi atingido.
+    const currentRoleCount = await prisma.user.count({
+      where: { role },
+    })
+    if (currentRoleCount >= roleLimits[role]) {
+      return NextResponse.json(
+        {
+          message:
+            "Você atingiu o limite de usuários para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.",
         },
         { status: 400 },
       )
