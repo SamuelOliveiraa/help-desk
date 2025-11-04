@@ -70,10 +70,7 @@ export default function ProfileDialog({
     getCurrentUser()
       .then((data) => setUser(data))
       .catch(() => console.log("Deu erro"))
-  }, [])
 
-  // Quando o componente for desmontado, reseta o form
-  useEffect(() => {
     return () => {
       reset()
     }
@@ -124,7 +121,7 @@ export default function ProfileDialog({
             defaultValue={user?.name}
             helperText="A senha deve ter mais de 8 caracteres"
           >
-            {user && user.id && <ChangePasswordDialog id={user.id}>Alterar</ChangePasswordDialog>}
+            <ChangePasswordDialog id={user?.id}>Alterar</ChangePasswordDialog>
           </InputForm>
 
           <Button

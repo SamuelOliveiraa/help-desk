@@ -23,7 +23,7 @@ export default function ChangePasswordDialog({
   id,
 }: {
   children: React.ReactNode
-  id: number
+  id?: number
 }) {
   const {
     register,
@@ -36,6 +36,7 @@ export default function ChangePasswordDialog({
   async function handleSubmitForm(data: FormValues) {
     setLoading(true)
     try {
+      if (!id) return
       const response = await updatePasswordUser(id, data.password, data.newPassword)
 
       if (response?.message) {
@@ -61,20 +62,18 @@ export default function ChangePasswordDialog({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="absolute right-0 bottom-10" asChild>
-        {children}
-      </AlertDialogTrigger>
+      <AlertDialogTrigger className="absolute right-0 bottom-10">{children}</AlertDialogTrigger>
 
       <AlertDialogContent className="max-w-md w-full min-h-[400px]" forceMount>
         <header className="flex items-center gap-2">
           <AlertDialogTrigger asChild>
-            <ArrowLeft className="text-gray-400 size-6" />
+            <ArrowLeft className="text-gray-400 size-6 cursor-pointer" />
           </AlertDialogTrigger>
 
           <AlertDialogTitle className="font-bold text-xl flex-1">Alterar senha</AlertDialogTitle>
 
           <AlertDialogTrigger asChild>
-            <X className="text-gray-400 size-4" />
+            <X className="text-gray-400 size-4 cursor-pointer" />
           </AlertDialogTrigger>
         </header>
         <form className="flex flex-col gap-3 justify-between">
