@@ -56,8 +56,6 @@ export default function DetailsTechnicals({ id }: { id: string }) {
   const [workingHours, setWorkingHours] = useState<WorkingHours[]>(INITIAL_WORKING_HOURS)
   const [workingHoursSelected, setWorkingHoursSelected] = useState<WorkingHours[]>([])
 
-  const idPage = id === "details" ? "" : id
-
   const fetchUsers = useCallback(async () => {
     try {
       if (id === "details") return
@@ -91,19 +89,6 @@ export default function DetailsTechnicals({ id }: { id: string }) {
   useEffect(() => {
     fetchUsers()
   }, [fetchUsers])
-
-  // Criação de usuário - carrega o usuario logado atualmente
-  useEffect(() => {
-    if (id !== "details") return
-    getCurrentUser()
-      .then((data: User) => {
-        setUser(data)
-        if (data.workingHours) {
-          setWorkingHours(data.workingHours)
-        }
-      })
-      .catch(() => console.log("Erro ao buscar usuário logado"))
-  }, [id])
 
   function handleAddWorkingHours(selectedHour: WorkingHours) {
     setWorkingHours((prev) =>
@@ -213,10 +198,15 @@ export default function DetailsTechnicals({ id }: { id: string }) {
   return (
     <div className="max-w-5xl flex flex-col m-auto gap-6 h-full">
       <header>
-        <div className="w-fit flex items-center gap-2 cursor-pointer" onClick={handleBack}>
+        <button
+          type="button"
+          className="w-fit flex items-center gap-2 cursor-pointer"
+          onClick={handleBack}
+        >
           <ArrowLeft />
           <span>Voltar</span>
-        </div>
+        </button>
+
         <div className="flex items-center justify-between w-full">
           <h2 className="text-2xl text-blue-400 font-bold">
             {id !== "details" ? "Editar Perfil de Técnico" : "Criar  Perfil de Técnico"}
@@ -241,7 +231,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
           </div>
 
           <form className="flex flex-col gap-6" onSubmit={handleSubmit(handleSubmitForm)}>
-            {idPage && <Avatar avatar={user?.avatar || ""} name={user?.name || ""} />}
+            {id !== "details" && <Avatar avatar={user?.avatar || ""} name={user?.name || ""} />}
 
             <InputForm
               type="text"
@@ -269,7 +259,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
               error={errors.email}
             />
 
-            {!idPage && (
+            {id === "details" && (
               <InputForm
                 isPassword={true}
                 inputID="password"

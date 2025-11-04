@@ -46,7 +46,6 @@ export default function ServicesPage() {
         >
           <Button>
             <Plus />
-            Novo
           </Button>
         </AddNewServiceModal>
       </div>
