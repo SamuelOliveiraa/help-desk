@@ -84,8 +84,7 @@ export async function POST(req: NextRequest) {
     if (currentRoleCount >= roleLimits[role]) {
       return NextResponse.json(
         {
-          message:
-            "Você atingiu o limite de usuários para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.",
+          message: `Você atingiu o limite de usuários do tipo ${role} para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.`,
         },
         { status: 400 },
       )

@@ -59,6 +59,18 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Verificar se o limite de usuários para este tipo de role foi atingido.
+    const currentServiceCount = await prisma.service.count()
+    if (currentServiceCount >= 7) {
+      return NextResponse.json(
+        {
+          message:
+            "Você atingiu o limite de serviços para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.",
+        },
+        { status: 403 },
+      )
+    }
+
     const newService = await prisma.service.create({
       data: {
         title,

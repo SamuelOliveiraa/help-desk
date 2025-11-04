@@ -73,6 +73,9 @@ export default function AddNewServiceModal({
 
       if (dataBackend) {
         toast.success(dataBackend.message)
+        if (!id) {
+          reset()
+        }
         onConfirm()
       }
     } catch (error) {
@@ -83,13 +86,6 @@ export default function AddNewServiceModal({
       }
     }
   }
-
-  // Quando o componente for desmontado, reseta o form
-  // useEffect(() => {
-  //   return () => {
-  //     reset()
-  //   }
-  // }, [reset])
 
   return (
     <Dialog>
