@@ -59,7 +59,7 @@ export default function AddNewServiceModal({
   async function handleSubmitForm(data: FormValues) {
     try {
       const formattedValue = parseFloat(data.value.toString().replace(/\./g, "").replace(",", "."))
-      const formattedStatus = data.status === "true" ? true : false
+      const formattedStatus = data.status === "true"
 
       const payload = {
         ...data,
@@ -73,7 +73,6 @@ export default function AddNewServiceModal({
 
       if (dataBackend) {
         toast.success(dataBackend.message)
-        reset()
         onConfirm()
       }
     } catch (error) {
@@ -86,15 +85,15 @@ export default function AddNewServiceModal({
   }
 
   // Quando o componente for desmontado, reseta o form
-  useEffect(() => {
-    return () => {
-      reset()
-    }
-  }, [reset])
+  // useEffect(() => {
+  //   return () => {
+  //     reset()
+  //   }
+  // }, [reset])
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
         <DialogHeader>
           <DialogTitle>{id ? `Editar Serviço "${title}"` : "Cadastro de Serviço"}</DialogTitle>
@@ -135,7 +134,7 @@ export default function AddNewServiceModal({
             rules={{ required: "O status é obrigatório" }}
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value || status}>
-                <SelectTrigger className="w-full" asChild>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Selecione um Status" />
                 </SelectTrigger>
                 <SelectContent>

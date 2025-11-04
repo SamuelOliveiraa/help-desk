@@ -46,6 +46,7 @@ export default function ServicesPage() {
         >
           <Button>
             <Plus />
+            <span className="hidden md:block">Novo</span>
           </Button>
         </AddNewServiceModal>
       </div>
