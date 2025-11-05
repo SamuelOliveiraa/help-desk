@@ -1,5 +1,4 @@
 import { AxiosError } from "axios"
-import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import Button from "@/components/Button"

@@ -40,7 +40,7 @@ enum Role {
 // Tabela Chamados
 model Ticket {
   id Int @id @default(autoincrement())
-  publicID Int @unique
+  publicID String @unique
 
   title String
   description String
