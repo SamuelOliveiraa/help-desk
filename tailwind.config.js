@@ -19,7 +19,6 @@ module.exports = {
         "gray-500": "#E3E5E8",
         "gray-600": "#F9FAFA",
         "red-400": "#D03E3E",
-        "yeloow-400": "#eedb32",
         "blue-400": "#355EC5",
         "green-400": "#508B26",
         background: "hsl(var(--background))",

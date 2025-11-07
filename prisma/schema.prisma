@@ -1,34 +1,58 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-// Tabela Usuario
 model User {
-  id Int @id @default(autoincrement())
-  avatar String?
-  name String
-  email String @unique
-  password String
-  role Role @default(user)
+  id           Int      @id @default(autoincrement())
+  avatar       String?
+  name         String
+  email        String   @unique
+  password     String
+  role         Role     @default(user)
   workingHours Json?
+  createdAt    DateTime @default(now())
+  assigned     Ticket[] @relation("TechTickets")
+  tickets      Ticket[] @relation("UserTickets")
+}
 
-  tickets Ticket[] @relation("UserTickets") // tickets criados pelo usuário
-  assigned Ticket[] @relation("TechTickets") // tickets atribuídos como técnico
+model Ticket {
+  id           Int          @id @default(autoincrement())
+  publicID     String       @unique
+  title        String
+  description  String
+  status       Status       @default(open)
+  amount       Float        @default(0)
+  serviceID    Int
+  userID       Int
+  technicianID Int?
+  createdAt    DateTime     @updatedAt
+  updatedAt    DateTime     @default(now())
+  service      Service      @relation("ServiceTickets", fields: [serviceID], references: [id])
+  technician   User?        @relation("TechTickets", fields: [technicianID], references: [id])
+  user         User         @relation("UserTickets", fields: [userID], references: [id])
+  subService   SubService[] @relation("SubServiceTicketsOnTicket")
+}
 
-  createdAt DateTime @default(now())
+model Service {
+  id      Int      @id @default(autoincrement())
+  title   String   @unique
+  value   Float
+  status  Boolean  @default(true)
+  tickets Ticket[] @relation("ServiceTickets")
+}
+
+model SubService {
+  id      Int      @id @default(autoincrement())
+  title   String   @unique
+  value   Float
+  tickets Ticket[] @relation("SubServiceTicketsOnTicket")
 }
 
 enum Role {
@@ -37,51 +61,8 @@ enum Role {
   technician
 }
 
-// Tabela Chamados
-model Ticket {
-  id Int @id @default(autoincrement())
-  publicID String @unique
-
-  title String
-  description String
-  status Status @default(open)
-
-  serviceID Int
-  service Service @relation("ServiceTickets",fields: [serviceID], references: [id])
-
-  subService SubService[] @relation("SubServiceTicketsOnTicket")
-
-  userID Int
-  user User @relation("UserTickets",fields: [userID], references: [id])
-
-  technicianID Int?
-  technician User? @relation("TechTickets", fields: [technicianID], references: [id])
-
-  createdAt DateTime @updatedAt
-  updatedAt DateTime @default(now())
-}
-
 enum Status {
   open
   finished
   inProgress
-}
-
-// Tabela Servicos
-model Service {
-  id Int @id @default(autoincrement())
-  title String @unique
-  value Float
-  status Boolean @default(true)
-
-  tickets Ticket[] @relation("ServiceTickets")
-}
-
-// Tabela de Servicos Adicionais
-model SubService {
-  id Int @id @default(autoincrement())
-  title String @unique
-  value Float
-
-  tickets Ticket[] @relation("SubServiceTicketsOnTicket")
 }

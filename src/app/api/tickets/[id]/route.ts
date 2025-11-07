@@ -1,40 +1,45 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { requireAuth } from "@/lib/auth/requireAuth"
-import prisma from "@/lib/prisma"
+import { type NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/auth/requireAuth";
+import prisma from "@/lib/prisma";
 
 // Pega o ticket conforme o ID informado.
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    // Faz todas as verificações necessarias do token
-    const authUser = await requireAuth(req)
-    if (authUser instanceof NextResponse) return authUser
+export async function GET(
+	req: NextRequest,
+	{ params }: { params: Promise<{ id: string }> },
+) {
+	try {
+		// Faz todas as verificações necessarias do token
+		const authUser = await requireAuth(req);
+		if (authUser instanceof NextResponse) return authUser;
 
-    // Se passou em todas as verificacoes, pode buscar o ticket
-    const { id } = await params
-    const ticketIDParams = Number(id)
+		// Se passou em todas as verificacoes, pode buscar o ticket
+		const { id } = await params;
+		const ticketIDParams = Number(id);
 
-    // Se o ID não existir retorna
-    if (Number.isNaN(ticketIDParams)) {
-      return NextResponse.json({ message: "ID Inválido" }, { status: 400 })
-    }
+		// Se o ID não existir retorna
+		if (!id || Number.isNaN(ticketIDParams)) {
+			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
+		}
 
-    const ticket = await prisma.ticket.findUnique({
-      where: { id: ticketIDParams },
-    })
+		const ticket = await prisma.ticket.findUnique({
+			where: { id: ticketIDParams },
+		});
 
-    if (!ticket) {
-      return NextResponse.json(
-        { message: "Nenhum chamado encontrado, por favor forneça um ID válido" },
-        { status: 404 },
-      )
-    }
+		if (!ticket) {
+			return NextResponse.json(
+				{
+					message: "Nenhum chamado encontrado, por favor forneça um ID válido",
+				},
+				{ status: 404 },
+			);
+		}
 
-    return NextResponse.json(ticket, { status: 200 })
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 },
-    )
-  }
+		return NextResponse.json(ticket, { status: 200 });
+	} catch (error) {
+		console.error(error);
+		return NextResponse.json(
+			{ message: "Erro interno de servidor, por favor tente novamente." },
+			{ status: 500 },
+		);
+	}
 }
