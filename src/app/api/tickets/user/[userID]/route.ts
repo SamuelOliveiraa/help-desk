@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 // Pega os tickets conforme o ID do usuario informado.
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: Promise<{ id: string }> },
+	{ params }: { params: Promise<{ userID: string }> },
 ) {
 	try {
 		// Faz todas as verificações necessarias do token
@@ -13,19 +13,27 @@ export async function GET(
 		if (authUser instanceof NextResponse) return authUser;
 
 		// Se passou em todas as verificacoes, pode buscar os tickets
-		const { id } = await params;
-		const userIDParams = Number(id);
+		const { userID } = await params;
+		const userIDParams = Number(userID);
+		console.log(userID)
 
 		// Se o ID não existir retorna
-		if (!id || Number.isNaN(userIDParams)) {
+		if (!userID || Number.isNaN(userIDParams)) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 
 		const tickets = await prisma.ticket.findMany({
-			where: { userID: userIDParams },
+			where: { 
+				OR: [
+					{userID: userIDParams},
+					{technicianID: userIDParams}
+				]
+			 },
 			orderBy: { publicID: "desc" },
 			include: {
 				service: true,
+				user: true, 
+				technician: true
 			},
 		});
 

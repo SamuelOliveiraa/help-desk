@@ -17,21 +17,6 @@ export async function getAllTickets(): Promise<Ticket[] | null> {
 	}
 }
 
-// GET todos os tickets baseado no status
-export async function getTicketsByStatus(status: Status): Promise<Ticket[] | null> {
-	try {
-		const res = await axios.get<Ticket[]>("/api/tickets", {
-			headers: await authHeader(),
-		});
-		
-		const filteredList = res.data.filter((ticket) => ticket.status === status)
-
-		return filteredList
-	} catch (error) {
-		handleAxiosError(error, "pegar os chamados");
-	}
-}
-
 // GET o ticket pelo ID
 export async function getTicketByID(id: number): Promise<Ticket[] | null> {
 	try {
@@ -47,6 +32,22 @@ export async function getTicketByID(id: number): Promise<Ticket[] | null> {
 	}
 }
 
+// GET o ticket pelo ID
+export async function getTicketByTechnicianID(technicianID: number): Promise<Ticket[] | null> {
+	try {
+		if (!technicianID) return null;
+
+		const res = await axios.get<Ticket[]>(`/api/tickets/user/${technicianID}`, {
+			headers: await authHeader(),
+		});
+
+		return res.data;
+	} catch (error: unknown) {
+		handleAxiosError(error, "pegar o chamado");
+	}
+}
+
+
 // POST Criar um ticket
 export async function createTicket(data: {
 	title: string;
@@ -54,7 +55,6 @@ export async function createTicket(data: {
 	serviceID: number;
 	userID: number;
 	amount: number;
-	service: Service
 }) {
 	try {
 		const token = await getToken();

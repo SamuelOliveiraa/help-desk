@@ -81,7 +81,6 @@ export default function NewTicket() {
 				serviceID: Number(data.serviceID),
 				userID: userID ?? 0,
 				amount: serviceSelected?.value,
-				service: serviceSelected
 			}
 
 			const res = await createTicket(newTicket)

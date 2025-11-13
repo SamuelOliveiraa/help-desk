@@ -49,8 +49,8 @@ export default function TicketCard({ ticket }: { ticket: Ticket }) {
 
             <div className="flex items-center justify-between border-t border-gray-400/10 pt-6">
                 <div className="flex gap-2 items-center">
-                    <Avatar size="sm" avatar={ticket.user?.avatar || ""} name={ticket.user.name} />
-                    <span>{ticket.user.name}</span>
+                    <Avatar size="sm" avatar={ticket.technician?.avatar || ""} name={ticket.technician?.name || ""} />
+                    <span>{ticket.technician?.name}</span>
                 </div>
                 <TicketStatus variant={ticket.status} />
             </div>
