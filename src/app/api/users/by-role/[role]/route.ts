@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { Role } from "@/generated/prisma";
 import { requireAuth } from "@/lib/auth/requireAuth";
 import { prisma } from "@/lib/prisma";
+import { Role } from "@/generated/prisma";
 
 // Lista todos os usuarios por role
 export async function GET(
