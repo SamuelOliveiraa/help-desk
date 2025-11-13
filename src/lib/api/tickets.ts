@@ -47,7 +47,6 @@ export async function getTicketByTechnicianID(technicianID: number): Promise<Tic
 	}
 }
 
-
 // POST Criar um ticket
 export async function createTicket(data: {
 	title: string;

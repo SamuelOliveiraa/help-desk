@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getTicketsByStatus } from "@/lib/api/tickets";
+import { getAllTickets } from "@/lib/api/tickets";
 import type { Ticket } from "@/types/tickets";
 import TicketStatus from "@/components/TicketStatus";
 import TicketContentCard from "@/components/TicketContentCard";
@@ -13,9 +13,10 @@ export default function DashboardPage() {
 
   const fetchTickets = useCallback(async () => {
     try {
-      const ticketsinProgess = await getTicketsByStatus("inProgress");
-      const ticketsOpen = await getTicketsByStatus("open");
-      const ticketsFinished = await getTicketsByStatus("finished");
+      const allTickets = await getAllTickets()
+      const ticketsinProgess = allTickets?.filter((ticket) => ticket.status === "inProgress")
+      const ticketsOpen = allTickets?.filter((ticket) => ticket.status === "open")
+      const ticketsFinished = allTickets?.filter((ticket) => ticket.status === "finished")
 
       if (ticketsinProgess) setInProgressTickets(ticketsinProgess);
       if (ticketsOpen) setOpenTickets(ticketsOpen);
