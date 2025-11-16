@@ -4,8 +4,15 @@ import { CheckCircle2, PencilLine } from "lucide-react";
 import TicketStatus from "../TicketStatus";
 import Avatar from "../Avatar";
 import { formatToBRL } from "@/utils/formatToBRL";
+import { Skeleton } from "../ui/skeleton";
 
-export default function TicketCard({ ticket }: { ticket: Ticket }) {
+export default function TicketCard({ ticket, loading }: { ticket: Ticket, loading?: boolean }) {
+
+    if (loading) {
+        return (
+            <Skeleton className="w-96 h-60" />
+        )
+    }
     return (
         <div className="max-w-96 w-full p-4 border max-h-fit rounded-lg flex flex-col gap-3">
             <header className="flex items-center justify-between">

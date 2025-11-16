@@ -17,6 +17,7 @@ import type { Service } from "@/types/services";
 import { formatToBRL } from "@/utils/formatToBRL";
 import AddNewServiceModal from "./AddNewServiceModal";
 import RemoveServiceModal from "./RemoveServiceModal";
+import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
 
 export default function ServicesPage() {
 	const [data, setData] = useState<Service[] | null>(null);
@@ -113,13 +114,7 @@ export default function ServicesPage() {
 								</TableRow>
 							))
 						) : (
-							<TableRow>
-								<TableCell colSpan={3} className="text-center">
-									<div className="flex items-center justify-center">
-										<Loader2 className="animate-spin" />
-									</div>
-								</TableCell>
-							</TableRow>
+							<TableLoadingSkeleton />
 						)}
 
 						{data?.length === 0 && (

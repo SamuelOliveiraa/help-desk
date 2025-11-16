@@ -109,7 +109,7 @@ export default function NewTicket() {
 			</header>
 
 			<div className="flex flex-col gap-4 lg:flex-row h-full">
-				<div className="w-full border border-gray-500 rounded-lg p-8 max-h-fit flex flex-col gap-4">
+				<div className="max-w-[624px] w-full border border-gray-500 rounded-lg p-8 max-h-fit flex flex-col gap-4">
 					<div className="flex flex-col gap-2">
 						<h2 className="font-bold text-xl">Informações</h2>
 
@@ -177,46 +177,44 @@ export default function NewTicket() {
 					</form>
 				</div>
 
-				<div className="max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex flex-col gap-4">
-					<header>
-						<h2 className="font-bold text-xl">Resumo</h2>
+				{serviceSelected &&
+					<div className="max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex flex-col gap-4">
+						<header>
+							<h2 className="font-bold text-xl">Resumo</h2>
 
-						<p className="text-sm text-gray-300">
-							Valores e detalhes
+							<p className="text-sm text-gray-300">
+								Valores e detalhes
+							</p>
+						</header>
+
+
+						<div className="flex flex-col gap-1 ">
+							<p className="text-sm text-gray-300">
+								Categoria do serviço
+							</p>
+							<span className="text-gray-200 font-bold">
+								{serviceSelected?.title || "Manutenção de computadores"}
+							</span>
+						</div>
+
+						<div className="flex flex-col gap-1 ">
+							<p className="text-sm text-gray-300">
+								Custo Inicial
+							</p>
+							<span className="text-gray-200 font-bold text-xl">
+								{formatToBRL(serviceSelected.value)}
+							</span>
+						</div>
+
+						<p className="text-sm text-gray-300 ">
+							O chamado será automaticamente atribuído a um técnico disponível
 						</p>
-					</header>
 
-					{!serviceSelected ?
-						<p>Selecione um serviço para mostrar o valor total</p> : (
-							<>
-								<div className="flex flex-col gap-1 ">
-									<p className="text-sm text-gray-300">
-										Categoria do serviço
-									</p>
-									<span className="text-gray-200 font-bold">
-										{serviceSelected?.title || "Manutenção de computadores"}
-									</span>
-								</div>
-
-								<div className="flex flex-col gap-1 ">
-									<p className="text-sm text-gray-300">
-										Custo Inicial
-									</p>
-									<span className="text-gray-200 font-bold text-xl">
-										{formatToBRL(serviceSelected.value)}
-									</span>
-								</div>
-
-								<p className="text-sm text-gray-300 ">
-									O chamado será automaticamente atribuído a um técnico disponível
-								</p>
-
-								<Button type="submit" loading={loading} onClick={handleSubmit(handleSubmitForm)} fullWidth>
-									Criar Chamado
-								</Button>
-							</>
-						)}
-				</div>
+						<Button type="submit" loading={loading} onClick={handleSubmit(handleSubmitForm)} fullWidth>
+							Criar Chamado
+						</Button>
+					</div>
+				}
 			</div>
 		</div>
 	);

@@ -16,6 +16,7 @@ import { getUsersByRole } from "@/lib/api/users";
 import type { User } from "@/types/user";
 import EditUserModal from "./EditUserModal";
 import RemoveUserModal from "./RemoveUserModal";
+import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
 
 export default function CustomersPage() {
 	const [data, setData] = useState<User[] | null>(null);
@@ -89,13 +90,7 @@ export default function CustomersPage() {
 								</TableRow>
 							))
 						) : (
-							<TableRow>
-								<TableCell colSpan={3} className="text-center">
-									<div className="flex items-center justify-center">
-										<Loader2 className="animate-spin" />
-									</div>
-								</TableCell>
-							</TableRow>
+							<TableLoadingSkeleton />
 						)}
 
 						{data?.length === 0 && (

@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<SidebarProvider>
 			<AppSidebar />
-			<main className="w-full h-full lg:px-12 lg:py-12">
+			<main className="w-full min-h-svh lg:px-12 lg:py-12">
 				<MenuMobile />
 				{children}
 			</main>

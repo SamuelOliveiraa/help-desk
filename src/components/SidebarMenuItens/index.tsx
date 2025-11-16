@@ -8,11 +8,11 @@ import {
 import { usePathname } from "next/navigation";
 import type { Role } from "@/types/user";
 import SidebarItem from "../SidebarItem";
+import { Skeleton } from "../ui/skeleton";
 
-export default function SidebarMenuItens({ role }: { role: Role }) {
+export default function SidebarMenuItens({ role }: { role?: Role | null }) {
 	const links = [
 		{ href: "/dashboard/admin", title: "Chamados", Icon: ClipboardList, id: 1 },
-
 		{
 			href: "/dashboard/admin/technicals",
 			title: "Técnicos",
@@ -61,7 +61,7 @@ export default function SidebarMenuItens({ role }: { role: Role }) {
 						active={pathname === "/dashboard/technician"}
 					/>
 				</>
-			) : (
+			) : role === 'admin' ? (
 				links.map((link) => (
 					<SidebarItem
 						title={link.title}
@@ -71,6 +71,12 @@ export default function SidebarMenuItens({ role }: { role: Role }) {
 						active={pathname === link.href}
 					/>
 				))
+			) : (
+				<>
+					<Skeleton className="h-12 w-full" />
+					<Skeleton className="h-12 w-full" />
+					<Skeleton className="h-12 w-full" />
+				</>
 			)}
 		</div>
 	);

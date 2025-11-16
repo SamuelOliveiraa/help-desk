@@ -37,10 +37,10 @@ export async function GET(
 			},
 		});
 
-		if (!tickets.length) {
+		if (tickets.length <= 0 ) {
 			return NextResponse.json(
 				{ message: "Nenhum chamado localizado para este usuário." },
-				{ status: 404 },
+				{ status: 200 },
 			);
 		}
 

@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/table";
 import { getUsersByRole } from "@/lib/api/users";
 import type { User } from "@/types/user";
+import { Skeleton } from "@/components/ui/skeleton";
+import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
 
 export default function TechnicalsPage() {
 	const [data, setData] = useState<User[] | null>(null);
@@ -119,13 +121,7 @@ export default function TechnicalsPage() {
 								</TableRow>
 							))
 						) : (
-							<TableRow>
-								<TableCell colSpan={3} className="text-center">
-									<div className="flex items-center justify-center">
-										<Loader2 className="animate-spin" />
-									</div>
-								</TableCell>
-							</TableRow>
+							<TableLoadingSkeleton />
 						)}
 						{data?.length === 0 && (
 							<TableRow>

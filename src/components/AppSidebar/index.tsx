@@ -28,11 +28,11 @@ export default function AppSidebar() {
 			<SidebarContent className="bg-gray-100">
 				<SidebarGroup className="flex flex-col h-full gap-4 p-0">
 					<SidebarGroupLabel className="flex py-4 px-3 border-b border-gray-400/10 rounded-none min-h-24">
-						<HeaderLogo role={role || "technician"} />
+						<HeaderLogo role={role} />
 					</SidebarGroupLabel>
 
 					<SidebarGroupContent className="flex flex-1 px-4">
-						<SidebarMenuItens role={role || "technician"} />
+						<SidebarMenuItens role={role} />
 					</SidebarGroupContent>
 
 					<SidebarFooter className="py-5 px-4 border-t border-gray-400/10">
