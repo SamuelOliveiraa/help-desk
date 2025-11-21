@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { tv } from "tailwind-variants";
 
 type SidebarItemProps = {
 	title: string;
@@ -7,6 +8,19 @@ type SidebarItemProps = {
 	href: string;
 	active?: boolean;
 };
+
+const sidebarItemLinkVariants = tv({
+	base: "p-3 rounded-lg w-full flex items-center gap-2 cursor-pointer hover:bg-blue-500 hover:text-gray-600",
+	variants: {
+		active: {
+			true: "bg-blue-500 text-gray-600",
+			false: "text-gray-400"
+		}
+	},
+	defaultVariants: {
+		active: false
+	}
+})
 
 export default function SidebarItem({
 	title,
@@ -17,9 +31,7 @@ export default function SidebarItem({
 	return (
 		<Link
 			href={href}
-			className={`p-3 rounded-lg w-full flex items-center gap-2 cursor-pointer hover:bg-blue-500 hover:text-gray-600 ${
-				active ? "bg-blue-500 text-gray-600" : "text-gray-400"
-			} `}
+			className={sidebarItemLinkVariants({ active })}
 		>
 			<Icon size={24} />
 			<span className="block">{title}</span>

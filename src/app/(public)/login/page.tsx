@@ -1,16 +1,16 @@
 "use client";
 
 import Button from "@/components/Button";
-import ContentContainer from "@/components/ContentContainer";
+import ContentContainer from "@/app/(public)/components/ContentContainer";
 import InputForm from "@/components/InputForm";
 import { loginUser } from "@/lib/api/users";
 import { AxiosError } from "axios";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import Container from "../components/Container";
 
 type FormValues = {
 	email: string;
@@ -48,81 +48,72 @@ export default function Login() {
 	}
 
 	return (
-		<div className="w-screen h-screen bg-[url('/background.png')] bg-cover bg-center flex items-center justify-end overflow-hidden ">
-			<div className="flex flex-1 max-w-2xl rounded-3xl bg-white h-full px-6 py-8 md:px-0 relative -bottom-10 md:items-center justify-center md:-bottom-4 md:-right-5 ">
-				<div className="max-w-sm w-full flex flex-col gap-6 items-center">
-					<Image
-						alt="Logo do site HelpDesk"
-						src={"/logo-help-desk.png"}
-						width={170}
-						height={170}
+		<Container>
+			<ContentContainer>
+				<form
+					className="flex flex-col gap-4"
+					onSubmit={handleSubmit(handleSubmitForm)}
+				>
+					<div className="flex flex-col gap-2">
+						<h2 className="text-xl font-bold">Acesse o portal</h2>
+						<p className="text-gray-300 text-sm">
+							Entre usando seu e-mail e senha cadastrados
+						</p>
+					</div>
+
+					<InputForm
+						type="email"
+						inputID="email"
+						label="E-mail"
+						placeholder="exemplo@mail.com"
+						register={register("email", {
+							required: "O e-mail é obrigatorio",
+							pattern: {
+								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
+								message: "Digite um e-mail válido",
+							},
+						})}
+						error={errors.email}
 					/>
 
-					<ContentContainer>
-						<form
-							className="flex flex-col gap-4"
-							onSubmit={handleSubmit(handleSubmitForm)}
-						>
-							<div className="flex flex-col gap-2">
-								<h2>Acesse o portal</h2>
-								<p>Entre usando seu e-mail e senha cadastrados</p>
-							</div>
+					<InputForm
+						isPassword={true}
+						inputID="password"
+						label="Senha"
+						placeholder="Digite sua senha"
+						register={register("password", {
+							required: "A senha  é obrigatorio",
+							minLength: {
+								value: 8,
+								message: "A senha deve ter mais de 8 caracteres",
+							},
+						})}
+						error={errors.password}
+						helperText="A senha deve ter mais de 8 caracteres"
+					/>
 
-							<InputForm
-								type="email"
-								inputID="email"
-								label="E-mail"
-								placeholder="exemplo@mail.com"
-								register={register("email", {
-									required: "O e-mail é obrigatorio",
-									pattern: {
-										value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-										message: "Digite um e-mail válido",
-									},
-								})}
-								error={errors.email}
-							/>
+					<Button
+						fullWidth
+						variant="secondary"
+						type="submit"
+						loading={loading}
+					>
+						<span className="font-bold">Entrar</span>
+					</Button>
+				</form>
+			</ContentContainer>
 
-							<InputForm
-								isPassword={true}
-								inputID="password"
-								label="Senha"
-								placeholder="Digite sua senha"
-								register={register("password", {
-									required: "A senha  é obrigatorio",
-									minLength: {
-										value: 8,
-										message: "A senha deve ter mais de 8 caracteres",
-									},
-								})}
-								error={errors.password}
-								helperText="A senha deve ter mais de 8 caracteres"
-							/>
+			<ContentContainer>
+				<div>
+					<h2 className="text-lg font-bold">Ainda não tem uma conta?</h2>
 
-							<Button
-								fullWidth
-								variant="secondary"
-								type="submit"
-								loading={loading}
-							>
-								<span className="font-bold">Entrar</span>
-							</Button>
-						</form>
-					</ContentContainer>
-
-					<ContentContainer>
-						<div>
-							<h2>Ainda não tem uma conta?</h2>
-
-							<p>Cadastre agora mesmo</p>
-						</div>
-
-						<Link href={"/register"}>
-							<Button fullWidth>Criar Conta</Button>
-						</Link>
-					</ContentContainer>
+					<p className="text-gray-300 text-sm">Cadastre agora mesmo</p>
 				</div>
-			</div>
-		</div>
+
+				<Link href={"/register"}>
+					<Button fullWidth>Criar Conta</Button>
+				</Link>
+			</ContentContainer>
+		</Container>
 	);
 }

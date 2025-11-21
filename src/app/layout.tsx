@@ -5,6 +5,8 @@ import { CircleCheckBig, CircleX } from "lucide-react";
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 
+import { Analytics } from "@vercel/analytics/next"
+
 const lato = Lato({
 	weight: ["100", "300", "400", "700", "900"],
 	subsets: ["latin"],
@@ -73,6 +75,7 @@ export default function RootLayout({
 						duration: 3000,
 					}}
 				/>
+				<Analytics />
 			</body>
 		</html>
 	);
