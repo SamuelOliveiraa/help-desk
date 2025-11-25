@@ -18,7 +18,7 @@ export async function getAllTickets(): Promise<Ticket[] | null> {
 }
 
 // GET o ticket pelo ID
-export async function getTicketByID(id: number): Promise<Ticket[] | null> {
+export async function getTicketByID(id: string): Promise<Ticket[] | null> {
 	try {
 		if (!id) return null;
 
@@ -52,7 +52,7 @@ export async function createTicket(data: {
 	title: string;
 	description: string;
 	serviceID: number;
-	userID: number;
+	userID: string;
 	amount: number;
 }) {
 	try {

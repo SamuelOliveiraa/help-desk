@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
 		}: {
 			title: string;
 			description: string;
-			serviceID: number;
-			userID: number;
+			serviceID: string;
+			userID: string;
 			amount: number;
 		} = await req.json();
 

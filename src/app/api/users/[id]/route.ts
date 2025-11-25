@@ -15,15 +15,14 @@ export async function GET(
 
 		// Se passou em todas as verificacoes, pode buscar o usuario
 		const { id } = await params;
-		const userId = Number(id);
 
 		// Se o ID não existir retorna
-		if (Number.isNaN(userId)) {
+		if (!id) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 
 		// Somente o admin pode pesquisar um usuario, o user/tecnico so pode ver seu proprio usuario/conta
-		if (authUser.role !== "admin" && authUser.id !== userId) {
+		if (authUser.role !== "admin" && String(authUser.id) !== id) {
 			return NextResponse.json(
 				{
 					message:
@@ -35,7 +34,7 @@ export async function GET(
 
 		// Busca o usuario no DB
 		const user = await prisma.user.findUnique({
-			where: { id: userId },
+			where: { id },
 		});
 
 		// Se o usuario não existir retorna
@@ -71,10 +70,9 @@ export async function DELETE(
 
 		// Se passou em todas as verificacoes, pode excluir o usuario
 		const { id } = await params;
-		const userId = Number(id);
 
 		// Se o ID não existir retorna
-		if (Number.isNaN(userId)) {
+		if (!id) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 
@@ -91,7 +89,7 @@ export async function DELETE(
 
 		// Busca o usuario no DB
 		const user = await prisma.user.delete({
-			where: { id: userId },
+			where: { id },
 		});
 
 		return NextResponse.json(

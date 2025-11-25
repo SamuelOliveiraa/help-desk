@@ -38,7 +38,7 @@ export default function NewTicket() {
 	const [loading, setLoading] = useState(false);
 	const [serviceSelected, setServiceSelected] = useState<Service>()
 	const [services, setServices] = useState<Service[]>()
-	const [userID, setUserID] = useState<number>()
+	const [userID, setUserID] = useState<string>()
 
 	const fetchServices = async () => {
 		try {
@@ -53,7 +53,7 @@ export default function NewTicket() {
 	const fetchUserID = async () => {
 		try {
 			const user = await getUserByToken()
-			if (user?.id) setUserID(Number(user.id))
+			if (user?.id) setUserID(user.id)
 		} catch (error) {
 			console.error("Não foi possível localizar o ID do usuario", error)
 
@@ -79,7 +79,7 @@ export default function NewTicket() {
 			const newTicket = {
 				...data,
 				serviceID: Number(data.serviceID),
-				userID: userID ?? 0,
+				userID: userID || "",
 				amount: serviceSelected?.value,
 			}
 

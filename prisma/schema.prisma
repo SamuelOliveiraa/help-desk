@@ -6,10 +6,11 @@ generator client {
 datasource db {
   provider = "postgresql"
   url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
+  id           String      @id @default(uuid())
   avatar       String?
   name         String
   email        String   @unique
@@ -22,17 +23,17 @@ model User {
 }
 
 model Ticket {
-  id           Int          @id @default(autoincrement())
+  id           String       @id @default(uuid())
   publicID     String       @unique
   title        String
   description  String
   status       Status       @default(open)
   amount       Float        @default(0)
-  serviceID    Int
-  userID       Int
-  technicianID Int?
-  createdAt    DateTime     @updatedAt
-  updatedAt    DateTime     @default(now())
+  serviceID    String
+  userID       String
+  technicianID String?
+  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime     @default(now())
   service      Service      @relation("ServiceTickets", fields: [serviceID], references: [id])
   technician   User?        @relation("TechTickets", fields: [technicianID], references: [id], onDelete: Cascade)
   user         User         @relation("UserTickets", fields: [userID], references: [id], onDelete: Cascade)
@@ -40,7 +41,7 @@ model Ticket {
 }
 
 model Service {
-  id      Int      @id @default(autoincrement())
+  id      String      @id @default(uuid())
   title   String   @unique
   value   Float
   status  Boolean  @default(true)
@@ -48,7 +49,7 @@ model Service {
 }
 
 model SubService {
-  id      Int      @id @default(autoincrement())
+  id      String      @id @default(uuid())
   title   String   @unique
   value   Float
   tickets Ticket[] @relation("SubServiceTicketsOnTicket")
