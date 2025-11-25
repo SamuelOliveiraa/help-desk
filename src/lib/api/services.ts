@@ -61,6 +61,7 @@ export async function deleteService(id: number) {
 		return res.data;
 	} catch (error) {
 		handleAxiosError(error, "deletar o serviço");
+		throw error
 	}
 }
 

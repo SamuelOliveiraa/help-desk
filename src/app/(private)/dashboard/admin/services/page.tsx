@@ -21,13 +21,17 @@ import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
 
 export default function ServicesPage() {
 	const [data, setData] = useState<Service[] | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	const fetchServices = useCallback(async () => {
+		setLoading(true)
 		try {
 			const services = await getServices();
 			setData(services);
 		} catch (err) {
 			console.error("Erro ao buscar usuários:", err);
+		} finally {
+			setLoading(false)
 		}
 	}, []);
 
@@ -63,7 +67,7 @@ export default function ServicesPage() {
 					</TableHeader>
 
 					<TableBody>
-						{data ? (
+						{data && !loading ? (
 							data?.map((service) => (
 								<TableRow
 									key={service.id}

@@ -90,6 +90,7 @@ export async function loginUser(data: { email: string; password: string }) {
 		return res.data;
 	} catch (error) {
 		handleAxiosError(error, "fazer login do usuario");
+		throw error
 	}
 }
 

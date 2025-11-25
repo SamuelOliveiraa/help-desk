@@ -19,6 +19,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { createService, updateService } from "@/lib/api/services";
+import { useState } from "react";
 
 type FormValues = {
 	title: string;
@@ -54,9 +55,12 @@ export default function AddNewServiceModal({
 			status,
 		},
 	});
+	const [loading, setLoading] = useState(false)
 
 	async function handleSubmitForm(data: FormValues) {
 		try {
+			setLoading(true)
+
 			const formattedValue = parseFloat(
 				data.value.toString().replace(/\./g, "").replace(",", "."),
 			);
@@ -88,6 +92,8 @@ export default function AddNewServiceModal({
 					"Erro interno de servidor, por favor contate a equipe de suporte",
 				);
 			}
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -155,8 +161,8 @@ export default function AddNewServiceModal({
 						<p className="text-red-500 text-sm">{errors.status.message}</p>
 					)}
 
-					<Button fullWidth type="submit">
-						Salvar
+					<Button fullWidth type="submit" loading={loading}>
+						{id ? "Editar Serviço " : "Criar Serviço"}
 					</Button>
 				</form>
 			</DialogContent>

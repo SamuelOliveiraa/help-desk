@@ -73,6 +73,21 @@ export async function DELETE(
 		if (isNaN(serviceId)) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
+		
+		const tickets = await prisma.ticket.findFirst({
+			where: {serviceID: serviceId}
+		})
+
+		if(tickets){
+			return NextResponse.json(
+				{
+					message:
+						"Não é possivel excluir o serviço, existem chamados em aberto usando este serviço.",
+				},
+				{ status: 400 },
+			);
+		}
+
 
 		// Somente o admin pode excluir um serviço,
 		if (authUser.role !== "admin") {
@@ -97,8 +112,6 @@ export async function DELETE(
 			},
 			{ status: 201 },
 		);
-
-		return NextResponse.json(service);
 	} catch (error: unknown) {
 		console.error(error);
 

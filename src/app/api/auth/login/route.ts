@@ -18,9 +18,9 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json(
 				{
 					message:
-						"Usuário não encontrado. Por favor, verifique o email ou cadastre-se.",
+						"Por favor, verifique o email/senha ou cadastre-se.",
 				},
-				{ status: 404 },
+				{ status: 401 },
 			);
 		}
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 		if (!isPasswordValid) {
 			return NextResponse.json(
 				{ message: "Usuario e/ou senha incorreta" },
-				{ status: 404 },
+				{ status: 401 },
 			);
 		}
 
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 	} catch (error) {
 		console.error(error);
 		return NextResponse.json(
-			{ message: "Erro interno de servidor, por favor tente novamente." },
+			{ message: "Erro interno de servidor, por favor tente novamente. (backend)" },
 			{ status: 500 },
 		);
 	}

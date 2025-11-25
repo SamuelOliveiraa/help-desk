@@ -4,7 +4,7 @@ import { Skeleton } from "../ui/skeleton";
 import { tv } from "tailwind-variants";
 
 const skeletonVariants = tv({
-	base: "",
+	base: "rounded-full",
 	variants: {
 		size: {
 			sm: "w-7 h-7",

@@ -9,6 +9,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteService } from "@/lib/api/services";
+import axios from "axios";
 
 export default function RemoveServiceModal({
 	children,
@@ -24,8 +25,8 @@ export default function RemoveServiceModal({
 	const [loading, setLoading] = useState(false);
 
 	async function handleDeleteService() {
-		setLoading(true);
 		try {
+			setLoading(true);
 			const response = await deleteService(id);
 			if (response?.message) {
 				onConfirm();
@@ -33,6 +34,9 @@ export default function RemoveServiceModal({
 			}
 		} catch (error) {
 			console.error(error);
+			if (axios.isAxiosError(error)) {
+				toast.error(error.response?.data.message)
+			}
 			setLoading(false);
 		} finally {
 			setLoading(false);

@@ -28,8 +28,8 @@ export default function Login() {
 	const router = useRouter();
 
 	async function handleSubmitForm(data: FormValues) {
-		setLoading(true);
 		try {
+			setLoading(true);
 			const { message, token, user } = await loginUser(data);
 			if (token) {
 				router.push(`/dashboard/${user.role}`);
@@ -40,9 +40,11 @@ export default function Login() {
 				toast.error(error.response?.data.message);
 			} else {
 				toast.error(
-					"Erro interno de servidor, por favor contate a equipe de suporte",
+					"Erro interno de servidor, por favor contate a equipe de suporte (front)",
 				);
 			}
+			setLoading(false);
+		} finally {
 			setLoading(false);
 		}
 	}

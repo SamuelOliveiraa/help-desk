@@ -4,9 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url = env("DATABASE_URL")
 }
 
 model User {
@@ -35,8 +34,8 @@ model Ticket {
   createdAt    DateTime     @updatedAt
   updatedAt    DateTime     @default(now())
   service      Service      @relation("ServiceTickets", fields: [serviceID], references: [id])
-  technician   User?        @relation("TechTickets", fields: [technicianID], references: [id])
-  user         User         @relation("UserTickets", fields: [userID], references: [id])
+  technician   User?        @relation("TechTickets", fields: [technicianID], references: [id], onDelete: Cascade)
+  user         User         @relation("UserTickets", fields: [userID], references: [id], onDelete: Cascade)
   subService   SubService[] @relation("SubServiceTicketsOnTicket")
 }
 
