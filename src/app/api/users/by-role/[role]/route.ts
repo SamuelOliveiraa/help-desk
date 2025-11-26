@@ -6,7 +6,7 @@ import { Role } from "@/generated/prisma";
 // Lista todos os usuarios por role
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: { role: Role } },
+	{ params }: { params: Promise<{ role: Role }> },
 ) {
 	try {
 		// Faz todas as verificações necessarias do token
@@ -14,7 +14,7 @@ export async function GET(
 		if (authUser instanceof NextResponse) return authUser;
 
 		// Se passou em todas as verificacoes, pode buscar o usuario
-		const { role } =  params;
+		const { role } =  await params;
 
 		// Verificar se role existe
 		if (!role) {
