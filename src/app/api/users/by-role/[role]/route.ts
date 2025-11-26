@@ -6,7 +6,7 @@ import { Role } from "@/generated/prisma";
 // Lista todos os usuarios por role
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: Promise<{ role: Role }> },
+	{ params }: { params: Promise<{ role: string }> },
 ) {
 	try {
 		// Faz todas as verificações necessarias do token
