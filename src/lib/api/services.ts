@@ -47,7 +47,7 @@ export async function getServicesByID(id: string): Promise<Service | null> {
 }
 
 // DELETA o serviço por ID
-export async function deleteService(id: number) {
+export async function deleteService(id: string) {
 	try {
 		if (!id) return null;
 

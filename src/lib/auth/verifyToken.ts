@@ -5,7 +5,7 @@ import type { Role } from "@/types/user";
 import { JWT_SECRET } from "@/utils/auth";
 
 interface TokenPayload extends JwtPayload {
-	id: number;
+	id: string;
 	email: string;
 	role: Role;
 }

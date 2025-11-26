@@ -17,6 +17,7 @@ import type { User } from "@/types/user";
 import EditUserModal from "./EditUserModal";
 import RemoveUserModal from "./RemoveUserModal";
 import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
+import ItensNotFound from "@/components/ItensNotFound";
 
 export default function CustomersPage() {
 	const [data, setData] = useState<User[] | null>(null);
@@ -96,11 +97,7 @@ export default function CustomersPage() {
 						{data?.length === 0 && (
 							<TableRow>
 								<TableCell colSpan={3} className="text-center">
-									<div className="flex items-center justify-center">
-										<span className="text-base text-gray-200">
-											Nenhum cliente localizado.
-										</span>
-									</div>
+									<ItensNotFound title="Nenhum cliente foi localizado" description="Ainda não existe nenhum usuário no sistema. Assim que novos usuários forem criados ou registrados, eles aparecerão aqui" className="mt-0" />
 								</TableCell>
 							</TableRow>
 						)}

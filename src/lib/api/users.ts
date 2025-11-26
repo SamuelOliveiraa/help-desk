@@ -107,12 +107,12 @@ export async function getCurrentUser() {
 
 		return res.data;
 	} catch (error) {
-		handleAxiosError(error, "ppegar o usuario atual");
+		handleAxiosError(error, "pegar o usuario atual");
 	}
 }
 
 // DELETA o usuario pelo ID
-export async function deleteUser(id: number) {
+export async function deleteUser(id: string) {
 	try {
 		if (!id) return null;
 
@@ -151,7 +151,7 @@ export async function updateUser(
 
 // Atualiza a senha do usuario
 export async function updatePasswordUser(
-	id: number,
+	id: string,
 	password: string,
 	newPassword: string,
 ): Promise<{ message: string } | null> {

@@ -14,19 +14,18 @@ export async function GET(
 
 		// Se passou em todas as verificacoes, pode buscar os tickets
 		const { userID } = await params;
-		const userIDParams = Number(userID);
 		console.log(userID)
 
 		// Se o ID não existir retorna
-		if (!userID || Number.isNaN(userIDParams)) {
+		if (!userID) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 
 		const tickets = await prisma.ticket.findMany({
 			where: { 
 				OR: [
-					{userID: userIDParams},
-					{technicianID: userIDParams}
+					{userID},
+					{technicianID: userID}
 				]
 			 },
 			orderBy: { publicID: "desc" },

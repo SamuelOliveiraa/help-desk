@@ -27,7 +27,7 @@ export default function EditUserModal({
 }: {
 	children: React.ReactNode;
 	onConfirm: () => void;
-	id: number;
+	id: string;
 	name: string;
 	email: string;
 }) {

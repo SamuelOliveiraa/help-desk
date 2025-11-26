@@ -18,7 +18,7 @@ export default function RemoveServiceModal({
 	onConfirm,
 }: {
 	children: React.ReactNode;
-	id: number;
+	id: string;
 	title: string;
 	onConfirm: () => void;
 }) {

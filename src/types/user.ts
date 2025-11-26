@@ -1,7 +1,7 @@
 export type Role = "admin" | "user" | "technician";
 
 export interface User {
-	id: number;
+	id: string;
 	avatar?: string | null;
 	name: string;
 	email: string;
@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface UpdateUserType {
-	id?: number;
+	id?: string;
 	avatar?: string | null;
 	name?: string;
 	email?: string;

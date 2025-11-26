@@ -151,7 +151,7 @@ export async function PUT(req: NextRequest) {
 			password,
 			workingHours,
 		}: {
-			id: number;
+			id: string;
 			name?: string;
 			email?: string;
 			avatar?: string;
@@ -234,7 +234,7 @@ export async function PATCH(req: NextRequest) {
 			password,
 			newPassword,
 		}: {
-			id: number;
+			id: string;
 			password?: string;
 			newPassword?: string;
 		} = await req.json();

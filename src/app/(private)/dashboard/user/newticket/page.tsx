@@ -78,7 +78,7 @@ export default function NewTicket() {
 
 			const newTicket = {
 				...data,
-				serviceID: Number(data.serviceID),
+				serviceID: data.serviceID,
 				userID: userID || "",
 				amount: serviceSelected?.value,
 			}
@@ -149,7 +149,7 @@ export default function NewTicket() {
 								<Select
 									onValueChange={(val) => {
 										field.onChange(val);
-										const selected = services?.find(service => service.id === Number(val))
+										const selected = services?.find(service => service.id === val)
 										setServiceSelected(selected)
 									}}
 									value={String(field.value) || ""}
@@ -160,7 +160,7 @@ export default function NewTicket() {
 									<SelectContent>
 										<SelectGroup>
 											{services?.map((service) => (
-												<SelectItem key={service.id} value={service.id.toString()}>
+												<SelectItem key={service.id} value={service.id}>
 													{service.title}
 												</SelectItem>
 											))}

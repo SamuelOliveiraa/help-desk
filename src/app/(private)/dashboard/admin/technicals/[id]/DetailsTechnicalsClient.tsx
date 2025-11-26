@@ -131,7 +131,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
 		workingHours: WorkingHours[];
 	}) {
 		const data = await updateUser({
-			id: Number(id),
+			id,
 			name,
 			email,
 			workingHours,

@@ -18,6 +18,7 @@ import { getUsersByRole } from "@/lib/api/users";
 import type { User } from "@/types/user";
 import { Skeleton } from "@/components/ui/skeleton";
 import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
+import ItensNotFound from "@/components/ItensNotFound";
 
 export default function TechnicalsPage() {
 	const [data, setData] = useState<User[] | null>(null);
@@ -126,11 +127,7 @@ export default function TechnicalsPage() {
 						{data?.length === 0 && (
 							<TableRow>
 								<TableCell colSpan={3} className="text-center">
-									<div className="flex items-center justify-center">
-										<span className="text-base text-gray-200">
-											Nenhum tecnico localizado.
-										</span>
-									</div>
+									<ItensNotFound title="Nenhum técnico foi localizado" description="Você ainda não adicionou nenhum técnico no sistema. Clique no botão acima para criar o primeiro técnico." className="mt-0" />
 								</TableCell>
 							</TableRow>
 						)}

@@ -14,15 +14,14 @@ export async function GET(
 
 		// Se passou em todas as verificacoes, pode buscar o ticket
 		const { id } = await params;
-		const ticketIDParams = Number(id);
 
 		// Se o ID não existir retorna
-		if (!id || Number.isNaN(ticketIDParams)) {
+		if (!id) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 
 		const ticket = await prisma.ticket.findUnique({
-			where: { id: ticketIDParams },
+			where: { id },
 		});
 
 		if (!ticket) {

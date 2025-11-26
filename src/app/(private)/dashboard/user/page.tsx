@@ -7,6 +7,7 @@ import TicketStatus from "@/components/TicketStatus";
 import TicketContentCard from "@/components/TicketContentCard";
 import { Loader2, NotepadText } from "lucide-react";
 import { getUserByToken } from "@/utils/cookies";
+import ItensNotFound from "@/components/ItensNotFound";
 
 export default function UserPage() {
 	const [allTickets, setAllTickets] = useState<Ticket[]>([]);
@@ -17,7 +18,7 @@ export default function UserPage() {
 			setLoading(true)
 			const user = await getUserByToken()
 			if (user) {
-				const data = await getTicketByTechnicianID(Number(user.id))
+				const data = await getTicketByTechnicianID(user.id)
 				if (data) setAllTickets(Array.isArray(data) ? data : [])
 			}
 		} catch (err) {
@@ -66,18 +67,8 @@ export default function UserPage() {
 
 
 			{allTickets.length === 0 && !loading && (
-				<div className="flex flex-col items-center justify-center mt-20 text-center px-4 gap-2">
-					<NotepadText size={80} />
+				<ItensNotFound title="Nenhum chamado localizado" description="Você ainda não criou nenhum chamado. Quando precisar de ajuda, abra seu primeiro chamado e acompanhe tudo por aqui." />
 
-					<h2 className="text-2xl font-semibold text-gray-700">
-						Nenhum chamado Localizado
-					</h2>
-
-					<p className="text-gray-400 mt-2 max-w-md">
-						Você ainda não criou nenhum chamado.
-						Quando precisar de ajuda, abra seu primeiro chamado e acompanhe tudo por aqui.
-					</p>
-				</div>
 			)}
 		</div>
 	);

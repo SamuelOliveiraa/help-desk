@@ -6,32 +6,21 @@ import { Role } from "@/generated/prisma";
 // Lista todos os usuarios por role
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: Promise<{ role: string }> },
+	{ params }: { params: { role: Role } },
 ) {
 	try {
 		// Faz todas as verificações necessarias do token
-		const authUser = await requireAuth(req);
+		const authUser = await requireAuth(req, "admin");
 		if (authUser instanceof NextResponse) return authUser;
 
 		// Se passou em todas as verificacoes, pode buscar o usuario
-		const { role } = await params;
+		const { role } =  params;
 
 		// Verificar se role existe
 		if (!role) {
 			return NextResponse.json(
 				{ message: "Campo role é obrigatório! Por favor, informe a role." },
 				{ status: 400 },
-			);
-		}
-
-		// Somente o admin pode pesquisar um usuario, o user/tecnico so pode ver seu proprio usuario/conta
-		if (authUser.role !== "admin") {
-			return NextResponse.json(
-				{
-					message:
-						"Acesso negado! Você não tem permissão para pesquisar usuários.",
-				},
-				{ status: 403 },
 			);
 		}
 

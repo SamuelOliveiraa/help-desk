@@ -1,7 +1,7 @@
 import type { Ticket } from "./tickets";
 
 export interface Service {
-	id: number;
+	id: string;
 	title: string;
 	value: number;
 	status: boolean;
@@ -9,7 +9,7 @@ export interface Service {
 }
 
 export interface SubService {
-	id: number;
+	id: string;
 	title: string;
 	value: number;
 	tickets?: Ticket[]; // opcional para evitar loop infinito

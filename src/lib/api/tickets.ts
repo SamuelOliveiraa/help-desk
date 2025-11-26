@@ -33,7 +33,7 @@ export async function getTicketByID(id: string): Promise<Ticket[] | null> {
 }
 
 // GET o ticket pelo ID
-export async function getTicketByTechnicianID(technicianID: number): Promise<Ticket[] | null> {
+export async function getTicketByTechnicianID(technicianID: string): Promise<Ticket[] | null> {
 	try {
 		if (!technicianID) return null;
 
@@ -51,7 +51,7 @@ export async function getTicketByTechnicianID(technicianID: number): Promise<Tic
 export async function createTicket(data: {
 	title: string;
 	description: string;
-	serviceID: number;
+	serviceID: string;
 	userID: string;
 	amount: number;
 }) {
@@ -73,7 +73,7 @@ export async function createTicket(data: {
 
 // PATCH atualiza o status ou os servicos adicionais do ticket
 export async function updateTicket(
-	id: number,
+	id: string,
 	status?: Status,
 	subService?: SubService,
 ): Promise<{ message: string } | null> {

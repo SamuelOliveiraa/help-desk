@@ -18,6 +18,7 @@ import { formatToBRL } from "@/utils/formatToBRL";
 import AddNewServiceModal from "./AddNewServiceModal";
 import RemoveServiceModal from "./RemoveServiceModal";
 import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
+import ItensNotFound from "@/components/ItensNotFound";
 
 export default function ServicesPage() {
 	const [data, setData] = useState<Service[] | null>(null);
@@ -124,12 +125,7 @@ export default function ServicesPage() {
 						{data?.length === 0 && (
 							<TableRow>
 								<TableCell colSpan={3} className="text-center">
-									<div className="flex items-center justify-center">
-										<span className="text-base text-gray-200">
-											Nenhum servico localizado, por favor crie um serviço para
-											começar.
-										</span>
-									</div>
+									<ItensNotFound title="Nenhum serviço foi localizado" description="Você ainda não adicionou nenhum serviço no sistema. Clique no botão acima para criar o primeiro serviço." className="mt-0" />
 								</TableCell>
 							</TableRow>
 						)}

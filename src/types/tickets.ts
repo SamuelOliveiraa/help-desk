@@ -4,18 +4,18 @@ import type { User } from "./user";
 export type Status = "open" | "finished" | "inProgress";
 
 export interface Ticket {
-	id: number;
-	publicID: number;
+	id: string;
+	publicID: string;
 	title: string;
 	description: string;
 	amount: number;
 	status: Status;
-	serviceID: number;
+	serviceID: string;
 	service: Service;
 	subServices: SubService[];
-	userID: number;
+	userID: string;
 	user: User;
-	technicianID?: number;
+	technicianID?: string;
 	technician?: User;
 	createdAt: string;
 	updatedAt: string;

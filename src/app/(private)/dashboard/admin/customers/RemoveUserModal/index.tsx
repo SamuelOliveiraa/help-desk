@@ -17,7 +17,7 @@ export default function RemoveUserModal({
 	onConfirm,
 }: {
 	children: React.ReactNode;
-	id: number;
+	id: string;
 	name: string;
 	onConfirm: () => void;
 }) {

@@ -14,10 +14,9 @@ export async function GET(
 
 		// Se passou em todas as verificacoes, pode buscar o serviço
 		const { id } = await params;
-		const serviceId = Number(id);
 
 		// Se o ID não existir retorna
-		if (isNaN(serviceId)) {
+		if (!id) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 
@@ -34,7 +33,7 @@ export async function GET(
 
 		// Busca o servico no DB
 		const service = await prisma.service.findUnique({
-			where: { id: serviceId },
+			where: { id },
 		});
 
 		// Se o serviço não existir retorna
@@ -67,15 +66,14 @@ export async function DELETE(
 
 		// Se passou em todas as verificacoes, pode deletar o serviço
 		const { id } = await params;
-		const serviceId = Number(id);
 
 		// Se o ID não existir retorna
-		if (isNaN(serviceId)) {
+		if (!id) {
 			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
 		}
 		
 		const tickets = await prisma.ticket.findFirst({
-			where: {serviceID: serviceId}
+			where: {serviceID: id}
 		})
 
 		if(tickets){
@@ -102,7 +100,7 @@ export async function DELETE(
 
 		// Busca o servico no DB
 		const service = await prisma.service.delete({
-			where: { id: serviceId },
+			where: { id },
 		});
 
 		return NextResponse.json(

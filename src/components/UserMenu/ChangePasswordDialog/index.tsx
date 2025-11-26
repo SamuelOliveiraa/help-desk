@@ -23,7 +23,7 @@ export default function ChangePasswordDialog({
 	id,
 }: {
 	children: React.ReactNode;
-	id?: number;
+	id?: string;
 }) {
 	const {
 		register,

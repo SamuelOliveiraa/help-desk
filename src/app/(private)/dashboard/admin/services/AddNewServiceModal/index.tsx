@@ -37,7 +37,7 @@ export default function AddNewServiceModal({
 }: {
 	children: React.ReactNode;
 	onConfirm: () => void;
-	id?: number;
+	id?: string;
 	title?: string;
 	value?: number;
 	status?: "true" | "false";

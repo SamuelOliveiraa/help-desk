@@ -166,13 +166,13 @@ export async function PATCH(req: NextRequest) {
 			status,
 			subService,
 		}: {
-			id: number;
+			id: string;
 			status?: Status;
 			subService?: SubService[];
 		} = await req.json();
 
 		// Verfica se o ID foi informado
-		if (!id || typeof id !== "number") {
+		if (!id || typeof id !== "string") {
 			return NextResponse.json(
 				{
 					message: "ID do chamado é inválido ou não foi informado.",
