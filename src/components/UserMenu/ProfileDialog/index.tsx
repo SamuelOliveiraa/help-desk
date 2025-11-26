@@ -33,6 +33,7 @@ export default function ProfileDialog({
 		reset,
 		formState: { errors },
 	} = useForm<FormValues>();
+	const [openModal, setModalOpen] = useState(false)
 	const [loading, setLoading] = useState(false);
 	const [user, setUser] = useState<User>();
 
@@ -53,6 +54,7 @@ export default function ProfileDialog({
 
 			toast.success("Perfil atualizado com sucesso");
 			onConfirm();
+			setModalOpen(!openModal)
 		} catch (error) {
 			console.log(error);
 			if (error instanceof AxiosError) {
@@ -79,7 +81,7 @@ export default function ProfileDialog({
 	}, [reset]);
 
 	return (
-		<Dialog>
+		<Dialog open={openModal} onOpenChange={setModalOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent className="max-w-md w-full min-h-[400px]">
 				<DialogHeader>

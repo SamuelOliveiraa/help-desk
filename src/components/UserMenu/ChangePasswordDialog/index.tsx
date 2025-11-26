@@ -31,6 +31,7 @@ export default function ChangePasswordDialog({
 		reset,
 		formState: { errors },
 	} = useForm<FormValues>();
+	const [openModal, setModalOpen] = useState(false)
 	const [loading, setLoading] = useState(false);
 
 	async function handleSubmitForm(data: FormValues) {
@@ -45,6 +46,7 @@ export default function ChangePasswordDialog({
 
 			if (response?.message) {
 				toast.success(response.message);
+				setModalOpen(!openModal)
 			}
 		} catch (error) {
 			if (error instanceof AxiosError) {
@@ -67,7 +69,7 @@ export default function ChangePasswordDialog({
 	}, [reset]);
 
 	return (
-		<AlertDialog>
+		<AlertDialog open={openModal} onOpenChange={setModalOpen}>
 			<AlertDialogTrigger className="absolute right-0 bottom-10">
 				{children}
 			</AlertDialogTrigger>

@@ -43,20 +43,23 @@ export async function middleware(req: NextRequest) {
 	}
 
 	try {
+		const isTicketDetails = pathname.startsWith("/dashboard/ticket")
+
 		const { payload } = (await jwtVerify(token, JWT_SECRET_CONVERTED)) as {
 			payload: CustomJWTPayload;
 		};
 		const role = payload.role;
 
-		if (role === "admin" && !pathname.startsWith("/dashboard/admin")) {
+		if (role === "admin" && !pathname.startsWith("/dashboard/admin") && !isTicketDetails) {
 			return NextResponse.redirect(new URL("/dashboard/admin", req.url));
 		}
-		if (role === "user" && !pathname.startsWith("/dashboard/user")) {
+		if (role === "user" && !pathname.startsWith("/dashboard/user")  && !isTicketDetails) {
 			return NextResponse.redirect(new URL("/dashboard/user", req.url));
 		}
 		if (
 			role === "technician" &&
-			!pathname.startsWith("/dashboard/technician")
+			!pathname.startsWith("/dashboard/technician") &&
+			!isTicketDetails
 		) {
 			return NextResponse.redirect(new URL("/dashboard/technician", req.url));
 		}

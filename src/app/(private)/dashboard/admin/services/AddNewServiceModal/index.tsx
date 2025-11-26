@@ -56,6 +56,7 @@ export default function AddNewServiceModal({
 		},
 	});
 	const [loading, setLoading] = useState(false)
+	const [openModal, setModalOpen] = useState(false)
 
 	async function handleSubmitForm(data: FormValues) {
 		try {
@@ -82,6 +83,7 @@ export default function AddNewServiceModal({
 					reset();
 				}
 				onConfirm();
+				setModalOpen(!openModal)
 
 			}
 		} catch (error) {
@@ -98,7 +100,7 @@ export default function AddNewServiceModal({
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={openModal} onOpenChange={setModalOpen}>
 			<DialogTrigger>{children}</DialogTrigger>
 			<DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
 				<DialogHeader>

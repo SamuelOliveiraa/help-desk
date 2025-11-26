@@ -22,6 +22,7 @@ export default function RemoveServiceModal({
 	title: string;
 	onConfirm: () => void;
 }) {
+	const [openModal, setModalOpen] = useState(false)
 	const [loading, setLoading] = useState(false);
 
 	async function handleDeleteService() {
@@ -31,6 +32,7 @@ export default function RemoveServiceModal({
 			if (response?.message) {
 				onConfirm();
 				toast.success(response?.message);
+				setModalOpen(!openModal)
 			}
 		} catch (error) {
 			console.error(error);
@@ -44,7 +46,7 @@ export default function RemoveServiceModal({
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={openModal} onOpenChange={setModalOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent className="max-w-md w-full flex flex-col gap-5">
 				<DialogHeader>
@@ -64,11 +66,9 @@ export default function RemoveServiceModal({
 						</Button>
 					</DialogTrigger>
 
-					<DialogTrigger asChild>
-						<Button fullWidth loading={loading} onClick={handleDeleteService}>
-							Sim
-						</Button>
-					</DialogTrigger>
+					<Button fullWidth loading={loading} onClick={handleDeleteService}>
+						Sim
+					</Button>
 				</div>
 			</DialogContent>
 		</Dialog>

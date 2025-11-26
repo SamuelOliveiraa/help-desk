@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
 			return NextResponse.json(
-				{ message: "Usuario e/ou senha incorreta" },
+				{ message: "Por favor, verifique o email/senha ou cadastre-se." },
 				{ status: 401 },
 			);
 		}

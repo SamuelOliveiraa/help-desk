@@ -21,12 +21,12 @@ export const metadata: Metadata = {
 		title: "HelpDesk",
 		description:
 			"Ferramenta de Help Desk que organiza solicitações, facilita a comunicação com clientes e melhora a experiência de suporte.",
-		url: "https://site-blog-rho.vercel.app/og-image.png",
-		siteName: "HelpDesk",
+		url: "https://help-desk-samuel.vercel.app/og-image.png",
+		siteName: "HelpDesk - Gestão de Chamados",
 		locale: "pt-BR",
 		images: [
 			{
-				url: "https://site-blog-rho.vercel.app/og-image.png",
+				url: "https://help-desk-samuel.vercel.app/og-image.png",
 				width: 800,
 				height: 600,
 				alt: "HelpDesk",

@@ -37,7 +37,7 @@ export default function Register() {
 				...data,
 				redirectUser: true,
 				workingHours: [],
-				role: "technician" as Role,
+				role: "user" as Role,
 			};
 			const { message, token, user } = await createUser(newData);
 			if (token) {

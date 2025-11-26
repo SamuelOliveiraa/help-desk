@@ -5,6 +5,7 @@ import TicketStatus from "../TicketStatus";
 import Avatar from "../Avatar";
 import { formatToBRL } from "@/utils/formatToBRL";
 import { Skeleton } from "../ui/skeleton";
+import Link from "next/link";
 
 export default function TicketCard({ ticket, loading }: { ticket: Ticket, loading?: boolean }) {
 
@@ -14,7 +15,7 @@ export default function TicketCard({ ticket, loading }: { ticket: Ticket, loadin
         )
     }
     return (
-        <div className="max-w-96 w-full p-4 border max-h-fit rounded-lg flex flex-col gap-3">
+        <Link href={`/dashboard/ticket/${ticket.id}`} className="max-w-96 w-full p-4 border max-h-fit rounded-lg flex flex-col gap-3">
             <header className="flex items-center justify-between">
                 <span className="font-bold text-sm text-gray-400">
                     {ticket.publicID}
@@ -62,6 +63,6 @@ export default function TicketCard({ ticket, loading }: { ticket: Ticket, loadin
                 <TicketStatus variant={ticket.status} />
             </div>
 
-        </div>
+        </Link>
     )
 }
