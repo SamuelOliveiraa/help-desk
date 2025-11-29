@@ -7,91 +7,110 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 
 // GET todos os tickets
 export async function getAllTickets(): Promise<Ticket[] | null> {
-	try {
-		const res = await axios.get<Ticket[]>("/api/tickets", {
-			headers: await authHeader(),
-		});
-		return res.data;
-	} catch (error) {
-		handleAxiosError(error, "pegar os chamados");
-	}
+  try {
+    const res = await axios.get<Ticket[]>("/api/tickets", {
+      headers: await authHeader()
+    });
+    return res.data;
+  } catch (error) {
+    handleAxiosError(error, "pegar os chamados");
+  }
 }
 
 // GET o ticket pelo ID
-export async function getTicketByID(id: string): Promise<Ticket[] | null> {
-	try {
-		if (!id) return null;
+export async function getTicketByID(id: string): Promise<Ticket | null> {
+  try {
+    if (!id) return null;
 
-		const res = await axios.get<Ticket[]>(`/api/tickets/${id}`, {
-			headers: await authHeader(),
-		});
+    const res = await axios.get<Ticket>(`/api/tickets/${id}`, {
+      headers: await authHeader()
+    });
 
-		return res.data;
-	} catch (error: unknown) {
-		handleAxiosError(error, "pegar o chamado");
-	}
+    return res.data;
+  } catch (error: unknown) {
+    handleAxiosError(error, "pegar o chamado");
+  }
 }
 
-// GET o ticket pelo ID
-export async function getTicketByTechnicianID(technicianID: string): Promise<Ticket[] | null> {
-	try {
-		if (!technicianID) return null;
+// GET o ticket pelo publicID
+export async function getTicketByPublicID(
+  publicID: string
+): Promise<Ticket | null> {
+  try {
+    if (!publicID) return null;
 
-		const res = await axios.get<Ticket[]>(`/api/tickets/user/${technicianID}`, {
-			headers: await authHeader(),
-		});
+    const res = await axios.get<Ticket>(`/api/tickets/publicID/${publicID}`, {
+      headers: await authHeader()
+    });
 
-		return res.data;
-	} catch (error: unknown) {
-		handleAxiosError(error, "pegar o chamado");
-	}
+    return res.data;
+  } catch (error: unknown) {
+    handleAxiosError(error, "pegar o chamado");
+  }
+}
+
+// GET o ticket pelo ID do técnico
+export async function getTicketByTechnicianID(
+  technicianID: string
+): Promise<Ticket[] | null> {
+  try {
+    if (!technicianID) return null;
+
+    const res = await axios.get<Ticket[]>(`/api/tickets/user/${technicianID}`, {
+      headers: await authHeader()
+    });
+
+    return res.data;
+  } catch (error: unknown) {
+    handleAxiosError(error, "pegar o chamado");
+  }
 }
 
 // POST Criar um ticket
 export async function createTicket(data: {
-	title: string;
-	description: string;
-	serviceID: string;
-	userID: string;
-	amount: number;
+  title: string;
+  description: string;
+  serviceID: string;
+  userID: string;
+  amount: number;
 }) {
-	try {
-		const token = await getToken();
-		if (!token) return null;
+  try {
+    const token = await getToken();
+    if (!token) return null;
 
-		const res = await axios.post("/api/tickets", data, {
-			headers: await authHeader(),
-		});
+    const res = await axios.post("/api/tickets", data, {
+      headers: await authHeader()
+    });
 
-		const { message } = res.data;
+    const { message } = res.data;
 
-		return { message };
-	} catch (error: unknown) {
-		handleAxiosError(error, "criar um chamado");
-	}
+    return { message };
+  } catch (error: unknown) {
+    handleAxiosError(error, "criar um chamado");
+  }
 }
 
 // PATCH atualiza o status ou os servicos adicionais do ticket
 export async function updateTicket(
-	id: string,
-	status?: Status,
-	subService?: SubService,
+  id: string,
+  status?: Status,
+  subService?: SubService
 ): Promise<{ message: string } | null> {
-	try {
-		if (!id) return null;
+  try {
+    if (!id) return null;
 
-		const res = await axios.patch<{ message: string }>(
-			`/api/tickets`,
-			{ id, status, subService },
-			{
-				headers: await authHeader(),
-			},
-		);
+    const res = await axios.patch<{ message: string }>(
+      `/api/tickets`,
+      { id, status, subService },
+      {
+        headers: await authHeader()
+      }
+    );
 
-		const { message } = res.data;
+    const { message } = res.data;
 
-		return { message };
-	} catch (error: unknown) {
-		handleAxiosError(error, "atualizar um chamado");
-	}
+    return { message };
+  } catch (error: unknown) {
+    handleAxiosError(error, "atualizar um chamado");
+  }
 }

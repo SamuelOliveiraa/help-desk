@@ -14,15 +14,14 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   const fetchTickets = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = await getAllTickets()
-      if (data) setAllTickets(Array.isArray(data) ? data : [])
-
+      const data = await getAllTickets();
+      if (data) setAllTickets(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }, []);
 
@@ -30,11 +29,14 @@ export default function DashboardPage() {
     fetchTickets();
   }, [fetchTickets]);
 
-
   // separa tickets por status
-  const openTickets = allTickets.filter((ticket) => ticket.status === "open");
-  const inProgressTickets = allTickets.filter((ticket) => ticket.status === "inProgress");
-  const finishedTickets = allTickets.filter((ticket) => ticket.status === "finished");
+  const openTickets = allTickets.filter(ticket => ticket.status === "open");
+  const inProgressTickets = allTickets.filter(
+    ticket => ticket.status === "inProgress"
+  );
+  const finishedTickets = allTickets.filter(
+    ticket => ticket.status === "finished"
+  );
 
   return (
     <div className="flex w-full h-full flex-col mb-10">
@@ -62,9 +64,11 @@ export default function DashboardPage() {
       )}
 
       {allTickets.length === 0 && !loading && (
-        <ItensNotFound title="Nenhum chamado localizado" description="Os usuários ainda não abriram chamados. Quando surgirem solicitações, elas aparecerão automaticamente no seu painel." />
+        <ItensNotFound
+          title="Nenhum chamado localizado"
+          description="Os usuários ainda não abriram chamados. Quando surgirem solicitações, elas aparecerão automaticamente no seu painel."
+        />
       )}
-
     </div>
   );
 }

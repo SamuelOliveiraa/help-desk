@@ -15,125 +15,120 @@ import type { Role } from "@/types/user";
 import Container from "../components/Container";
 
 type FormValues = {
-	name: string;
-	email: string;
-	password: string;
+  name: string;
+  email: string;
+  password: string;
 };
 
 export default function Register() {
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FormValues>();
-	const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormValues>();
+  const [loading, setLoading] = useState(false);
 
-	const router = useRouter();
+  const router = useRouter();
 
-	async function handleSubmitForm(data: FormValues) {
-		setLoading(true);
-		try {
-			const newData = {
-				...data,
-				redirectUser: true,
-				workingHours: [],
-				role: "user" as Role,
-			};
-			const { message, token, user } = await createUser(newData);
-			if (token) {
-				router.push(`/dashboard/${user.role}`);
-			}
-			toast.success(message);
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				toast.error(error.response?.data.message);
-			} else {
-				toast.error(
-					"Erro interno de servidor, por favor contate a equipe de suporte",
-				);
-			}
-			setLoading(false);
-		}
-	}
+  async function handleSubmitForm(data: FormValues) {
+    setLoading(true);
+    try {
+      const newData = {
+        ...data,
+        redirectUser: true,
+        workingHours: [],
+        role: "user" as Role
+      };
+      const { message, token, user } = await createUser(newData);
+      if (token) {
+        router.push(`/dashboard/${user.role}`);
+      }
+      toast.success(message);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error(
+          "Erro interno de servidor, por favor contate a equipe de suporte"
+        );
+      }
+      setLoading(false);
+    }
+  }
 
-	return (
-		<Container>
-			<ContentContainer>
-				<form
-					className="flex flex-col gap-4"
-					onSubmit={handleSubmit(handleSubmitForm)}
-				>
-					<div className="flex flex-col gap-1">
-						<h2 className="text-xl font-bold">Acesse o portal</h2>
-						<p className="text-gray-300 text-sm">
-							Entre usando seu e-mail e senha cadastrados
-						</p>
-					</div>
+  return (
+    <Container>
+      <ContentContainer>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(handleSubmitForm)}
+        >
+          <div className="flex flex-col gap-1">
+            <h2 className="text-xl font-bold">Acesse o portal</h2>
+            <p className="text-gray-300 text-sm">
+              Entre usando seu e-mail e senha cadastrados
+            </p>
+          </div>
 
-					<InputForm
-						type="text"
-						inputID="name"
-						label="Nome"
-						placeholder="Digite o nome completo"
-						register={register("name", {
-							required: "O nome é obrigatorio",
-						})}
-						error={errors.name}
-					/>
+          <InputForm
+            type="text"
+            inputID="name"
+            label="Nome"
+            placeholder="Digite o nome completo"
+            register={register("name", {
+              required: "O nome é obrigatorio"
+            })}
+            error={errors.name}
+          />
 
-					<InputForm
-						inputID="email"
-						label="E-mail"
-						placeholder="Digite o e-mail completo"
-						register={register("email", {
-							required: "O e-mail é obrigatorio",
-							pattern: {
-								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-								message: "Digite um e-mail válido",
-							},
-						})}
-						type="email"
-						error={errors.email}
-					/>
+          <InputForm
+            inputID="email"
+            label="E-mail"
+            placeholder="Digite o e-mail completo"
+            register={register("email", {
+              required: "O e-mail é obrigatorio",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
+                message: "Digite um e-mail válido"
+              }
+            })}
+            type="email"
+            error={errors.email}
+          />
 
-					<InputForm
-						inputID="password"
-						label="Senha"
-						placeholder="Digite sua senha"
-						register={register("password", {
-							required: "A senha  é obrigatorio",
-							minLength: {
-								value: 8,
-								message: "A senha deve ter mais de 8 caracteres",
-							},
-						})}
-						type="password"
-						error={errors.password}
-						helperText="Minimo de 8 digitos"
-					/>
+          <InputForm
+            inputID="password"
+            label="Senha"
+            placeholder="Digite sua senha"
+            register={register("password", {
+              required: "A senha  é obrigatorio",
+              minLength: {
+                value: 8,
+                message: "A senha deve ter mais de 8 caracteres"
+              }
+            })}
+            type="password"
+            error={errors.password}
+            helperText="Minimo de 8 digitos"
+          />
 
-					<Button
-						fullWidth
-						type="submit"
-						loading={loading}
-						variant="secondary"
-					>
-						<span className="font-bold">Cadastrar</span>
-					</Button>
-				</form>
-			</ContentContainer>
+          <Button fullWidth type="submit" loading={loading} variant="secondary">
+            <span className="font-bold">Cadastrar</span>
+          </Button>
+        </form>
+      </ContentContainer>
 
-			<ContentContainer>
-				<div>
-					<h2 className="text-lg font-bold">Já tem uma conta?</h2>
+      <ContentContainer>
+        <div>
+          <h2 className="text-lg font-bold">Já tem uma conta?</h2>
 
-					<p className="text-gray-300 text-sm">Entre agora mesmo</p>
-				</div>
+          <p className="text-gray-300 text-sm">Entre agora mesmo</p>
+        </div>
 
-				<Link href={"/login"}>
-					<Button fullWidth>Acessar Conta</Button>
-				</Link>
-			</ContentContainer>
-		</Container>
-	);
+        <Link href={"/login"}>
+          <Button fullWidth>Acessar Conta</Button>
+        </Link>
+      </ContentContainer>
+    </Container>
+  );
 }

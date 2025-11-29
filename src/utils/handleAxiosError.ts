@@ -1,12 +1,11 @@
 import axios, { AxiosError } from "axios";
 
 export function handleAxiosError(error: unknown, action: string): never {
-	if (axios.isAxiosError(error)) {
-		throw error
-	}
-	throw new Error(error instanceof Error ? error.message : `Erro ao ${action}`);
+  if (axios.isAxiosError(error)) {
+    throw error;
+  }
+  throw new Error(error instanceof Error ? error.message : `Erro ao ${action}`);
 }
-
 
 // import axios from "axios";
 

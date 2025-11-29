@@ -4,51 +4,47 @@ import prisma from "@/lib/prisma";
 
 // Pega os tickets conforme o ID do usuario informado.
 export async function GET(
-	req: NextRequest,
-	{ params }: { params: Promise<{ userID: string }> },
+  req: NextRequest,
+  { params }: { params: Promise<{ userID: string }> }
 ) {
-	try {
-		// Faz todas as verificações necessarias do token
-		const authUser = await requireAuth(req);
-		if (authUser instanceof NextResponse) return authUser;
+  try {
+    // Faz todas as verificações necessarias do token
+    const authUser = await requireAuth(req);
+    if (authUser instanceof NextResponse) return authUser;
 
-		// Se passou em todas as verificacoes, pode buscar os tickets
-		const { userID } = await params;
-		console.log(userID)
+    // Se passou em todas as verificacoes, pode buscar os tickets
+    const { userID } = await params;
 
-		// Se o ID não existir retorna
-		if (!userID) {
-			return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
-		}
+    // Se o ID não existir retorna
+    if (!userID) {
+      return NextResponse.json({ message: "ID Inválido" }, { status: 400 });
+    }
 
-		const tickets = await prisma.ticket.findMany({
-			where: { 
-				OR: [
-					{userID},
-					{technicianID: userID}
-				]
-			 },
-			orderBy: { publicID: "desc" },
-			include: {
-				service: true,
-				user: true, 
-				technician: true
-			},
-		});
+    const tickets = await prisma.ticket.findMany({
+      where: {
+        OR: [{ userID }, { technicianID: userID }]
+      },
+      orderBy: { publicID: "desc" },
+      include: {
+        service: true,
+        user: true,
+        technician: true
+      }
+    });
 
-		if (tickets.length <= 0 ) {
-			return NextResponse.json(
-				{ message: "Nenhum chamado localizado para este usuário." },
-				{ status: 200 },
-			);
-		}
+    if (tickets.length <= 0) {
+      return NextResponse.json(
+        { message: "Nenhum chamado localizado para este usuário." },
+        { status: 200 }
+      );
+    }
 
-		return NextResponse.json(tickets, { status: 200 });
-	} catch (error) {
-		console.error(error);
-		return NextResponse.json(
-			{ message: "Erro interno de servidor, por favor tente novamente." },
-			{ status: 500 },
-		);
-	}
+    return NextResponse.json(tickets, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Erro interno de servidor, por favor tente novamente." },
+      { status: 500 }
+    );
+  }
 }

@@ -5,6 +5,7 @@
 Aplicação web construída com Next.js para centralizar o atendimento de suporte técnico. O sistema oferece portais distintos para administradores, usuários e técnicos, permitindo a abertura, o acompanhamento e a resolução de chamados com controle de acesso baseado em papéis.
 
 ## Sumário
+
 - [Visão Geral](#visão-geral)
 - [Principais Funcionalidades](#principais-funcionalidades)
 - [Tecnologias](#tecnologias)
@@ -20,9 +21,11 @@ Aplicação web construída com Next.js para centralizar o atendimento de suport
 - [Licença](#licença)
 
 ## Visão Geral
+
 O Help Desk concentra a gestão completa do ciclo de vida de um chamado: criação, priorização, atribuição para técnicos, execução e encerramento. Todas as operações internas são protegidas por autenticação com JWT armazenado em cookies, enquanto o middleware do Next.js garante que cada usuário acesse apenas as rotas correspondentes ao seu papel.
 
 ## Principais Funcionalidades
+
 - Autenticação com e-mail e senha e emissão de tokens JWT seguros.
 - Painéis exclusivos para `admin`, `user` e `technician` com redirecionamento automático após o login.
 - Abertura de chamados pelos usuários com seleção de serviços, cálculo automático do valor e resumo do pedido.
@@ -32,6 +35,7 @@ O Help Desk concentra a gestão completa do ciclo de vida de um chamado: criaç�
 - UI responsiva construída com componentes Radix UI, Tailwind CSS e design system próprio.
 
 ## Tecnologias
+
 - Next.js 15 (App Router)
 - React 19 com TypeScript
 - Tailwind CSS e Tailwind Merge
@@ -42,12 +46,14 @@ O Help Desk concentra a gestão completa do ciclo de vida de um chamado: criaç�
 - JSON Web Tokens com a biblioteca `jose`
 
 ## Pré-requisitos
+
 - Node.js 18 ou superior
 - NPM (ou Yarn/PNPM/Bun, se preferir)
 - Banco de dados PostgreSQL acessível
 - Conta com permissões para executar migrações Prisma no banco configurado
 
 ## Configuração
+
 1. Clone o repositório:
    ```bash
    git clone https://github.com/seu-usuario/help-desk.git
@@ -60,6 +66,7 @@ O Help Desk concentra a gestão completa do ciclo de vida de um chamado: criaç�
    > Caso prefira outro gerenciador de pacotes, adapte os comandos (`yarn`, `pnpm`, `bun`).
 
 ### Variáveis de Ambiente
+
 Crie um arquivo `.env` na raiz do projeto (ou `.env.local`, se preferir manter separado do versionamento) com as configurações abaixo:
 
 ```
@@ -73,6 +80,7 @@ JWT_SECRET="uma_chave_bem_secreta_e_complexa"
 - `JWT_SECRET`: chave usada para assinar e validar os tokens JWT. Altere para um valor robusto; o fallback presente no código serve apenas para desenvolvimento.
 
 ### Banco de Dados e Prisma
+
 1. Aplique as migrações existentes ou crie novas:
    ```bash
    npx prisma migrate dev
@@ -89,10 +97,13 @@ JWT_SECRET="uma_chave_bem_secreta_e_complexa"
 As migrações atuais criam as tabelas de usuários, serviços, subserviços e tickets, além dos enums de papéis (`admin`, `user`, `technician`) e status de chamados.
 
 ### Executando o Projeto
+
 - Ambiente de desenvolvimento:
+
   ```bash
   npm run dev
   ```
+
   A aplicação ficará disponível em `http://localhost:3000`.
 
 - Build de produção:
@@ -102,12 +113,14 @@ As migrações atuais criam as tabelas de usuários, serviços, subserviços e t
   ```
 
 ## Scripts Disponíveis
+
 - `npm run dev`: inicia o servidor Next.js em modo de desenvolvimento.
 - `npm run build`: gera o client do Prisma, compila a aplicação e executa o type-check.
 - `npm run start`: inicia o servidor em modo de produção (requer build prévio).
 - `npm run lint`: executa o ESLint com as regras definidas pelo Next.js/TypeScript.
 
 ## Estrutura de Pastas
+
 ```
 .
 ├── prisma/               # Schema do Prisma, migrações e base de dados local
@@ -124,6 +137,7 @@ As migrações atuais criam as tabelas de usuários, serviços, subserviços e t
 ```
 
 ## Autenticação e Autorização
+
 - O login gera um token JWT armazenado em cookie com validade de 3 dias.
 - O middleware (`src/middleware.ts`) intercepta todas as rotas privadas, validando o token.
 - Usuários sem token válido são redirecionados para `/login`.
@@ -133,6 +147,7 @@ As migrações atuais criam as tabelas de usuários, serviços, subserviços e t
   - `/dashboard/technician`
 
 ## Roadmap e Melhorias
+
 - ✅ Cadastro e autenticação com controle de papéis.
 - ✅ Fluxo completo de abertura e acompanhamento de chamados.
 - 🔜 Implementar notificações por e-mail.
@@ -140,4 +155,5 @@ As migrações atuais criam as tabelas de usuários, serviços, subserviços e t
 - 🔜 Adicionar testes automatizados (unitários e e2e).
 
 ## Licença
+
 Este projeto está licenciado sob os termos da [MIT License](LICENSE).

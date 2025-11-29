@@ -2,34 +2,27 @@ import { X } from "lucide-react";
 import { tv } from "tailwind-variants";
 
 type TagTimeProps = {
-	selected?: boolean;
-	text: string;
+  selected?: boolean;
+  text: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const tagTimeButtonVariants = tv({
-	base: "flex items-center justify-center gap-1 py-1 px-3 transition-colors duration-200 rounded-full border border-gray-400",
-	variants: {
-		selected: {
-			true: "text-gray-600 bg-blue-200 "
-		}
-	},
-	defaultVariants: {
-		selected: false
-	}
-})
+  base: "flex items-center justify-center gap-1 py-1 px-3 transition-colors duration-200 rounded-full border border-gray-400",
+  variants: {
+    selected: {
+      true: "text-gray-600 bg-blue-200 "
+    }
+  },
+  defaultVariants: {
+    selected: false
+  }
+});
 
-export default function TagTime({
-	selected,
-	text,
-	...rest
-}: TagTimeProps) {
-	return (
-		<button
-			className={tagTimeButtonVariants({ selected })}
-			{...rest}
-		>
-			{text}
-			{selected && <X className="size-3" />}
-		</button>
-	);
+export default function TagTime({ selected, text, ...rest }: TagTimeProps) {
+  return (
+    <button className={tagTimeButtonVariants({ selected })} {...rest}>
+      {text}
+      {selected && <X className="size-3" />}
+    </button>
+  );
 }
