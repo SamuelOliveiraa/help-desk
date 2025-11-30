@@ -1,7 +1,7 @@
 import DetailsTechnicalsClient from "./DetailsTechnicalsClient";
 
 export default async function Page({
-  params
+  params,
 }: {
   params: Promise<{ id: string }>;
 }) {

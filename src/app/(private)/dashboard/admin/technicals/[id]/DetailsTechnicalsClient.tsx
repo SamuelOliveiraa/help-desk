@@ -36,11 +36,11 @@ const INITIAL_WORKING_HOURS = [
   "20:00",
   "21:00",
   "22:00",
-  "23:00"
+  "23:00",
 ].map((time, index) => ({
   id: index,
   time,
-  active: false
+  active: false,
 }));
 
 export default function DetailsTechnicals({ id }: { id: string }) {
@@ -48,13 +48,13 @@ export default function DetailsTechnicals({ id }: { id: string }) {
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [workingHours, setWorkingHours] = useState<WorkingHours[]>(
-    INITIAL_WORKING_HOURS
+    INITIAL_WORKING_HOURS,
   );
   const [workingHoursSelected, setWorkingHoursSelected] = useState<
     WorkingHours[]
@@ -69,7 +69,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
 
       reset({
         name: user.name,
-        email: user.email
+        email: user.email,
       });
 
       setUser(user);
@@ -80,12 +80,12 @@ export default function DetailsTechnicals({ id }: { id: string }) {
         setWorkingHours(prev =>
           prev.map(hour => {
             const found = user.workingHours?.find(
-              h => h.id === hour.id && h.active
+              h => h.id === hour.id && h.active,
             );
             return found
               ? { ...hour, active: true }
               : { ...hour, active: false };
-          })
+          }),
         );
       }
     } catch (err) {
@@ -101,8 +101,8 @@ export default function DetailsTechnicals({ id }: { id: string }) {
   function handleAddWorkingHours(selectedHour: WorkingHours) {
     setWorkingHours(prev =>
       prev.map(hour =>
-        hour.id === selectedHour.id ? { ...hour, active: !hour.active } : hour
-      )
+        hour.id === selectedHour.id ? { ...hour, active: !hour.active } : hour,
+      ),
     );
     setWorkingHoursSelected(prev => {
       const exists = prev.some(hour => hour.id === selectedHour.id);
@@ -120,7 +120,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
   async function handleEditTechnican({
     name,
     email,
-    workingHours
+    workingHours,
   }: {
     name: string;
     email: string;
@@ -130,7 +130,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
       id,
       name,
       email,
-      workingHours
+      workingHours,
     });
 
     if (data !== null) {
@@ -143,7 +143,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
     name,
     email,
     password,
-    workingHours
+    workingHours,
   }: {
     name: string;
     email: string;
@@ -155,7 +155,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
       email,
       password,
       workingHours,
-      role: "technician" as Role
+      role: "technician" as Role,
     });
 
     if (token) {
@@ -171,7 +171,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
 
       if (workingHoursSelected.length < 4) {
         toast.error(
-          "Horários de atendimento não podem estar vazios, selecione pelo menos 4 horários."
+          "Horários de atendimento não podem estar vazios, selecione pelo menos 4 horários.",
         );
         return;
       }
@@ -180,13 +180,13 @@ export default function DetailsTechnicals({ id }: { id: string }) {
         await handleEditTechnican({
           name: data.name,
           email: data.email,
-          workingHours: workingHoursSelected
+          workingHours: workingHoursSelected,
         });
       } else {
         await handleCreateTechnican({
           ...data,
           password: data.password || "",
-          workingHours: workingHoursSelected
+          workingHours: workingHoursSelected,
         });
       }
     } catch (error) {
@@ -194,7 +194,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
+          "Erro interno de servidor, por favor contate a equipe de suporte",
         );
       }
       setLoading(false);
@@ -257,7 +257,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
               label="Nome"
               placeholder="Digite o nome completo"
               register={register("name", {
-                required: "O nome é obrigatorio"
+                required: "O nome é obrigatorio",
               })}
               error={errors.name}
             />
@@ -270,8 +270,8 @@ export default function DetailsTechnicals({ id }: { id: string }) {
                 required: "O e-mail é obrigatorio",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Digite um e-mail válido"
-                }
+                  message: "Digite um e-mail válido",
+                },
               })}
               type="email"
               error={errors.email}
@@ -287,8 +287,8 @@ export default function DetailsTechnicals({ id }: { id: string }) {
                   required: "A senha  é obrigatorio",
                   minLength: {
                     value: 8,
-                    message: "A senha deve ter mais de 8 caracteres"
-                  }
+                    message: "A senha deve ter mais de 8 caracteres",
+                  },
                 })}
                 error={errors.password}
                 helperText="A senha deve ter mais de 8 caracteres"

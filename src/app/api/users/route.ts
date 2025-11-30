@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
     // Remove senha antes de retornar
     const usersWithoutPassword = users.map(
-      ({ password: _password, ...rest }) => rest
+      ({ password: _password, ...rest }) => rest,
     );
 
     return NextResponse.json(usersWithoutPassword);
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, tente novamente mais tarde." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       email,
       password,
       workingHours,
-      role
+      role,
     }: {
       name: string;
       email: string;
@@ -56,42 +56,42 @@ export async function POST(req: NextRequest) {
     if (!role) {
       return NextResponse.json(
         {
-          message: "Role é obrigatório. Por favor, informe a role do usuário."
+          message: "Role é obrigatório. Por favor, informe a role do usuário.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Verificar se o usuario ja existe
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
     if (existingUser) {
       return NextResponse.json(
         {
           message:
-            "E-mail informado já está sendo utilizado. Por favor, informe outro."
+            "E-mail informado já está sendo utilizado. Por favor, informe outro.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const roleLimits: Record<Role, number> = {
       admin: 1,
       user: 7,
-      technician: 3
+      technician: 3,
     };
 
     // Verificar se o limite de usuários para este tipo de role foi atingido.
     const currentRoleCount = await prisma.user.count({
-      where: { role }
+      where: { role },
     });
     if (currentRoleCount >= roleLimits[role]) {
       return NextResponse.json(
         {
-          message: `Você atingiu o limite de usuários do tipo ${role} para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.`
+          message: `Você atingiu o limite de usuários do tipo ${role} para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.`,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -103,15 +103,15 @@ export async function POST(req: NextRequest) {
         name,
         password: hashedPassword,
         role,
-        workingHours
-      }
+        workingHours,
+      },
     });
 
     // Gerar JWT
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, role: newUser.role },
       JWT_SECRET,
-      { expiresIn: "3d" }
+      { expiresIn: "3d" },
     );
 
     return NextResponse.json(
@@ -121,17 +121,17 @@ export async function POST(req: NextRequest) {
           id: newUser.id,
           name: newUser.name,
           email: newUser.email,
-          role: newUser.role
+          role: newUser.role,
         },
-        message: "Usuário criado com sucesso!"
+        message: "Usuário criado com sucesso!",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -149,7 +149,7 @@ export async function PUT(req: NextRequest) {
       email,
       avatar,
       password,
-      workingHours
+      workingHours,
     }: {
       id: string;
       name?: string;
@@ -161,28 +161,28 @@ export async function PUT(req: NextRequest) {
 
     // Verificar se o email já existe
     const ifEmailsAlredyExists = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
     if (ifEmailsAlredyExists && ifEmailsAlredyExists.id !== id) {
       return NextResponse.json(
         {
           message:
-            "E-mail informado já está sendo utilizado. Por favor, informe outro."
+            "E-mail informado já está sendo utilizado. Por favor, informe outro.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Verificar se o usuario é valido
     const existingUser = await prisma.user.findUnique({
-      where: { id }
+      where: { id },
     });
     if (!existingUser) {
       return NextResponse.json(
         {
-          message: "Usuario informado não existe. Por favor, tente novamente."
+          message: "Usuario informado não existe. Por favor, tente novamente.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -198,8 +198,8 @@ export async function PUT(req: NextRequest) {
           : existingUser.password,
         workingHours: workingHours
           ? JSON.parse(JSON.stringify(workingHours))
-          : existingUser.workingHours
-      }
+          : existingUser.workingHours,
+      },
     });
 
     return NextResponse.json(
@@ -207,17 +207,17 @@ export async function PUT(req: NextRequest) {
         user: {
           id: updatedUser.id,
           name: updatedUser.name,
-          email: updatedUser.email
+          email: updatedUser.email,
         },
-        message: `Usuário "${updatedUser.name}" atualizado com sucesso!`
+        message: `Usuário "${updatedUser.name}" atualizado com sucesso!`,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -232,7 +232,7 @@ export async function PATCH(req: NextRequest) {
     const {
       id,
       password,
-      newPassword
+      newPassword,
     }: {
       id: string;
       password?: string;
@@ -241,14 +241,14 @@ export async function PATCH(req: NextRequest) {
 
     // Verificar se o usuario é valido
     const existingUser = await prisma.user.findUnique({
-      where: { id }
+      where: { id },
     });
     if (!existingUser) {
       return NextResponse.json(
         {
-          message: "Usuario informado não existe. Por favor, tente novamente."
+          message: "Usuario informado não existe. Por favor, tente novamente.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -259,9 +259,9 @@ export async function PATCH(req: NextRequest) {
     if (!ifPasswordIsCorrect) {
       return NextResponse.json(
         {
-          message: "Senha informada não é válida. Por favor, tente novamente."
+          message: "Senha informada não é válida. Por favor, tente novamente.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -271,21 +271,21 @@ export async function PATCH(req: NextRequest) {
       data: {
         password: newPassword
           ? await bcrypt.hash(newPassword, 10)
-          : existingUser.password
-      }
+          : existingUser.password,
+      },
     });
 
     return NextResponse.json(
       {
-        message: "Senha atualizada com sucesso!"
+        message: "Senha atualizada com sucesso!",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

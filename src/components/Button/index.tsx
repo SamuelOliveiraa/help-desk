@@ -16,21 +16,21 @@ const buttonVariants = tv({
       secondary:
         "bg-gray-500 text-gray-200 hover:bg-gray-400/40 hover:text-gray-100",
       link: "bg-transparent text-gray-300 hover:bg-gray-500 hover:text-gray-100",
-      delete: "bg-red-500 text-gray-600"
+      delete: "bg-red-500 text-gray-600",
     },
     loading: {
-      true: "cursor-not-allowed opacity-60"
+      true: "cursor-not-allowed opacity-60",
     },
     fullWidth: {
       true: "w-full py-3 px-4",
-      false: "w-fit p-2"
-    }
+      false: "w-fit p-2",
+    },
   },
   defaultVariants: {
     variant: "primary",
     loading: false,
-    fullWidth: false
-  }
+    fullWidth: false,
+  },
 });
 
 export default function Button({

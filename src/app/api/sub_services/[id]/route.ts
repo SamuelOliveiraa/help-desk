@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Deleta o serviço adicional conforme o ID informado.
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -26,33 +26,33 @@ export async function DELETE(
       where: { id: ticketID },
       data: {
         subService: {
-          disconnect: { id: id }
-        }
-      }
+          disconnect: { id: id },
+        },
+      },
     });
 
     if (!ticketWithoutSubService) {
       return NextResponse.json(
         {
           message:
-            "Não é possivel excluir o serviço adicional, por favor tente novamente."
+            "Não é possivel excluir o serviço adicional, por favor tente novamente.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       {
-        message: `Serviço adicional excluído com sucesso!`
+        message: `Serviço adicional excluído com sucesso!`,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: unknown) {
     console.error(error);
 
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

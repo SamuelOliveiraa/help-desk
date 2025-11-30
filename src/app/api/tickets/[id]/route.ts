@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 // Pega o ticket conforme o ID informado.
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -21,15 +21,15 @@ export async function GET(
     }
 
     const ticket = await prisma.ticket.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!ticket) {
       return NextResponse.json(
         {
-          message: "Nenhum chamado encontrado, por favor forneça um ID válido"
+          message: "Nenhum chamado encontrado, por favor forneça um ID válido",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -38,7 +38,7 @@ export async function GET(
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

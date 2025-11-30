@@ -13,7 +13,7 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { getUserByToken } from "@/utils/cookies";
 import toast from "react-hot-toast";
@@ -32,13 +32,13 @@ export default function NewTicket() {
     handleSubmit,
     reset,
     control,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       title: "",
       description: "",
-      serviceID: ""
-    }
+      serviceID: "",
+    },
   });
 
   const router = useRouter();
@@ -86,7 +86,7 @@ export default function NewTicket() {
         ...data,
         serviceID: data.serviceID,
         userID: userID || "",
-        amount: serviceSelected?.value
+        amount: serviceSelected?.value,
       };
 
       const res = await createTicket(newTicket);
@@ -127,7 +127,7 @@ export default function NewTicket() {
               label="Título"
               placeholder="Digite um título para o chamado"
               register={register("title", {
-                required: "O título é obrigatorio"
+                required: "O título é obrigatorio",
               })}
               error={errors.title}
             />
@@ -138,7 +138,7 @@ export default function NewTicket() {
               label="Descrição"
               placeholder="Descreva o que está acontecendo"
               register={register("description", {
-                required: "A descrição é obrigatoria"
+                required: "A descrição é obrigatoria",
               })}
               error={errors.description}
             />
@@ -152,7 +152,7 @@ export default function NewTicket() {
                   onValueChange={val => {
                     field.onChange(val);
                     const selected = services?.find(
-                      service => service.id === val
+                      service => service.id === val,
                     );
                     setServiceSelected(selected);
                   }}

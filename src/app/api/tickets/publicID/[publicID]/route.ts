@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 // Pega o ticket conforme o publicID informado.
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ publicID: string }> }
+  { params }: { params: Promise<{ publicID: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -25,16 +25,16 @@ export async function GET(
       include: {
         user: true,
         technician: true,
-        service: true
-      }
+        service: true,
+      },
     });
 
     if (!ticket) {
       return NextResponse.json(
         {
-          message: "Nenhum chamado encontrado, por favor forneça um ID válido"
+          message: "Nenhum chamado encontrado, por favor forneça um ID válido",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -43,7 +43,7 @@ export async function GET(
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

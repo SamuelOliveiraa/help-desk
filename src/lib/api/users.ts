@@ -8,7 +8,7 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 export async function getUsers(): Promise<User[]> {
   try {
     const res = await axios.get<User[]>("/api/users", {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
     return res.data;
   } catch (error) {
@@ -22,7 +22,7 @@ export async function getUsersByRole(role: Role): Promise<User[] | null> {
     if (!role) return null;
 
     const res = await axios.get(`/api/users/by-role/${role}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -37,7 +37,7 @@ export async function getUsersByID(id: string): Promise<User | null> {
     if (!id) return null;
 
     const res = await axios.get(`/api/users/${id}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -102,7 +102,7 @@ export async function getCurrentUser() {
     if (!user || !user.id) return null;
 
     const res = await axios.get(`/api/users/${user?.id}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -119,8 +119,8 @@ export async function deleteUser(id: string) {
     const res = await axios.delete<{ user: User; message: string }>(
       `/api/users/${id}`,
       {
-        headers: await authHeader()
-      }
+        headers: await authHeader(),
+      },
     );
 
     return res.data;
@@ -131,7 +131,7 @@ export async function deleteUser(id: string) {
 
 // Atualiza o usuario pelo ID
 export async function updateUser(
-  data: UpdateUserType
+  data: UpdateUserType,
 ): Promise<{ user: User; message: string } | null> {
   try {
     if (!data.id) return null;
@@ -140,8 +140,8 @@ export async function updateUser(
       `/api/users`,
       data,
       {
-        headers: await authHeader()
-      }
+        headers: await authHeader(),
+      },
     );
     return res.data;
   } catch (error) {
@@ -153,7 +153,7 @@ export async function updateUser(
 export async function updatePasswordUser(
   id: string,
   password: string,
-  newPassword: string
+  newPassword: string,
 ): Promise<{ message: string } | null> {
   try {
     if (!id) return null;
@@ -162,8 +162,8 @@ export async function updatePasswordUser(
       `/api/users`,
       { id, password, newPassword },
       {
-        headers: await authHeader()
-      }
+        headers: await authHeader(),
+      },
     );
 
     return res.data;

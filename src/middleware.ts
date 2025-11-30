@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
           payload: CustomJWTPayload;
         };
         return NextResponse.redirect(
-          new URL(`/dashboard/${payload.role}`, req.url)
+          new URL(`/dashboard/${payload.role}`, req.url),
         );
       } catch {
         return NextResponse.next();
@@ -86,6 +86,6 @@ export const config = {
     // - favicon
     // - arquivos estáticos
     // - rotas da API
-    "/((?!_next/static|_next/image|favicon.ico|api/.*|.*\\.(?:png|jpg|jpeg|svg|ico|gif|webp)).*)"
-  ]
+    "/((?!_next/static|_next/image|favicon.ico|api/.*|.*\\.(?:png|jpg|jpeg|svg|ico|gif|webp)).*)",
+  ],
 };

@@ -7,7 +7,7 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 export async function getServices(): Promise<Service[] | null> {
   try {
     const res = await axios.get<Service[]>("/api/services", {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -20,11 +20,11 @@ export async function getServices(): Promise<Service[] | null> {
 export async function getAllServicesActives(): Promise<Service[] | null> {
   try {
     const res = await axios.get<Service[]>("/api/services", {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     const servicesFiltered = res.data.filter(
-      service => service.status === true
+      service => service.status === true,
     );
 
     return servicesFiltered;
@@ -39,7 +39,7 @@ export async function getServicesByID(id: string): Promise<Service | null> {
     if (!id) return null;
 
     const res = await axios.get<Service>(`/api/services/${id}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -56,8 +56,8 @@ export async function deleteService(id: string) {
     const res = await axios.delete<{ service: Service; message: string }>(
       `/api/services/${id}`,
       {
-        headers: await authHeader()
-      }
+        headers: await authHeader(),
+      },
     );
 
     return res.data;
@@ -78,7 +78,7 @@ export async function createService(data: {
       service: Service;
       message: string;
     }>("/api/services", data, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -93,13 +93,13 @@ export async function createService(data: {
 
 // Atualiza o serviço pelo ID
 export async function updateService(
-  data: Service
+  data: Service,
 ): Promise<{ message: string } | null> {
   try {
     if (!data.id) return null;
 
     const res = await axios.put<{ message: string }>(`/api/services`, data, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;

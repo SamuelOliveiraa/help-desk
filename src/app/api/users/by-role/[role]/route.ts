@@ -6,7 +6,7 @@ import { Role } from "@/generated/prisma";
 // Lista todos os usuarios por role
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ role: string }> }
+  { params }: { params: Promise<{ role: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -20,7 +20,7 @@ export async function GET(
     if (!role) {
       return NextResponse.json(
         { message: "Campo role é obrigatório! Por favor, informe a role." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -29,9 +29,9 @@ export async function GET(
       return NextResponse.json(
         {
           message:
-            "A role informada é inválida. Por favor, informe uma role válida."
+            "A role informada é inválida. Por favor, informe uma role válida.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,8 +44,8 @@ export async function GET(
         email: true,
         role: true,
         createdAt: true,
-        workingHours: true
-      }
+        workingHours: true,
+      },
     });
 
     return NextResponse.json(users);
@@ -53,7 +53,7 @@ export async function GET(
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

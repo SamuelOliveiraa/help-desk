@@ -4,13 +4,13 @@ import SidebarMenuItens from "@/components/SidebarMenuItens";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Role } from "@/types/user";
 
 export default function MenuOptionsDropDown({
   children,
-  role
+  role,
 }: {
   children: React.ReactNode;
   role: Role | null;

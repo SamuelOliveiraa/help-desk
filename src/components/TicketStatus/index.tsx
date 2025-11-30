@@ -9,17 +9,17 @@ const ticketStatusContainerVariant = tv({
     variant: {
       open: "bg-red-400/20 text-red-400",
       finished: "bg-green-400/20 text-green-400",
-      inProgress: "bg-yellow-500/20 text-yellow-600"
-    }
+      inProgress: "bg-yellow-500/20 text-yellow-600",
+    },
   },
   defaultVariants: {
-    variant: "open"
-  }
+    variant: "open",
+  },
 });
 
 export default function TicketStatus({
   variant,
-  loading
+  loading,
 }: {
   variant: Status;
   loading?: boolean;

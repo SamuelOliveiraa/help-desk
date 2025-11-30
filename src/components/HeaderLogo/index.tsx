@@ -6,7 +6,7 @@ import { Skeleton } from "../ui/skeleton";
 const roleLabels = {
   user: "Cliente",
   technician: "Técnico",
-  admin: "Admin"
+  admin: "Admin",
 };
 
 export default function HeaderLogo({ role }: { role?: Role | null }) {

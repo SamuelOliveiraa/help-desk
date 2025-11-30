@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -16,7 +16,7 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { createService, updateService } from "@/lib/api/services";
 import { useState } from "react";
@@ -33,7 +33,7 @@ export default function AddNewServiceModal({
   id,
   title,
   value,
-  status
+  status,
 }: {
   children: React.ReactNode;
   onConfirm: () => void;
@@ -47,13 +47,13 @@ export default function AddNewServiceModal({
     handleSubmit,
     reset,
     control,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       title,
       value,
-      status
-    }
+      status,
+    },
   });
   const [loading, setLoading] = useState(false);
   const [openModal, setModalOpen] = useState(false);
@@ -63,14 +63,14 @@ export default function AddNewServiceModal({
       setLoading(true);
 
       const formattedValue = parseFloat(
-        data.value.toString().replace(/\./g, "").replace(",", ".")
+        data.value.toString().replace(/\./g, "").replace(",", "."),
       );
       const formattedStatus = data.status === "true";
 
       const payload = {
         ...data,
         value: formattedValue,
-        status: formattedStatus
+        status: formattedStatus,
       };
 
       const dataBackend = id
@@ -90,7 +90,7 @@ export default function AddNewServiceModal({
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
+          "Erro interno de servidor, por favor contate a equipe de suporte",
         );
       }
     } finally {
@@ -117,7 +117,7 @@ export default function AddNewServiceModal({
             label="Título"
             placeholder="Nome do serviço"
             register={register("title", {
-              required: "O titulo do serviço é obrigatorio"
+              required: "O titulo do serviço é obrigatorio",
             })}
             error={errors.title}
           />
@@ -131,8 +131,8 @@ export default function AddNewServiceModal({
               required: "O valor do serviço é obrigatório",
               pattern: {
                 value: /^\d{1,3}(\.\d{3})*(,\d{2})?$/, // aceita formato brasileiro: 1.234,56
-                message: "Digite um valor válido (ex: 10,50 ou 1.234,99)"
-              }
+                message: "Digite um valor válido (ex: 10,50 ou 1.234,99)",
+              },
             })}
             error={errors.value}
           />

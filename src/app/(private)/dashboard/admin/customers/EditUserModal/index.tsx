@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { updateUser } from "@/lib/api/users";
 
@@ -23,7 +23,7 @@ export default function EditUserModal({
   name,
   email,
   children,
-  onConfirm
+  onConfirm,
 }: {
   children: React.ReactNode;
   onConfirm: () => void;
@@ -35,41 +35,41 @@ export default function EditUserModal({
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       name,
-      email
-    }
+      email,
+    },
   });
-  const [loading, setLoading] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   async function handleSubmitForm(data: FormValues) {
-    setLoading(true)
+    setLoading(true);
     try {
       const editedUser = {
         ...data,
-        id
+        id,
       };
       const response = await updateUser(editedUser);
 
       if (response) {
         toast.success(response.message);
         onConfirm();
-        setOpenModal(!openModal)
+        setOpenModal(!openModal);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
+          "Erro interno de servidor, por favor contate a equipe de suporte",
         );
-        setLoading(false)
+        setLoading(false);
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -97,7 +97,7 @@ export default function EditUserModal({
             label="Nome"
             placeholder="Nome"
             register={register("name", {
-              required: "O nome do usuario é obrigatorio"
+              required: "O nome do usuario é obrigatorio",
             })}
             error={errors.name}
           />
@@ -111,8 +111,8 @@ export default function EditUserModal({
               required: "O email do usuario é obrigatorio",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Digite um email válido"
-              }
+                message: "Digite um email válido",
+              },
             })}
             error={errors.email}
           />

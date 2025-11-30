@@ -32,10 +32,10 @@ export default function DashboardPage() {
   // separa tickets por status
   const openTickets = allTickets.filter(ticket => ticket.status === "open");
   const inProgressTickets = allTickets.filter(
-    ticket => ticket.status === "inProgress"
+    ticket => ticket.status === "inProgress",
   );
   const finishedTickets = allTickets.filter(
-    ticket => ticket.status === "finished"
+    ticket => ticket.status === "finished",
   );
 
   return (

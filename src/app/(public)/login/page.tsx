@@ -21,7 +21,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +40,7 @@ export default function Login() {
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte (front)"
+          "Erro interno de servidor, por favor contate a equipe de suporte (front)",
         );
       }
       setLoading(false);
@@ -72,8 +72,8 @@ export default function Login() {
               required: "O e-mail é obrigatorio",
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-                message: "Digite um e-mail válido"
-              }
+                message: "Digite um e-mail válido",
+              },
             })}
             error={errors.email}
           />
@@ -87,8 +87,8 @@ export default function Login() {
               required: "A senha  é obrigatorio",
               minLength: {
                 value: 8,
-                message: "A senha deve ter mais de 8 caracteres"
-              }
+                message: "A senha deve ter mais de 8 caracteres",
+              },
             })}
             error={errors.password}
             helperText="A senha deve ter mais de 8 caracteres"

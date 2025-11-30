@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     // Se passou em todas as verificacoes, pode tentar criar os serviço adicional
     const {
       title,
-      value
+      value,
     }: {
       title: string;
       value: number;
@@ -22,11 +22,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message:
-            "Por favor, informe o titulo e/ou o valor do serviço adicional."
+            "Por favor, informe o titulo e/ou o valor do serviço adicional.",
         },
         {
-          status: 404
-        }
+          status: 404,
+        },
       );
     }
 
@@ -34,26 +34,26 @@ export async function POST(req: NextRequest) {
     const existingSubService = await prisma.subService.findFirst({
       where: {
         title: {
-          equals: title.toLowerCase()
-        }
-      }
+          equals: title.toLowerCase(),
+        },
+      },
     });
 
     if (existingSubService) {
       return NextResponse.json(
         {
           message:
-            "Servico adicional já existe, por favor crie serviços únicos."
+            "Servico adicional já existe, por favor crie serviços únicos.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const newService = await prisma.subService.create({
       data: {
         title,
-        value
-      }
+        value,
+      },
     });
 
     return NextResponse.json(
@@ -61,17 +61,17 @@ export async function POST(req: NextRequest) {
         service: {
           id: newService.id,
           title: newService.title,
-          value: newService.value
+          value: newService.value,
         },
-        message: "Serviço adicional criado com sucesso!"
+        message: "Serviço adicional criado com sucesso!",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

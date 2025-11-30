@@ -8,7 +8,7 @@ export async function requireAuth(req: NextRequest, requiredRole?: string) {
   if (!authHeader) {
     return NextResponse.json(
       { message: "Token não informado" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 

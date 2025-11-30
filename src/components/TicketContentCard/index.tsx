@@ -4,7 +4,7 @@ import TicketCard from "../TicketCard";
 export default function TicketContentCard({
   tickets,
   loading,
-  isUserPage
+  isUserPage,
 }: {
   tickets: Ticket[] | undefined;
   loading?: boolean;

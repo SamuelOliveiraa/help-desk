@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, tente novamente mais tarde." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     const {
       title,
       value,
-      status
+      status,
     }: {
       title: string;
       value: number;
@@ -47,15 +47,15 @@ export async function POST(req: NextRequest) {
     const existingService = await prisma.service.findFirst({
       where: {
         title: {
-          equals: title.toLowerCase()
-        }
-      }
+          equals: title.toLowerCase(),
+        },
+      },
     });
 
     if (existingService) {
       return NextResponse.json(
         { message: "Servico já existe, por favor crie serviços únicos." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -65,9 +65,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message:
-            "Você atingiu o limite de serviços para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite."
+            "Você atingiu o limite de serviços para o seu plano. Por favor, contate o suporte ou o administrador para aumentar o limite.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -75,8 +75,8 @@ export async function POST(req: NextRequest) {
       data: {
         title,
         value,
-        status
-      }
+        status,
+      },
     });
 
     return NextResponse.json(
@@ -85,17 +85,17 @@ export async function POST(req: NextRequest) {
           id: newService.id,
           title: newService.title,
           value: newService.value,
-          status: newService.status
+          status: newService.status,
         },
-        message: "Serviço criado com sucesso!"
+        message: "Serviço criado com sucesso!",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -111,13 +111,13 @@ export async function PUT(req: NextRequest) {
 
     // Verificar se o serviço ja existe
     const existingService = await prisma.service.findFirst({
-      where: { id }
+      where: { id },
     });
 
     if (!existingService) {
       return NextResponse.json(
         { message: "Servico não existe, por favor tente novamente." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -127,21 +127,21 @@ export async function PUT(req: NextRequest) {
       data: {
         title: title ?? existingService.title,
         value: value ?? existingService.value,
-        status: status !== undefined ? status : existingService.status
-      }
+        status: status !== undefined ? status : existingService.status,
+      },
     });
 
     return NextResponse.json(
       {
-        message: "Serviço atualizado com sucesso!"
+        message: "Serviço atualizado com sucesso!",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro ao atualizar serviço" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

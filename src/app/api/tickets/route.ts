@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
     // Se passou em todas as verificacoes, pode buscar os tickets
     const tickets = await prisma.ticket.findMany({
-      include: { service: true, user: true, technician: true }
+      include: { service: true, user: true, technician: true },
     });
 
     return NextResponse.json(tickets);
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, tente novamente mais tarde." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       description,
       serviceID,
       userID,
-      amount
+      amount,
     }: {
       title: string;
       description: string;
@@ -49,39 +49,39 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message:
-            "Alguns campos obrigatóriosnão foram informados. Por favor verifique."
+            "Alguns campos obrigatóriosnão foram informados. Por favor verifique.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Verifica se o Serviço informado existe.
     const serviceExists = await prisma.service.findUnique({
-      where: { id: serviceID }
+      where: { id: serviceID },
     });
     if (!serviceExists) {
       return NextResponse.json(
         { message: "Serviço informado não existe." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Pegar o publicID do ultimo chamado no banco
     const lastTicketOnDB = await prisma.ticket.findFirst({
       orderBy: { publicID: "desc" },
-      select: { publicID: true }
+      select: { publicID: true },
     });
 
     // Cria o publicID do chamado
     const publicID = String(
-      parseInt(lastTicketOnDB?.publicID || "0", 10) + 1
+      parseInt(lastTicketOnDB?.publicID || "0", 10) + 1,
     ).padStart(6, "0");
 
     // Ordena os tecnicos com os seus chamados abertos
     const technicians = await prisma.user.findMany({
       where: { role: "technician" },
       orderBy: { id: "asc" },
-      select: { id: true, name: true }
+      select: { id: true, name: true },
     });
 
     // Caso nenhum tecnico exista, retorna.
@@ -89,16 +89,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message:
-            "Nenhum técnico localizado. Por favor entre em contato com o administrador. "
+            "Nenhum técnico localizado. Por favor entre em contato com o administrador. ",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     const lastTicket = await prisma.ticket.findFirst({
       where: { technicianID: { not: null } },
       orderBy: { id: "desc" },
-      select: { technicianID: true }
+      select: { technicianID: true },
     });
 
     let nextTechnician;
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
     } else {
       // Econtra o índice do ultimo tecnico
       const lastIndex = technicians.findIndex(
-        technician => technician.id === lastTicket.technicianID
+        technician => technician.id === lastTicket.technicianID,
       );
 
       // define o proximo recnico (volta ao inicio se chegou ao final)
@@ -121,9 +121,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message:
-            "Não foi possível encontrar um técnico disponível no momento."
+            "Não foi possível encontrar um técnico disponível no momento.",
         },
-        { status: 503 }
+        { status: 503 },
       );
     }
 
@@ -137,8 +137,8 @@ export async function POST(req: NextRequest) {
         publicID,
         service: { connect: { id: serviceID } },
         user: { connect: { id: userID } },
-        technician: { connect: { id: nextTechnician.id } }
-      }
+        technician: { connect: { id: nextTechnician.id } },
+      },
     });
 
     return NextResponse.json(
@@ -148,17 +148,17 @@ export async function POST(req: NextRequest) {
           title: newTicket.title,
           description: newTicket.description,
           status: newTicket.status,
-          amount: newTicket.amount
+          amount: newTicket.amount,
         },
-        message: "Chamado criado com sucesso!"
+        message: "Chamado criado com sucesso!",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -173,7 +173,7 @@ export async function PATCH(req: NextRequest) {
     const {
       id,
       status,
-      subService
+      subService,
     }: {
       id: string;
       status?: Status;
@@ -184,22 +184,22 @@ export async function PATCH(req: NextRequest) {
     if (!id || typeof id !== "string") {
       return NextResponse.json(
         {
-          message: "ID do chamado é inválido ou não foi informado."
+          message: "ID do chamado é inválido ou não foi informado.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Verificar se o ticket é valido
     const existingTicket = await prisma.ticket.findUnique({
-      where: { id }
+      where: { id },
     });
     if (!existingTicket) {
       return NextResponse.json(
         {
-          message: "Chamado informado não existe. Por favor, tente novamente."
+          message: "Chamado informado não existe. Por favor, tente novamente.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -211,9 +211,9 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json(
         {
           message:
-            "É necessário informar ao menos o status ou o serviço adicional para atualização do chamado."
+            "É necessário informar ao menos o status ou o serviço adicional para atualização do chamado.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -223,27 +223,27 @@ export async function PATCH(req: NextRequest) {
 
     if (hasSubservice) {
       updateData.subService = {
-        connect: subService.map(service => ({ id: service.id }))
+        connect: subService.map(service => ({ id: service.id })),
       };
     }
 
     // Se passou em todas as validações pode atualizar o ticket
     await prisma.ticket.update({
       where: { id },
-      data: updateData
+      data: updateData,
     });
 
     return NextResponse.json(
       {
-        message: "Chamado atualizado com sucesso!"
+        message: "Chamado atualizado com sucesso!",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

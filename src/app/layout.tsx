@@ -9,7 +9,7 @@ import { Analytics } from "@vercel/analytics/next";
 
 const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
-  subsets: ["latin"]
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -29,14 +29,14 @@ export const metadata: Metadata = {
         url: "https://help-desk-samuel.vercel.app/og-image.png",
         width: 800,
         height: 600,
-        alt: "HelpDesk"
-      }
-    ]
-  }
+        alt: "HelpDesk",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
@@ -50,29 +50,29 @@ export default function RootLayout({
             style: {
               borderRadius: "8px",
               background: "#333",
-              color: "#fff"
+              color: "#fff",
             },
             success: {
               style: {
                 background: "#508B26",
-                color: "#fff"
+                color: "#fff",
               },
-              icon: <CircleCheckBig />
+              icon: <CircleCheckBig />,
             },
             error: {
               style: {
                 background: "#ff4d4f", // vermelho
-                color: "#fff"
+                color: "#fff",
               },
-              icon: <CircleX />
+              icon: <CircleX />,
             },
             loading: {
               style: {
                 background: "#1e1e1e",
-                color: "#fff"
-              }
+                color: "#fff",
+              },
             },
-            duration: 3000
+            duration: 3000,
           }}
         />
         <Analytics />

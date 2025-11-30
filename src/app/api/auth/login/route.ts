@@ -12,14 +12,14 @@ export async function POST(req: NextRequest) {
 
     // verificar se o usuario existe
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
     if (!user) {
       return NextResponse.json(
         {
-          message: "Por favor, verifique o email/senha ou cadastre-se."
+          message: "Por favor, verifique o email/senha ou cadastre-se.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     if (!isPasswordValid) {
       return NextResponse.json(
         { message: "Por favor, verifique o email/senha ou cadastre-se." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -37,23 +37,23 @@ export async function POST(req: NextRequest) {
       { id: user.id, email: user.email, role: user.role },
       JWT_SECRET,
       {
-        expiresIn: "3d"
-      }
+        expiresIn: "3d",
+      },
     );
 
     return NextResponse.json({
       token,
       user: { id: user.id, email: user.email, role: user.role },
-      message: "Login realizado com sucesso!"
+      message: "Login realizado com sucesso!",
     });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       {
         message:
-          "Erro interno de servidor, por favor tente novamente. (backend)"
+          "Erro interno de servidor, por favor tente novamente. (backend)",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

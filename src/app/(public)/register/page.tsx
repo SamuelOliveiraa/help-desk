@@ -24,7 +24,7 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,7 @@ export default function Register() {
         ...data,
         redirectUser: true,
         workingHours: [],
-        role: "user" as Role
+        role: "user" as Role,
       };
       const { message, token, user } = await createUser(newData);
       if (token) {
@@ -49,7 +49,7 @@ export default function Register() {
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
+          "Erro interno de servidor, por favor contate a equipe de suporte",
         );
       }
       setLoading(false);
@@ -76,7 +76,7 @@ export default function Register() {
             label="Nome"
             placeholder="Digite o nome completo"
             register={register("name", {
-              required: "O nome é obrigatorio"
+              required: "O nome é obrigatorio",
             })}
             error={errors.name}
           />
@@ -89,8 +89,8 @@ export default function Register() {
               required: "O e-mail é obrigatorio",
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-                message: "Digite um e-mail válido"
-              }
+                message: "Digite um e-mail válido",
+              },
             })}
             type="email"
             error={errors.email}
@@ -104,8 +104,8 @@ export default function Register() {
               required: "A senha  é obrigatorio",
               minLength: {
                 value: 8,
-                message: "A senha deve ter mais de 8 caracteres"
-              }
+                message: "A senha deve ter mais de 8 caracteres",
+              },
             })}
             type="password"
             error={errors.password}

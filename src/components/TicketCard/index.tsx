@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function TicketCard({
   ticket,
   loading,
-  isUserPage
+  isUserPage,
 }: {
   ticket: Ticket;
   loading?: boolean;

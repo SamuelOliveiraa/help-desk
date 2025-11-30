@@ -6,12 +6,12 @@ const serviceStatusSpanVariant = tv({
   variants: {
     status: {
       true: "bg-green-400/20 text-green-400",
-      false: "bg-red-100 text-red-400"
-    }
+      false: "bg-red-100 text-red-400",
+    },
   },
   defaultVariants: {
-    status: true
-  }
+    status: true,
+  },
 });
 
 export default function ServiceStatus({ status }: { status: boolean }) {

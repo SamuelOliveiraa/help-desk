@@ -7,12 +7,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteToken } from "@/utils/cookies";
 
 export default function ProfileDialog({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

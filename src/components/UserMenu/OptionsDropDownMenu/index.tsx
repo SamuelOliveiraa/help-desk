@@ -3,7 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import LogOutDialog from "../LogOutDialog";
 import ProfileDialog from "../ProfileDialog";
@@ -11,7 +11,7 @@ import ProfileDialog from "../ProfileDialog";
 export default function OptionsDropDownMenu({
   children,
   onConfirm,
-  isMobile
+  isMobile,
 }: {
   children: React.ReactNode;
   onConfirm: () => void;

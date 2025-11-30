@@ -14,19 +14,19 @@ const sidebarItemLinkVariants = tv({
   variants: {
     active: {
       true: "bg-blue-500 text-gray-600",
-      false: "text-gray-400"
-    }
+      false: "text-gray-400",
+    },
   },
   defaultVariants: {
-    active: false
-  }
+    active: false,
+  },
 });
 
 export default function SidebarItem({
   title,
   Icon,
   href,
-  active
+  active,
 }: SidebarItemProps) {
   return (
     <Link href={href} className={sidebarItemLinkVariants({ active })}>

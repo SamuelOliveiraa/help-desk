@@ -9,7 +9,7 @@ import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { updatePasswordUser } from "@/lib/api/users";
 
@@ -20,7 +20,7 @@ type FormValues = {
 
 export default function ChangePasswordDialog({
   children,
-  id
+  id,
 }: {
   children: React.ReactNode;
   id?: string;
@@ -29,7 +29,7 @@ export default function ChangePasswordDialog({
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>();
   const [openModal, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export default function ChangePasswordDialog({
       const response = await updatePasswordUser(
         id,
         data.password,
-        data.newPassword
+        data.newPassword,
       );
 
       if (response?.message) {
@@ -53,7 +53,7 @@ export default function ChangePasswordDialog({
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Erro interno de servidor, por favor contate a equipe de suporte"
+          "Erro interno de servidor, por favor contate a equipe de suporte",
         );
       }
     } finally {
@@ -98,8 +98,8 @@ export default function ChangePasswordDialog({
               required: "A senha é obrigatória",
               minLength: {
                 value: 8,
-                message: "A senha atual deve ter 8 ou mais caracteres"
-              }
+                message: "A senha atual deve ter 8 ou mais caracteres",
+              },
             })}
             error={errors.password}
           />
@@ -113,8 +113,8 @@ export default function ChangePasswordDialog({
               required: "A senha é obrigatória",
               minLength: {
                 value: 8,
-                message: "A senha deve ter 8 ou mais caracteres"
-              }
+                message: "A senha deve ter 8 ou mais caracteres",
+              },
             })}
             error={errors.newPassword}
             helperText="Minimo de 8 digitos"

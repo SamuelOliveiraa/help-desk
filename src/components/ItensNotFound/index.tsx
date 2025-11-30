@@ -9,13 +9,13 @@ type ItensNotFoundProps = {
 };
 
 const ItensNotFoundVariants = tv({
-  base: "flex flex-col items-center justify-center mt-24 text-center gap-2 px-4"
+  base: "flex flex-col items-center justify-center mt-24 text-center gap-2 px-4",
 });
 
 export default function ItensNotFound({
   title,
   description,
-  className
+  className,
 }: ItensNotFoundProps) {
   return (
     <div className={ItensNotFoundVariants({ className })}>

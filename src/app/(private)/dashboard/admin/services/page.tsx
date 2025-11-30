@@ -10,7 +10,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 import { getServices } from "@/lib/api/services";
 import type { Service } from "@/types/services";

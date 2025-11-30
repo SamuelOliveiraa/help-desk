@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 // Pega o usuario conforme o ID informado.
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -26,22 +26,22 @@ export async function GET(
       return NextResponse.json(
         {
           message:
-            "Acesso negado! Você não tem permissão para pesquisar usuários."
+            "Acesso negado! Você não tem permissão para pesquisar usuários.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     // Busca o usuario no DB
     const user = await prisma.user.findUnique({
-      where: { id }
+      where: { id },
     });
 
     // Se o usuario não existir retorna
     if (!user) {
       return NextResponse.json(
         { message: "Usuario não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -53,7 +53,7 @@ export async function GET(
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -61,7 +61,7 @@ export async function GET(
 // Deleta o usuario conforme o ID informado.
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -81,29 +81,29 @@ export async function DELETE(
       return NextResponse.json(
         {
           message:
-            "Acesso negado! Você não tem permissão para excluir usuários."
+            "Acesso negado! Você não tem permissão para excluir usuários.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     // Busca o usuario no DB
     const user = await prisma.user.delete({
-      where: { id }
+      where: { id },
     });
 
     return NextResponse.json(
       {
         user,
-        message: `Usuario "${user.name}" excluído com sucesso!`
+        message: `Usuario "${user.name}" excluído com sucesso!`,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

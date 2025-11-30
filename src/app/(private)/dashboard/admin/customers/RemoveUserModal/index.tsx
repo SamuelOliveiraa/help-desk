@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteUser } from "@/lib/api/users";
 
@@ -14,7 +14,7 @@ export default function RemoveUserModal({
   children,
   id,
   name,
-  onConfirm
+  onConfirm,
 }: {
   children: React.ReactNode;
   id: string;
@@ -22,7 +22,7 @@ export default function RemoveUserModal({
   onConfirm: () => void;
 }) {
   const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
 
   async function handleDeleteUser() {
     setLoading(true);
@@ -31,7 +31,7 @@ export default function RemoveUserModal({
       if (response?.message) {
         toast.success(response?.message);
         onConfirm();
-        setOpenModal(!openModal)
+        setOpenModal(!openModal);
       }
     } catch (error) {
       console.error(error);

@@ -9,7 +9,7 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 export async function getAllTickets(): Promise<Ticket[] | null> {
   try {
     const res = await axios.get<Ticket[]>("/api/tickets", {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
     return res.data;
   } catch (error) {
@@ -23,7 +23,7 @@ export async function getTicketByID(id: string): Promise<Ticket | null> {
     if (!id) return null;
 
     const res = await axios.get<Ticket>(`/api/tickets/${id}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -34,13 +34,13 @@ export async function getTicketByID(id: string): Promise<Ticket | null> {
 
 // GET o ticket pelo publicID
 export async function getTicketByPublicID(
-  publicID: string
+  publicID: string,
 ): Promise<Ticket | null> {
   try {
     if (!publicID) return null;
 
     const res = await axios.get<Ticket>(`/api/tickets/publicID/${publicID}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -51,13 +51,13 @@ export async function getTicketByPublicID(
 
 // GET o ticket pelo ID do técnico
 export async function getTicketByTechnicianID(
-  technicianID: string
+  technicianID: string,
 ): Promise<Ticket[] | null> {
   try {
     if (!technicianID) return null;
 
     const res = await axios.get<Ticket[]>(`/api/tickets/user/${technicianID}`, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     return res.data;
@@ -79,7 +79,7 @@ export async function createTicket(data: {
     if (!token) return null;
 
     const res = await axios.post("/api/tickets", data, {
-      headers: await authHeader()
+      headers: await authHeader(),
     });
 
     const { message } = res.data;
@@ -94,7 +94,7 @@ export async function createTicket(data: {
 export async function updateTicket(
   id: string,
   status?: Status,
-  subService?: SubService
+  subService?: SubService,
 ): Promise<{ message: string } | null> {
   try {
     if (!id) return null;
@@ -103,8 +103,8 @@ export async function updateTicket(
       `/api/tickets`,
       { id, status, subService },
       {
-        headers: await authHeader()
-      }
+        headers: await authHeader(),
+      },
     );
 
     const { message } = res.data;

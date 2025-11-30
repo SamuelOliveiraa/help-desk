@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteService } from "@/lib/api/services";
 import axios from "axios";
@@ -15,7 +15,7 @@ export default function RemoveServiceModal({
   children,
   id,
   title,
-  onConfirm
+  onConfirm,
 }: {
   children: React.ReactNode;
   id: string;

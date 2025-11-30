@@ -10,12 +10,12 @@ const tagTimeButtonVariants = tv({
   base: "flex items-center justify-center gap-1 py-1 px-3 transition-colors duration-200 rounded-full border border-gray-400",
   variants: {
     selected: {
-      true: "text-gray-600 bg-blue-200 "
-    }
+      true: "text-gray-600 bg-blue-200 ",
+    },
   },
   defaultVariants: {
-    selected: false
-  }
+    selected: false,
+  },
 });
 
 export default function TagTime({ selected, text, ...rest }: TagTimeProps) {

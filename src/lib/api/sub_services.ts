@@ -11,8 +11,8 @@ export async function deletesubService(ticketID: string, id: string) {
       `/api/sub_services/${id}`,
       {
         data: { ticketID },
-        headers: await authHeader()
-      }
+        headers: await authHeader(),
+      },
     );
 
     return res.data;

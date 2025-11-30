@@ -3,7 +3,7 @@ import {
   ClipboardList,
   PlusIcon,
   Users,
-  Wrench
+  Wrench,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { Role } from "@/types/user";
@@ -17,20 +17,20 @@ export default function SidebarMenuItens({ role }: { role?: Role | null }) {
       href: "/dashboard/admin/technicals",
       title: "Técnicos",
       Icon: Wrench,
-      id: 4
+      id: 4,
     },
     {
       href: "/dashboard/admin/customers",
       title: "Clientes",
       Icon: Users,
-      id: 2
+      id: 2,
     },
     {
       href: "/dashboard/admin/services",
       title: "Serviços",
       Icon: BriefcaseBusiness,
-      id: 3
-    }
+      id: 3,
+    },
   ];
 
   const pathname = usePathname();

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 // Pega o serviço conforme o ID informado.
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -25,22 +25,22 @@ export async function GET(
       return NextResponse.json(
         {
           message:
-            "Acesso negado! Você não tem permissão para pesquisar serviços."
+            "Acesso negado! Você não tem permissão para pesquisar serviços.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     // Busca o servico no DB
     const service = await prisma.service.findUnique({
-      where: { id }
+      where: { id },
     });
 
     // Se o serviço não existir retorna
     if (!service) {
       return NextResponse.json(
         { message: "Serviço não localizado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -49,7 +49,7 @@ export async function GET(
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -57,7 +57,7 @@ export async function GET(
 // Deleta o serviço conforme o ID informado.
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -77,44 +77,44 @@ export async function DELETE(
       return NextResponse.json(
         {
           message:
-            "Acesso negado! Você não tem permissão para excluir serviços."
+            "Acesso negado! Você não tem permissão para excluir serviços.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     const tickets = await prisma.ticket.findFirst({
-      where: { serviceID: id }
+      where: { serviceID: id },
     });
 
     if (tickets) {
       return NextResponse.json(
         {
           message:
-            "Não é possivel excluir o serviço, existem chamados em aberto usando este serviço."
+            "Não é possivel excluir o serviço, existem chamados em aberto usando este serviço.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Busca o servico no DB
     const service = await prisma.service.delete({
-      where: { id }
+      where: { id },
     });
 
     return NextResponse.json(
       {
         service,
-        message: `Serviço "${service.title}" excluído com sucesso!`
+        message: `Serviço "${service.title}" excluído com sucesso!`,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: unknown) {
     console.error(error);
 
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

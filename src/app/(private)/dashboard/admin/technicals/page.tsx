@@ -12,7 +12,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 import { getUsersByRole } from "@/lib/api/users";
 import type { User } from "@/types/user";

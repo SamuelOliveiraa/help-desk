@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { getCurrentUser, updateUser } from "@/lib/api/users";
 import type { User } from "@/types/user";
@@ -22,7 +22,7 @@ type FormValues = {
 
 export default function ProfileDialog({
   children,
-  onConfirm
+  onConfirm,
 }: {
   children: React.ReactNode;
   onConfirm: () => void;
@@ -31,7 +31,7 @@ export default function ProfileDialog({
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>();
   const [openModal, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export default function ProfileDialog({
         id: user?.id,
         name: data.name,
         email: data.email,
-        avatar: user?.avatar || ""
+        avatar: user?.avatar || "",
       };
       const id = user?.id;
       if (!id) return;
@@ -61,7 +61,7 @@ export default function ProfileDialog({
         toast.error(error.response?.data.message);
       } else {
         toast.error(
-          "Não foi possível atualizar o perfil, por favor contate a equipe de suporte"
+          "Não foi possível atualizar o perfil, por favor contate a equipe de suporte",
         );
       }
     } finally {
@@ -94,7 +94,7 @@ export default function ProfileDialog({
             label="Nome"
             placeholder="Digite seu nome"
             register={register("name", {
-              required: "O nome é obrigatorio"
+              required: "O nome é obrigatorio",
             })}
             error={errors.name}
             defaultValue={user?.name}
@@ -109,8 +109,8 @@ export default function ProfileDialog({
               required: "O e-mail é obrigatorio",
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // regex padrão de e-mail
-                message: "Digite um e-mail válido"
-              }
+                message: "Digite um e-mail válido",
+              },
             })}
             error={errors.email}
             defaultValue={user?.email}

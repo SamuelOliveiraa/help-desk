@@ -8,12 +8,12 @@ const skeletonVariants = tv({
   variants: {
     size: {
       sm: "w-7 h-7",
-      lg: "w-12 h-12"
-    }
+      lg: "w-12 h-12",
+    },
   },
   defaultVariants: {
-    size: "lg"
-  }
+    size: "lg",
+  },
 });
 
 const avatarContainerVariants = tv({
@@ -21,12 +21,12 @@ const avatarContainerVariants = tv({
   variants: {
     size: {
       sm: "w-7 h-7",
-      lg: "w-12 h-12"
-    }
+      lg: "w-12 h-12",
+    },
   },
   defaultVariants: {
-    size: "lg"
-  }
+    size: "lg",
+  },
 });
 
 const avatarSpanTextVariants = tv({
@@ -34,19 +34,19 @@ const avatarSpanTextVariants = tv({
   variants: {
     size: {
       sm: "text-xs",
-      lg: "text-lg"
-    }
+      lg: "text-lg",
+    },
   },
   defaultVariants: {
-    size: "lg"
-  }
+    size: "lg",
+  },
 });
 
 export default function Avatar({
   name,
   avatar,
   size,
-  loading
+  loading,
 }: {
   name: string;
   avatar: string | null;

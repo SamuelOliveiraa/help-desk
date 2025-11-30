@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 // Pega os tickets conforme o ID do usuario informado.
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ userID: string }> }
+  { params }: { params: Promise<{ userID: string }> },
 ) {
   try {
     // Faz todas as verificações necessarias do token
@@ -22,20 +22,20 @@ export async function GET(
 
     const tickets = await prisma.ticket.findMany({
       where: {
-        OR: [{ userID }, { technicianID: userID }]
+        OR: [{ userID }, { technicianID: userID }],
       },
       orderBy: { publicID: "desc" },
       include: {
         service: true,
         user: true,
-        technician: true
-      }
+        technician: true,
+      },
     });
 
     if (tickets.length <= 0) {
       return NextResponse.json(
         { message: "Nenhum chamado localizado para este usuário." },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
@@ -44,7 +44,7 @@ export async function GET(
     console.error(error);
     return NextResponse.json(
       { message: "Erro interno de servidor, por favor tente novamente." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -12,7 +12,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel
+  SidebarGroupLabel,
 } from "../ui/sidebar";
 
 export default function AppSidebar() {
