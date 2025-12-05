@@ -2,7 +2,7 @@
 
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { Role } from "@/types/user";
-import { JWT_SECRET } from "@/utils/auth";
+import { JWT_SECRET } from "@/utils/client/auth";
 
 interface TokenPayload extends JwtPayload {
   id: string;

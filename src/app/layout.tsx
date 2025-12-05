@@ -75,7 +75,7 @@ export default function RootLayout({
             duration: 3000,
           }}
         />
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   );

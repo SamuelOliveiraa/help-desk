@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteToken } from "@/utils/cookies";
+import { deleteToken } from "@/utils/client/cookies";
 
 export default function ProfileDialog({
   children,

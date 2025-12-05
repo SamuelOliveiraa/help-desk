@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getTicketByTechnicianID } from "@/lib/api/tickets";
+import { getTicketByTechnicianID } from "@/lib/fetchers/tickets";
 import type { Ticket } from "@/types/tickets";
 import TicketStatus from "@/components/TicketStatus";
 import TicketContentCard from "@/components/TicketContentCard";
-import { Loader2 } from "lucide-react";
-import { getUserByToken } from "@/utils/cookies";
+import { getUserByToken } from "@/utils/client/cookies";
 import ItensNotFound from "@/components/ItensNotFound";
+import { RefreshCcw } from "lucide-react";
 
 export default function TechnicianPage() {
   const [allTickets, setAllTickets] = useState<Ticket[]>([]);
@@ -40,7 +40,14 @@ export default function TechnicianPage() {
 
   return (
     <div className="flex w-full h-full flex-col mb-10">
-      <h1 className="text-4xl text-black">Meus Chamados</h1>
+      <div className="flex items-center justify-between w-full">
+        <h1 className="text-4xl text-black">Meus Chamados</h1>
+        <RefreshCcw
+          size={24}
+          onClick={() => !loading && fetchTickets()}
+          className="cursor-pointer"
+        />
+      </div>
 
       {!loading && openTickets?.length === 0 ? null : (
         <div className="flex flex-col mt-10 gap-4">

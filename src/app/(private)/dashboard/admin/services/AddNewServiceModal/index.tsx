@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createService, updateService } from "@/lib/api/services";
+import { createService, updateService } from "@/lib/fetchers/services";
 import { useState } from "react";
 
 type FormValues = {
@@ -103,7 +103,7 @@ export default function AddNewServiceModal({
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="w-full truncate">
             {id ? `Editar Serviço "${title}"` : "Cadastro de Serviço"}
           </DialogTitle>
         </DialogHeader>

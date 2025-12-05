@@ -1,5 +1,5 @@
-import { requireAuth } from "@/lib/auth/requireAuth";
-import prisma from "@/lib/prisma";
+import { requireAuth } from "@/lib/server/auth/requireAuth";
+import prisma from "@/lib/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 // Deleta o serviço adicional conforme o ID informado.

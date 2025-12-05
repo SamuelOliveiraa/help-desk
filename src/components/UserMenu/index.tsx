@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getCurrentUser } from "@/lib/api/users";
+import { getCurrentUser } from "@/lib/fetchers/users";
 import type { User } from "@/types/user";
 import Avatar from "../Avatar";
 import OptionsDropDownMenu from "./OptionsDropDownMenu";
@@ -35,9 +35,13 @@ export default function UserMenu({ isMobile }: { isMobile?: boolean }) {
         />
 
         {user ? (
-          <div className="hidden md:flex gap-1 flex-col flex-1 md:items-start">
-            <h2 className="text-gray-600 text-left">{user?.name}</h2>
-            <span className="text-gray-400 text-sm">{user?.email}</span>
+          <div className="hidden md:flex gap-1 flex-col flex-1 md:items-start max-w-40">
+            <h2 className="text-gray-600 text-left truncate w-full">
+              {user?.name}
+            </h2>
+            <span className="text-gray-400 text-sm truncate w-full">
+              {user?.email}
+            </span>
           </div>
         ) : (
           <Skeleton className="flex flex-1 h-12" />

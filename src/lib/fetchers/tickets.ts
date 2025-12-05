@@ -1,9 +1,9 @@
 import axios from "axios";
 import type { Service, SubService } from "@/types/services";
 import type { Status, Ticket } from "@/types/tickets";
-import { authHeader } from "@/utils/auth";
-import { getToken } from "@/utils/cookies";
-import { handleAxiosError } from "@/utils/handleAxiosError";
+import { authHeader } from "@/utils/client/auth";
+import { getToken } from "@/utils/client/cookies";
+import { handleAxiosError } from "@/utils/client/handleAxiosError";
 
 // GET todos os tickets
 export async function getAllTickets(): Promise<Ticket[] | null> {

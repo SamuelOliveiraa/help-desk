@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getUsersByRole } from "@/lib/api/users";
+import { getUsersByRole } from "@/lib/fetchers/users";
 import type { User } from "@/types/user";
 import EditUserModal from "./EditUserModal";
 import RemoveUserModal from "./RemoveUserModal";
@@ -36,7 +36,7 @@ export default function CustomersPage() {
   }, [fetchUsers]);
 
   return (
-    <div className="flex flex-col w-full h-full gap-10 rounded-t-3xl rounded-b-none p-4">
+    <div className="flex flex-col w-full h-full gap-10 rounded-t-3xl rounded-b-none">
       <h2 className="text-3xl text-blue-500 font-bold">Clientes</h2>
 
       <div className="border rounded-lg">
@@ -58,12 +58,12 @@ export default function CustomersPage() {
                 >
                   <TableCell className="font-medium flex items-center gap-2">
                     <Avatar name={user.name} avatar={user.avatar || null} />
-                    <span className="text-base text-gray-200 font-bold">
+                    <span className="text-base text-gray-200 font-bold truncate max-w-lg">
                       {user.name}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-base text-gray-200">
+                    <span className="text-base text-gray-200 font-bold truncate max-w-md w-full inline-block ">
                       {user.email}
                     </span>
                   </TableCell>

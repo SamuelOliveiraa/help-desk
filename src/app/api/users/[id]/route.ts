@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth/requireAuth";
-import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/server/auth/requireAuth";
+import { prisma } from "@/lib/db/prisma";
 
 // Pega o usuario conforme o ID informado.
 export async function GET(

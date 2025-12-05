@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteService } from "@/lib/api/services";
+import { deleteService } from "@/lib/fetchers/services";
 import axios from "axios";
 
 export default function RemoveServiceModal({
@@ -50,8 +50,9 @@ export default function RemoveServiceModal({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full flex flex-col gap-5">
         <DialogHeader>
-          <DialogTitle className="text-xl">
-            Excluir Serviço {`"${title}"`}?
+          <DialogTitle className="text-xl w-full truncate">
+            Excluir Serviço
+            {` "${title}"`}?
           </DialogTitle>
         </DialogHeader>
         <p className="text-base">

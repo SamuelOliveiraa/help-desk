@@ -3,7 +3,7 @@ import Button from "../Button";
 import { CheckCircle2, PencilLine } from "lucide-react";
 import TicketStatus from "../TicketStatus";
 import Avatar from "../Avatar";
-import { formatToBRL } from "@/utils/formatToBRL";
+import { formatToBRL } from "@/utils/formatters/formatToBRL";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 
@@ -46,8 +46,10 @@ export default function TicketCard({
 
       <div className="flex flex-col gap-3 ">
         <div className="flex flex-col">
-          <h2 className="font-bold text-base">{ticket.title}</h2>
-          <span className="text-sm text-gray-400">{ticket.service.title}</span>
+          <h2 className="font-bold text-base truncate">{ticket.title}</h2>
+          <span className="text-sm text-gray-400 truncate">
+            {ticket.service.title}
+          </span>
         </div>
 
         <div className="flex items-center justify-between">

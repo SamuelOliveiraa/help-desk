@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { updatePasswordUser } from "@/lib/api/users";
+import { updatePasswordUser } from "@/lib/fetchers/users";
 
 type FormValues = {
   password: string;

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Role } from "@/types/user";
-import { getTokenRole } from "@/utils/cookies";
+import { getTokenRole } from "@/utils/client/cookies";
 import HeaderLogo from "../HeaderLogo";
 import SidebarMenuItens from "../SidebarMenuItens";
 import UserMenu from "../UserMenu";

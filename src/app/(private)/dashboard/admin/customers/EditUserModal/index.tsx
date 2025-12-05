@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { updateUser } from "@/lib/api/users";
+import { updateUser } from "@/lib/fetchers/users";
 
 type FormValues = {
   name: string;

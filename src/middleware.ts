@@ -1,9 +1,14 @@
 import { type JWTPayload, jwtVerify } from "jose";
 import { type NextRequest, NextResponse } from "next/server";
 import type { Role } from "@/types/user";
-import { JWT_SECRET } from "./utils/auth";
+import { JWT_SECRET } from "./utils/client/auth";
 
-const PUBLICK_PAGES = ["/login", "/register"];
+const PUBLICK_PAGES = [
+  "/login",
+  "/register",
+  "/reset-password",
+  "/reset-password/*",
+];
 
 export interface CustomJWTPayload extends JWTPayload {
   role: Role;
@@ -21,7 +26,11 @@ export async function middleware(req: NextRequest) {
   }
 
   // Paginas publicas
-  if (PUBLICK_PAGES.includes(pathname)) {
+  if (
+    PUBLICK_PAGES.includes(pathname) ||
+    pathname === "/reset-password" ||
+    pathname.startsWith("/reset-password")
+  ) {
     if (token) {
       try {
         const { payload } = (await jwtVerify(token, JWT_SECRET_CONVERTED)) as {

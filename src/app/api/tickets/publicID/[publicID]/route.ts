@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth/requireAuth";
-import prisma from "@/lib/prisma";
+import { requireAuth } from "@/lib/server/auth/requireAuth";
+import prisma from "@/lib/db/prisma";
 
 // Pega o ticket conforme o publicID informado.
 export async function GET(

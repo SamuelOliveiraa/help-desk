@@ -1,8 +1,8 @@
 "use client";
 
-import { Loader2, PenLine, Plus } from "lucide-react";
+import { PenLine, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import TagTime from "@/components/TagTime";
@@ -14,28 +14,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getUsersByRole } from "@/lib/api/users";
+import { getUsersByRole } from "@/lib/fetchers/users";
 import type { User } from "@/types/user";
-import { Skeleton } from "@/components/ui/skeleton";
 import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
 import ItensNotFound from "@/components/ItensNotFound";
+import IconUpdateData from "@/components/IconUpdateData";
 
 export default function TechnicalsPage() {
   const [data, setData] = useState<User[] | null>(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const fetchTechnicals = useCallback(async () => {
+    setLoading(true);
+    try {
+      const technicals = await getUsersByRole("technician");
+      setData(technicals);
+    } catch (err) {
+      console.error("Erro ao buscar usuários:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    async function fetchTechnicals() {
-      try {
-        const technicals = await getUsersByRole("technician");
-        setData(technicals);
-      } catch (err) {
-        console.error("Erro ao buscar usuários:", err);
-      }
-    }
-
     fetchTechnicals();
-  }, []);
+  }, [fetchTechnicals]);
 
   return (
     <div className="flex flex-col w-full h-full gap-10">
@@ -50,7 +54,7 @@ export default function TechnicalsPage() {
         </Button>
       </div>
 
-      <div className="border rounded-lg">
+      <div className="border rounded-lg overflow-x-auto mx-3">
         <Table>
           <TableHeader className="rounded-lg">
             <TableRow className="h-12">
@@ -59,11 +63,14 @@ export default function TechnicalsPage() {
               <TableHead className="w-[50%] text-base">
                 Disponibilidade
               </TableHead>
+              <TableHead className="w-[50%] text-base">
+                <IconUpdateData loading={loading} onUpdate={fetchTechnicals} />
+              </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {data ? (
+            {!loading ? (
               data?.map(user => (
                 <TableRow
                   key={user.id}
@@ -124,6 +131,7 @@ export default function TechnicalsPage() {
             ) : (
               <TableLoadingSkeleton />
             )}
+
             {data?.length === 0 && (
               <TableRow>
                 <TableCell colSpan={3} className="text-center">

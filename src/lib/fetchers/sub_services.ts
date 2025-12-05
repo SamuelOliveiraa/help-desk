@@ -1,5 +1,5 @@
-import { authHeader } from "@/utils/auth";
-import { handleAxiosError } from "@/utils/handleAxiosError";
+import { authHeader } from "@/utils/client/auth";
+import { handleAxiosError } from "@/utils/client/handleAxiosError";
 import axios from "axios";
 
 // DELETA o serviço adicional por ID

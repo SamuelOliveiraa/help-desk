@@ -12,9 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getServices } from "@/lib/api/services";
+import { getServices } from "@/lib/fetchers/services";
 import type { Service } from "@/types/services";
-import { formatToBRL } from "@/utils/formatToBRL";
+import { formatToBRL } from "@/utils/formatters/formatToBRL";
 import AddNewServiceModal from "./AddNewServiceModal";
 import RemoveServiceModal from "./RemoveServiceModal";
 import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
@@ -42,7 +42,7 @@ export default function ServicesPage() {
 
   return (
     <div className="flex flex-col w-full h-full gap-10">
-      <div className="flex w-full items-center justify-between p-4">
+      <div className="flex w-full items-center justify-between">
         <h2 className="text-3xl text-blue-500 font-bold">Serviços</h2>
 
         <AddNewServiceModal
@@ -75,7 +75,7 @@ export default function ServicesPage() {
                   className="transition-colors hover:bg-muted/50 h-16 sm:px-12"
                 >
                   <TableCell className="font-medium flex items-center gap-2">
-                    <span className="truncate w-36 sm:w-auto text-base text-gray-200 font-bold">
+                    <span className="truncate w-auto md:max-w-[700px] text-base text-gray-200 font-bold">
                       {service.title}
                     </span>
                   </TableCell>

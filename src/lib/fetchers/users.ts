@@ -1,8 +1,8 @@
 import axios from "axios";
 import type { Role, UpdateUserType, User, WorkingHours } from "@/types/user";
-import { authHeader } from "@/utils/auth";
-import { getUserByToken, saveToken } from "@/utils/cookies";
-import { handleAxiosError } from "@/utils/handleAxiosError";
+import { authHeader } from "@/utils/client/auth";
+import { getUserByToken, saveToken } from "@/utils/client/cookies";
+import { handleAxiosError } from "@/utils/client/handleAxiosError";
 
 // GET todos os usuarios
 export async function getUsers(): Promise<User[]> {

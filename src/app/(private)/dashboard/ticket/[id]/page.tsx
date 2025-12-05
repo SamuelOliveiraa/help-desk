@@ -3,15 +3,14 @@
 import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import ButtonBack from "@/components/ButtonBack";
-import ItensNotFound from "@/components/ItensNotFound";
 import TicketStatus from "@/components/TicketStatus";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getTicketByPublicID } from "@/lib/api/tickets";
+import { getTicketByPublicID } from "@/lib/fetchers/tickets";
 import { Ticket } from "@/types/tickets";
 import { Role } from "@/types/user";
-import { getUserByToken } from "@/utils/cookies";
-import { formtDataToBRL } from "@/utils/formatDataToBRL";
-import { formatToBRL } from "@/utils/formatToBRL";
+import { getUserByToken } from "@/utils/client/cookies";
+import { formtDataToBRL } from "@/utils/formatters/formatDataToBRL";
+import { formatToBRL } from "@/utils/formatters/formatToBRL";
 import { CircleCheckBig, Clock2, Plus, Trash } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -39,7 +38,7 @@ export default function TicketDetails() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetchTicket();
@@ -89,7 +88,7 @@ export default function TicketDetails() {
             {loading ? (
               <Skeleton className="w-full h-9" />
             ) : (
-              <h2 className="text-2xl font-bold text-gray-200">
+              <h2 className="text-2xl font-bold text-gray-200 break-words">
                 {ticket?.title}
               </h2>
             )}
@@ -100,7 +99,9 @@ export default function TicketDetails() {
               {loading ? (
                 <Skeleton className="w-full h-20" />
               ) : (
-                <p>{ticket?.description}</p>
+                <p className="break-words min-h-[2.5rem] max-h-52 overflow-y-auto">
+                  {ticket?.description}
+                </p>
               )}
             </div>
 
@@ -110,7 +111,7 @@ export default function TicketDetails() {
               {loading ? (
                 <Skeleton className="w-full h-9" />
               ) : (
-                <p>{ticket?.service?.title}</p>
+                <p className="w-full truncate">{ticket?.service?.title}</p>
               )}
             </div>
 
@@ -198,11 +199,12 @@ export default function TicketDetails() {
                 (!ticket?.subServices || ticket.subServices.length === 0) && (
                   <div className="flex items-center flex-col gap-2">
                     <h2 className="text-lg font-semibold">
-                      Nenhum serviço adicional encontrado
+                      Nenhum serviço adicional foi registrado
                     </h2>
 
                     <p className="text-sm text-muted-foreground">
-                      Que tal adicionar um novo serviço a este chamado?
+                      Adicione abaixo qualquer serviço extra realizado durante a
+                      visita ao cliente.
                     </p>
                   </div>
                 )}

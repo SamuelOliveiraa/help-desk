@@ -4,11 +4,11 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import type { JsonArray } from "@/generated/prisma/runtime/library";
-import { requireAuth } from "@/lib/auth/requireAuth";
-import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/server/auth/requireAuth";
+import { JsonArray } from "@/generated/prisma/runtime/library";
+import { prisma } from "@/lib/db/prisma";
 import type { Role, WorkingHours } from "@/types/user";
-import { JWT_SECRET } from "@/utils/auth";
+import { JWT_SECRET } from "@/utils/client/auth";
 
 // Lista todos os usuarios do sistema
 export async function GET(req: NextRequest) {

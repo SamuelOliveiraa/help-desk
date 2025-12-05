@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import InputForm from "@/components/InputForm";
 import { Service } from "@/types/services";
-import { getAllServicesActives } from "@/lib/api/services";
+import { getAllServicesActives } from "@/lib/fetchers/services";
 import Button from "@/components/Button";
 import {
   Select,
@@ -15,10 +15,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getUserByToken } from "@/utils/cookies";
+import { getUserByToken } from "@/utils/client/cookies";
 import toast from "react-hot-toast";
-import { createTicket } from "@/lib/api/tickets";
-import { formatToBRL } from "@/utils/formatToBRL";
+import { createTicket } from "@/lib/fetchers/tickets";
+import { formatToBRL } from "@/utils/formatters/formatToBRL";
 
 type FormValues = {
   title: string;
@@ -47,7 +47,7 @@ export default function NewTicket() {
   const [services, setServices] = useState<Service[]>();
   const [userID, setUserID] = useState<string>();
 
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     try {
       const data = await getAllServicesActives();
       if (data) setServices(data);
@@ -55,7 +55,7 @@ export default function NewTicket() {
     } catch (error) {
       console.error("Não foi possível localizar os serviços", error);
     }
-  };
+  }, []);
 
   const fetchUserID = async () => {
     try {
@@ -68,7 +68,7 @@ export default function NewTicket() {
 
   useEffect(() => {
     fetchServices();
-  }, []);
+  }, [fetchServices]);
 
   async function handleSubmitForm(data: FormValues) {
     try {
@@ -133,7 +133,7 @@ export default function NewTicket() {
             />
 
             <InputForm
-              type="text"
+              type="textarea"
               inputID="description"
               label="Descrição"
               placeholder="Descreva o que está acontecendo"
@@ -159,13 +159,22 @@ export default function NewTicket() {
                   value={String(field.value) || ""}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione o tipo de serviço" />
+                    <SelectValue
+                      placeholder="Selecione o tipo de serviço"
+                      className="block w-full truncate"
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       {services?.map(service => (
-                        <SelectItem key={service.id} value={service.id}>
-                          {service.title}
+                        <SelectItem
+                          key={service.id}
+                          value={service.id}
+                          className="max-w-lg min-w-0 "
+                        >
+                          <span className="block max-w-md truncate">
+                            {service.title}
+                          </span>
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -189,8 +198,8 @@ export default function NewTicket() {
 
             <div className="flex flex-col gap-1 ">
               <p className="text-sm text-gray-300">Categoria do serviço</p>
-              <span className="text-gray-200 font-bold">
-                {serviceSelected?.title || "Manutenção de computadores"}
+              <span className="text-gray-200 font-bold w-full truncate">
+                {serviceSelected?.title}
               </span>
             </div>
 

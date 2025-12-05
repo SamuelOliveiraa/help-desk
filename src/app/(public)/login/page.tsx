@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import ContentContainer from "@/app/(public)/components/ContentContainer";
 import InputForm from "@/components/InputForm";
-import { loginUser } from "@/lib/api/users";
+import { loginUser } from "@/lib/fetchers/users";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -94,6 +94,13 @@ export default function Login() {
             helperText="A senha deve ter mais de 8 caracteres"
           />
 
+          <Link
+            href={"/reset-password"}
+            className="w-fit transition-colors text-gray-100/70 hover:text-gray-100 font-bold text-sm"
+          >
+            Esqueceu a senha? Clique Aqui.
+          </Link>
+
           <Button fullWidth variant="secondary" type="submit" loading={loading}>
             <span className="font-bold">Entrar</span>
           </Button>
@@ -102,9 +109,9 @@ export default function Login() {
 
       <ContentContainer>
         <div>
-          <h2 className="text-lg font-bold">Ainda não tem uma conta?</h2>
+          <h2 className="text-lg font-bold">Ainda não possui uma conta?</h2>
 
-          <p className="text-gray-300 text-sm">Cadastre agora mesmo</p>
+          <p className="text-gray-300 text-sm">Crie a sua agora mesmo.</p>
         </div>
 
         <Link href={"/register"}>

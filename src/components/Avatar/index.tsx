@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getInitialNames } from "@/utils/getInitialNames";
+import { getInitialNames } from "@/utils/formatters/getInitialNames";
 import { Skeleton } from "../ui/skeleton";
 import { tv } from "tailwind-variants";
 

@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getCurrentUser, updateUser } from "@/lib/api/users";
+import { getCurrentUser, updateUser } from "@/lib/fetchers/users";
 import type { User } from "@/types/user";
 import ChangePasswordDialog from "../ChangePasswordDialog";
 

@@ -3,7 +3,7 @@
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Role } from "@/types/user";
-import { getTokenRole } from "@/utils/cookies";
+import { getTokenRole } from "@/utils/client/cookies";
 import Button from "../Button";
 import HeaderLogo from "../HeaderLogo";
 import UserMenu from "../UserMenu";

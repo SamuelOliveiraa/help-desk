@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import Button from "@/components/Button";
 import ContentContainer from "@/app/(public)/components/ContentContainer";
 import InputForm from "@/components/InputForm";
-import { createUser } from "@/lib/api/users";
+import { createUser } from "@/lib/fetchers/users";
 import type { Role } from "@/types/user";
 import Container from "../components/Container";
 

@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@prisma/client": "^5.16.2",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
@@ -30,17 +29,19 @@
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.545.0",
     "next": "15.5.4",
-    "prisma": "^5.16.2",
+    "node-mailjet": "^6.0.11",
     "react": "^19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
     "react-hot-toast": "^2.6.0",
+    "resend": "^6.5.2",
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^3.1.1",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@prisma/client": "4.16.2",
     "@rocketseat/eslint-config": "^2.2.2",
     "@types/bcrypt": "^6.0.0",
     "@types/js-cookie": "^3.0.6",
@@ -51,7 +52,11 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.5.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "postcss": "^8.5.6",
+    "prettier": "^3.7.3",
+    "prisma": "4.16.2",
     "tailwindcss": "^3.4.18",
     "typescript": "^5"
   }

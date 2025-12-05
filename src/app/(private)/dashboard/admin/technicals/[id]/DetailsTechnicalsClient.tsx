@@ -8,7 +8,7 @@ import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import InputForm from "@/components/InputForm";
 import TagTime from "@/components/TagTime";
-import { createUser, getUsersByID, updateUser } from "@/lib/api/users";
+import { createUser, getUsersByID, updateUser } from "@/lib/fetchers/users";
 import type { Role, User, WorkingHours } from "@/types/user";
 import ButtonBack from "@/components/ButtonBack";
 import { useRouter } from "next/navigation";

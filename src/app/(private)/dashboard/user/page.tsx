@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getTicketByTechnicianID } from "@/lib/api/tickets";
+import { getTicketByTechnicianID } from "@/lib/fetchers/tickets";
 import type { Ticket } from "@/types/tickets";
 import TicketStatus from "@/components/TicketStatus";
 import TicketContentCard from "@/components/TicketContentCard";
-import { getUserByToken } from "@/utils/cookies";
+import { getUserByToken } from "@/utils/client/cookies";
 import ItensNotFound from "@/components/ItensNotFound";
 
 export default function UserPage() {

@@ -3,8 +3,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { JWT_SECRET } from "@/utils/auth";
+import prisma from "@/lib/db/prisma";
+import { JWT_SECRET } from "@/utils/client/auth";
 
 export async function POST(req: NextRequest) {
   try {
