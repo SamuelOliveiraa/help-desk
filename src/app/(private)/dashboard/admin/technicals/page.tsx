@@ -78,13 +78,13 @@ export default function TechnicalsPage() {
                 >
                   <TableCell className="font-medium flex items-center gap-2">
                     <Avatar name={user.name} avatar={user.avatar || null} />
-                    <span className="text-base text-gray-200 font-bold">
+                    <span className="text-base text-gray-200 font-bold max-w-80 truncate">
                       {user.name}
                     </span>
                   </TableCell>
 
                   <TableCell>
-                    <span className="text-base text-gray-200">
+                    <span className="text-base text-gray-200 truncate max-w-80 inline-block">
                       {user.email}
                     </span>
                   </TableCell>

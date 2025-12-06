@@ -18,16 +18,21 @@ import EditUserModal from "./EditUserModal";
 import RemoveUserModal from "./RemoveUserModal";
 import TableLoadingSkeleton from "@/components/TableLoadingSkeleton";
 import ItensNotFound from "@/components/ItensNotFound";
+import IconUpdateData from "@/components/IconUpdateData";
 
 export default function CustomersPage() {
   const [data, setData] = useState<User[] | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchUsers = useCallback(async () => {
+    setLoading(true);
     try {
       const users = await getUsersByRole("user");
       setData(users);
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -45,12 +50,14 @@ export default function CustomersPage() {
             <TableRow className="h-12">
               <TableHead className="w-[50%] text-base">Nome</TableHead>
               <TableHead className="w-[40%] text-base">Email</TableHead>
-              <TableHead className="text-right w-[10%]"></TableHead>
+              <TableHead className="text-right w-[10%]">
+                <IconUpdateData loading={loading} onUpdate={fetchUsers} />
+              </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {data ? (
+            {!loading ? (
               data?.map(user => (
                 <TableRow
                   key={user.id}
@@ -63,7 +70,7 @@ export default function CustomersPage() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-base text-gray-200 font-bold truncate max-w-md w-full inline-block ">
+                    <span className="text-base text-gray-200 truncate max-w-lg w-full inline-block">
                       {user.email}
                     </span>
                   </TableCell>

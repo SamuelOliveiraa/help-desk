@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       status,
     }: {
       title: string;
-      value: number;
+      value: string;
       status: boolean;
     } = await req.json();
 

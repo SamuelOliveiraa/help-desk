@@ -12,6 +12,7 @@ import { createUser, getUsersByID, updateUser } from "@/lib/fetchers/users";
 import type { Role, User, WorkingHours } from "@/types/user";
 import ButtonBack from "@/components/ButtonBack";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type FormValues = {
   name: string;
@@ -62,6 +63,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
 
   const fetchUsers = useCallback(async () => {
     try {
+      setLoading(true);
       if (id === "details") return;
 
       const user = await getUsersByID(id);
@@ -90,6 +92,8 @@ export default function DetailsTechnicals({ id }: { id: string }) {
       }
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
+    } finally {
+      setLoading(false);
     }
   }, [id, reset]);
 
@@ -219,11 +223,11 @@ export default function DetailsTechnicals({ id }: { id: string }) {
               : "Criar  Perfil de Técnico"}
           </h2>
           <div className="flex items-center gap-2">
-            <Button variant="secondary" onClick={handleBack}>
+            <Button variant="secondary" disabled={loading} onClick={handleBack}>
               Cancelar
             </Button>
             <Button
-              loading={loading}
+              disabled={loading}
               type="submit"
               onClick={handleSubmit(handleSubmitForm)}
             >
@@ -248,36 +252,48 @@ export default function DetailsTechnicals({ id }: { id: string }) {
             onSubmit={handleSubmit(handleSubmitForm)}
           >
             {id !== "details" && (
-              <Avatar avatar={user?.avatar || ""} name={user?.name || ""} />
+              <Avatar
+                loading={loading}
+                avatar={user?.avatar || ""}
+                name={user?.name || ""}
+              />
             )}
 
-            <InputForm
-              type="text"
-              inputID="name"
-              label="Nome"
-              placeholder="Digite o nome completo"
-              register={register("name", {
-                required: "O nome é obrigatorio",
-              })}
-              error={errors.name}
-            />
+            {loading ? (
+              <Skeleton className="w-full h-12" />
+            ) : (
+              <InputForm
+                type="text"
+                inputID="name"
+                label="Nome"
+                placeholder="Digite o nome completo"
+                register={register("name", {
+                  required: "O nome é obrigatorio",
+                })}
+                error={errors.name}
+              />
+            )}
 
-            <InputForm
-              inputID="email"
-              label="E-mail"
-              placeholder="Digite o e-mail completo"
-              register={register("email", {
-                required: "O e-mail é obrigatorio",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Digite um e-mail válido",
-                },
-              })}
-              type="email"
-              error={errors.email}
-            />
+            {loading ? (
+              <Skeleton className="w-full h-12" />
+            ) : (
+              <InputForm
+                inputID="email"
+                label="E-mail"
+                placeholder="Digite o e-mail completo"
+                register={register("email", {
+                  required: "O e-mail é obrigatorio",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Digite um e-mail válido",
+                  },
+                })}
+                type="email"
+                error={errors.email}
+              />
+            )}
 
-            {id === "details" && (
+            {id === "details" && !loading && (
               <InputForm
                 isPassword={true}
                 inputID="password"
@@ -310,6 +326,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
             <div className="flex flex-wrap gap-2">
               {workingHours.slice(0, 6).map(hour => (
                 <TagTime
+                  loading={loading}
                   key={hour.id}
                   text={hour.time}
                   selected={hour.active}
@@ -323,6 +340,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
             <div className="flex flex-wrap gap-2">
               {workingHours.slice(6, 12).map(hour => (
                 <TagTime
+                  loading={loading}
                   key={hour.id}
                   text={hour.time}
                   selected={hour.active}
@@ -336,6 +354,7 @@ export default function DetailsTechnicals({ id }: { id: string }) {
             <div className="flex flex-wrap gap-2">
               {workingHours.slice(12).map(hour => (
                 <TagTime
+                  loading={loading}
                   key={hour.id}
                   text={hour.time}
                   selected={hour.active}

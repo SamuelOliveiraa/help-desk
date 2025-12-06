@@ -12,7 +12,7 @@ export interface Ticket {
   status: Status;
   serviceID: string;
   service: Service;
-  subServices: SubService[];
+  subService: SubService[];
   userID: string;
   user: User;
   technicianID?: string;

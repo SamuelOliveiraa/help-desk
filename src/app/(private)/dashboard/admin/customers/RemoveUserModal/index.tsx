@@ -46,8 +46,8 @@ export default function RemoveUserModal({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md w-full flex flex-col gap-5">
         <DialogHeader>
-          <DialogTitle className="text-xl">
-            Deseja realmente excluir {`"${name}"`}?
+          <DialogTitle className="text-xl flex items-center">
+            Deseja realmente excluir o usuario?
           </DialogTitle>
         </DialogHeader>
         <p className="text-base">

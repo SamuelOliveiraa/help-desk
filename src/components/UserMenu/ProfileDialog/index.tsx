@@ -122,7 +122,7 @@ export default function ProfileDialog({
             inputID="password"
             label="Senha"
             placeholder="*********"
-            defaultValue={user?.name}
+            defaultValue={"aaaaaaaaaaaaaa"}
             helperText="A senha deve ter mais de 8 caracteres"
           >
             <ChangePasswordDialog id={user?.id}>Alterar</ChangePasswordDialog>

@@ -19,6 +19,7 @@ import { getUserByToken } from "@/utils/client/cookies";
 import toast from "react-hot-toast";
 import { createTicket } from "@/lib/fetchers/tickets";
 import { formatToBRL } from "@/utils/formatters/formatToBRL";
+import TextAreaForm from "@/components/TextAreaForm";
 
 type FormValues = {
   title: string;
@@ -86,7 +87,7 @@ export default function NewTicket() {
         ...data,
         serviceID: data.serviceID,
         userID: userID || "",
-        amount: serviceSelected?.value,
+        amount: Number(serviceSelected?.value),
       };
 
       const res = await createTicket(newTicket);
@@ -132,8 +133,7 @@ export default function NewTicket() {
               error={errors.title}
             />
 
-            <InputForm
-              type="textarea"
+            <TextAreaForm
               inputID="description"
               label="Descrição"
               placeholder="Descreva o que está acontecendo"
@@ -206,7 +206,7 @@ export default function NewTicket() {
             <div className="flex flex-col gap-1 ">
               <p className="text-sm text-gray-300">Custo Inicial</p>
               <span className="text-gray-200 font-bold text-xl">
-                {formatToBRL(serviceSelected.value)}
+                {formatToBRL(Number(serviceSelected.value))}
               </span>
             </div>
 

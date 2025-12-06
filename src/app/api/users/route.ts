@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
-import { JsonArray } from "@/generated/prisma/runtime/library";
 import { prisma } from "@/lib/db/prisma";
 import type { Role, WorkingHours } from "@/types/user";
 import { JWT_SECRET } from "@/utils/client/auth";
+import { Prisma } from "@/generated/prisma";
 
 // Lista todos os usuarios do sistema
 export async function GET(req: NextRequest) {
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       name: string;
       email: string;
       password: string;
-      workingHours: JsonArray;
+      workingHours: Prisma.JsonArray;
       role?: Role;
     } = await req.json();
 

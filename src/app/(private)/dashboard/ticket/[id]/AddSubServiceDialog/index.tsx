@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Button from "@/components/Button";
 import InputForm from "@/components/InputForm";
@@ -10,49 +9,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { createService, updateService } from "@/lib/fetchers/services";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { createSubServiceOnTicket } from "@/lib/fetchers/tickets";
 
 type FormValues = {
   title: string;
   value: string;
-  status: string;
 };
 
-export default function AddNewServiceModal({
+export default function AddSubServiceDialog({
   children,
   onConfirm,
   id,
   title,
   value,
-  status,
 }: {
   children: React.ReactNode;
   onConfirm: () => void;
   id?: string;
   title?: string;
   value?: string;
-  status?: "true" | "false";
 }) {
   const {
     register,
     handleSubmit,
     reset,
-    control,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       title,
       value,
-      status,
     },
   });
   const [loading, setLoading] = useState(false);
@@ -65,20 +52,18 @@ export default function AddNewServiceModal({
       const formattedValue = String(
         parseFloat(data.value.toString().replace(/\./g, "").replace(",", ".")),
       );
-      const formattedStatus = data.status === "true";
 
       const payload = {
         ...data,
         value: formattedValue,
-        status: formattedStatus,
       };
 
-      const dataBackend = id
-        ? await updateService({ id, ...payload })
-        : await createService(payload);
+      if (!id) return null;
 
-      if (dataBackend) {
-        toast.success(dataBackend.message);
+      const response = await createSubServiceOnTicket(id, payload);
+
+      if (response) {
+        toast.success(response.message);
         if (!id) {
           reset();
         }
@@ -101,12 +86,13 @@ export default function AddNewServiceModal({
   return (
     <Dialog open={openModal} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-md w-full min-h-[350px] flex flex-col gap-5">
+      <DialogContent className="max-w-md w-full min-h-[300px] flex flex-col space-y-2">
         <DialogHeader>
           <DialogTitle className="w-full truncate">
-            {id ? `Editar Serviço "${title}"` : "Cadastro de Serviço"}
+            Serviço Adicional
           </DialogTitle>
         </DialogHeader>
+
         <form
           className="flex flex-col gap-4 justify-between"
           onSubmit={handleSubmit(handleSubmitForm)}
@@ -115,9 +101,9 @@ export default function AddNewServiceModal({
             type="text"
             inputID="title"
             label="Título"
-            placeholder="Nome do serviço"
+            placeholder="Nome do serviço adicional"
             register={register("title", {
-              required: "O titulo do serviço é obrigatorio",
+              required: "O titulo do serviço adicional é obrigatorio",
             })}
             error={errors.title}
           />
@@ -128,7 +114,7 @@ export default function AddNewServiceModal({
             label="Valor"
             placeholder="0,00"
             register={register("value", {
-              required: "O valor do serviço é obrigatório",
+              required: "O valor do serviço adicional é obrigatório",
               pattern: {
                 value: /^\d{1,3}(\.\d{3})*(,\d{2})?$/, // aceita formato brasileiro: 1.234,56
                 message: "Digite um valor válido (ex: 10,50 ou 1.234,99)",
@@ -146,33 +132,8 @@ export default function AddNewServiceModal({
             error={errors.value}
           />
 
-          <Controller
-            name="status"
-            control={control}
-            rules={{ required: "O status é obrigatório" }}
-            render={({ field }) => (
-              <Select
-                onValueChange={field.onChange}
-                value={field.value || status}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Selecione um Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="true">Ativo</SelectItem>
-                    <SelectItem value="false">Inativo</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.status && (
-            <p className="text-red-500 text-sm">{errors.status.message}</p>
-          )}
-
           <Button fullWidth type="submit" loading={loading}>
-            {id ? "Editar Serviço " : "Criar Serviço"}
+            Salvar
           </Button>
         </form>
       </DialogContent>

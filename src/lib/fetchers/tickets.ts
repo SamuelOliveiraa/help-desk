@@ -90,18 +90,41 @@ export async function createTicket(data: {
   }
 }
 
-// PATCH atualiza o status ou os servicos adicionais do ticket
-export async function updateTicket(
-  id: string,
-  status?: Status,
-  subService?: SubService,
+// PATCH atualiza o status do ticket com base no publicID
+export async function updateTicketStatus(
+  publicID: string,
+  status: Status,
 ): Promise<{ message: string } | null> {
   try {
-    if (!id) return null;
+    if (!publicID || !status) return null;
 
     const res = await axios.patch<{ message: string }>(
-      `/api/tickets`,
-      { id, status, subService },
+      `/api/tickets/publicID/${publicID}`,
+      { status },
+      {
+        headers: await authHeader(),
+      },
+    );
+
+    const { message } = res.data;
+
+    return { message };
+  } catch (error: unknown) {
+    handleAxiosError(error, "atualizar um chamado");
+  }
+}
+
+// PATCH adiciona um sub-serviço no ticket com base no id
+export async function createSubServiceOnTicket(
+  id: string,
+  data: { title: string; value: string },
+): Promise<{ message: string } | null> {
+  try {
+    if (!id || !data) return null;
+
+    const res = await axios.patch<{ message: string }>(
+      `/api/tickets/${id}`,
+      data,
       {
         headers: await authHeader(),
       },

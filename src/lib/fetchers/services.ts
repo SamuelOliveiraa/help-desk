@@ -70,7 +70,7 @@ export async function deleteService(id: string) {
 // POST criar Servico
 export async function createService(data: {
   title: string;
-  value: number;
+  value: string;
   status: boolean;
 }) {
   try {

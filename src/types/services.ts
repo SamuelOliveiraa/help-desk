@@ -3,7 +3,7 @@ import type { Ticket } from "./tickets";
 export interface Service {
   id: string;
   title: string;
-  value: number;
+  value: string;
   status: boolean;
   tickets?: Ticket[];
 }

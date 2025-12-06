@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, PenLine, Plus, Trash } from "lucide-react";
+import { PenLine, Plus, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import ServiceStatus from "@/components/ServiceStatus";
@@ -82,7 +82,7 @@ export default function ServicesPage() {
 
                   <TableCell>
                     <span className="text-base text-gray-200">
-                      {formatToBRL(service.value)}
+                      {formatToBRL(Number(service.value))}
                     </span>
                   </TableCell>
 

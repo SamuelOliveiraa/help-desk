@@ -34,11 +34,7 @@ export default function TicketCard({
           <div className="flex items-center gap-2 max-w-40">
             <Button variant="secondary">
               <PencilLine size={18} />
-            </Button>
-
-            <Button>
-              <CheckCircle2 size={18} />
-              <span>Encerrar</span>
+              Detalhes
             </Button>
           </div>
         )}

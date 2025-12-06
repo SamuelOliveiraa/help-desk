@@ -9,7 +9,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const buttonVariants = tv({
-  base: "flex items-center justify-center gap-3 rounded-md cursor-pointer transition-colors duration-200 min-h-10",
+  base: "flex items-center justify-center gap-3 rounded-md cursor-pointer transition-colors duration-200 min-h-10 disabled:cursor-not-allowed disabled:opacity-60",
   variants: {
     variant: {
       primary: "bg-gray-200 text-gray-600 hover:bg-gray-100",

@@ -14,6 +14,9 @@ import { formatToBRL } from "@/utils/formatters/formatToBRL";
 import { CircleCheckBig, Clock2, Plus, Trash } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import FinishTicketDialog from "./FinishTicketDialog";
+import InProgressTicketDialog from "./InProgressTicketDialog";
+import AddSubServiceDialog from "./AddSubServiceDialog";
 
 export default function TicketDetails() {
   const { id } = useParams();
@@ -56,15 +59,35 @@ export default function TicketDetails() {
 
         {role !== "user" && (
           <div className="flex gap-2 items-center">
-            <Button variant="secondary">
-              <CircleCheckBig size={18} />
-              <span>Encerrar</span>
-            </Button>
+            {ticket?.status === "inProgress" ? (
+              <FinishTicketDialog publicID={id as string}>
+                <Button variant="secondary">
+                  <CircleCheckBig size={18} />
+                  <span>Encerrar</span>
+                </Button>
+              </FinishTicketDialog>
+            ) : (
+              ticket?.status === "open" && (
+                <>
+                  <FinishTicketDialog publicID={id as string}>
+                    <Button variant="secondary">
+                      <CircleCheckBig size={18} />
+                      <span>Encerrar</span>
+                    </Button>
+                  </FinishTicketDialog>
 
-            <Button>
-              <Clock2 size={18} />
-              <span>Iniciar Atendimento</span>
-            </Button>
+                  <InProgressTicketDialog publicID={id as string}>
+                    <Button
+                      disabled={role === "admin"}
+                      variant={role === "admin" ? "secondary" : "primary"}
+                    >
+                      <Clock2 size={18} />
+                      <span>Iniciar Atendimento</span>
+                    </Button>
+                  </InProgressTicketDialog>
+                </>
+              )
+            )}
           </div>
         )}
       </header>
@@ -156,60 +179,61 @@ export default function TicketDetails() {
             )}
           </div>
 
-          {role === "technician" && (
-            <div className="max-w-[624px] w-full border border-gray-500 rounded-lg p-8 max-h-fit flex flex-col gap-4">
-              <div className="flex items-center justify-between border-b border-gray-400/10 pb-2">
-                <span className="text-base text-gray-400">
-                  Serviços Adicionais
-                </span>
-                <Button>
-                  <Plus size={20} />
-                </Button>
+          {role === "technician" &&
+            (loading || ticket?.status === "inProgress") && (
+              <div className="max-w-[624px] w-full border border-gray-500 rounded-lg p-8 max-h-fit flex flex-col gap-4">
+                <div className="flex items-center justify-between border-b border-gray-400/10 pb-2">
+                  <span className="text-base text-gray-400">
+                    Serviços Adicionais
+                  </span>
+                  <AddSubServiceDialog id={ticket?.id} onConfirm={fetchTicket}>
+                    <Button>
+                      <Plus size={20} />
+                    </Button>
+                  </AddSubServiceDialog>
+                </div>
+
+                {loading
+                  ? Array.from({ length: 3 }).map((_, index) => (
+                      <div
+                        className="flex items-center justify-between mb-1 gap-2"
+                        key={`item-teste-${index}`}
+                      >
+                        <Skeleton className="flex-1 h-8" />
+                        <Skeleton className="w-20 h-8" />
+                        <Skeleton className="w-10 h-8" />
+                      </div>
+                    ))
+                  : ticket?.subService?.map(item => (
+                      <div
+                        className="flex items-center border-b order-gray-400/10 gap-4 pb-1"
+                        key={item.id}
+                      >
+                        <span className="font-bold flex-1">{item.title}</span>
+
+                        <span>{formatToBRL(item.value)}</span>
+
+                        <Button variant="secondary">
+                          <Trash size={20} className="text-red-400" />
+                        </Button>
+                      </div>
+                    ))}
+
+                {!loading &&
+                  (!ticket?.subService || ticket.subService.length === 0) && (
+                    <div className="flex items-center flex-col gap-2">
+                      <h2 className="text-lg font-semibold">
+                        Nenhum serviço adicional foi registrado
+                      </h2>
+
+                      <p className="text-sm text-muted-foreground">
+                        Adicione abaixo qualquer serviço extra realizado durante
+                        a visita ao cliente.
+                      </p>
+                    </div>
+                  )}
               </div>
-
-              {loading
-                ? Array.from({ length: 3 }).map((_, index) => (
-                    <div
-                      className="flex items-center justify-between mb-1 gap-2"
-                      key={`item-teste-${index}`}
-                    >
-                      <Skeleton className="flex-1 h-8" />
-                      <Skeleton className="w-20 h-8" />
-                      <Skeleton className="w-10 h-8" />
-                    </div>
-                  ))
-                : ticket?.subServices?.map(subService => (
-                    <div
-                      className="flex items-center border-b order-gray-400/10 gap-4 pb-1"
-                      key={subService.id}
-                    >
-                      <span className="font-bold flex-1">
-                        {subService.title}
-                      </span>
-
-                      <span>{subService.title}</span>
-
-                      <Button variant="secondary">
-                        <Trash size={20} className="text-red-400" />
-                      </Button>
-                    </div>
-                  ))}
-
-              {!loading &&
-                (!ticket?.subServices || ticket.subServices.length === 0) && (
-                  <div className="flex items-center flex-col gap-2">
-                    <h2 className="text-lg font-semibold">
-                      Nenhum serviço adicional foi registrado
-                    </h2>
-
-                    <p className="text-sm text-muted-foreground">
-                      Adicione abaixo qualquer serviço extra realizado durante a
-                      visita ao cliente.
-                    </p>
-                  </div>
-                )}
-            </div>
-          )}
+            )}
         </div>
 
         <div className="max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex flex-col gap-4">
@@ -251,12 +275,14 @@ export default function TicketDetails() {
               {loading ? (
                 <Skeleton className="w-20 h-7" />
               ) : (
-                <span>{formatToBRL(ticket?.amount || 100)}</span>
+                <span>
+                  {formatToBRL(Number(ticket?.service?.value) || 100)}
+                </span>
               )}
             </div>
           </div>
 
-          {ticket?.subServices && ticket?.subServices?.length > 0 && (
+          {ticket?.subService && ticket?.subService?.length > 0 && (
             <div>
               <span className="text-sm text-gray-400">Adicionais</span>
 
@@ -270,14 +296,14 @@ export default function TicketDetails() {
                       <Skeleton className="w-20 h-7" />
                     </div>
                   ))
-                : ticket?.subServices.map(subService => (
+                : ticket?.subService.map(item => (
                     <div
                       className="flex items-center justify-between mb-1"
-                      key={subService.id}
+                      key={item.id}
                     >
-                      <span>{subService.title}</span>
+                      <span>{item.title}</span>
 
-                      <span>{subService.value}</span>
+                      <span>{formatToBRL(item.value)}</span>
                     </div>
                   ))}
             </div>

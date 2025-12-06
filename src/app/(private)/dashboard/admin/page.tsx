@@ -6,7 +6,7 @@ import type { Ticket } from "@/types/tickets";
 import TicketStatus from "@/components/TicketStatus";
 import TicketContentCard from "@/components/TicketContentCard";
 import TicketCard from "@/components/TicketCard";
-import { Tag } from "lucide-react";
+import { RefreshCcw, Tag } from "lucide-react";
 import ItensNotFound from "@/components/ItensNotFound";
 
 export default function DashboardPage() {
@@ -18,6 +18,7 @@ export default function DashboardPage() {
     try {
       const data = await getAllTickets();
       if (data) setAllTickets(Array.isArray(data) ? data : []);
+      console.log(data);
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
     } finally {
@@ -40,7 +41,14 @@ export default function DashboardPage() {
 
   return (
     <div className="flex w-full h-full flex-col mb-10">
-      <h1 className="text-4xl text-black">Chamados</h1>
+      <div className="flex items-center justify-between w-full">
+        <h1 className="text-4xl text-black">Chamados</h1>
+        <RefreshCcw
+          size={24}
+          onClick={() => !loading && fetchTickets()}
+          className="cursor-pointer"
+        />
+      </div>
 
       {!loading && openTickets?.length === 0 ? null : (
         <div className="flex flex-col mt-10 gap-4">

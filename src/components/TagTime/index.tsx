@@ -1,9 +1,11 @@
 import { X } from "lucide-react";
 import { tv } from "tailwind-variants";
+import { Skeleton } from "../ui/skeleton";
 
 type TagTimeProps = {
   selected?: boolean;
   text: string;
+  loading?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const tagTimeButtonVariants = tv({
@@ -18,7 +20,16 @@ const tagTimeButtonVariants = tv({
   },
 });
 
-export default function TagTime({ selected, text, ...rest }: TagTimeProps) {
+export default function TagTime({
+  selected,
+  text,
+  loading,
+  ...rest
+}: TagTimeProps) {
+  if (loading) {
+    return <Skeleton className="w-16 h-8 rounded-full" />;
+  }
+
   return (
     <button className={tagTimeButtonVariants({ selected })} {...rest}>
       {text}
