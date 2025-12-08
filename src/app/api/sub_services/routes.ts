@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       value,
     }: {
       title: string;
-      value: string;
+      value: number;
     } = await req.json();
 
     if (!title || !value) {
