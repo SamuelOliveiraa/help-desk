@@ -19,4 +19,9 @@ export interface Ticket {
   technician?: User;
   createdAt: string;
   updatedAt: string;
+  TicketSubService: {
+    ticketID: string;
+    subServiceID: string;
+    subService: SubService;
+  }[];
 }

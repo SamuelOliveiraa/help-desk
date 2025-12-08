@@ -39,7 +39,7 @@ export default function UserPage() {
   const finishedTickets = allTickets.filter(t => t.status === "finished");
 
   return (
-    <div className="flex w-full h-full flex-col mb-10">
+    <div className="flex w-full h-full flex-col p-5 mb-10">
       <div className="flex items-center justify-between w-full">
         <h1 className="text-4xl text-black">Meus Chamados</h1>
         <RefreshCcw

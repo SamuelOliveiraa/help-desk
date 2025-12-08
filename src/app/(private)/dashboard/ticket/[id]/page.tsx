@@ -34,6 +34,7 @@ export default function TicketDetails() {
       if (!Array.isArray(id) && id) {
         const data = await getTicketByPublicID(id);
         if (data) setTicket(data);
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -48,7 +49,7 @@ export default function TicketDetails() {
   }, [fetchTicket]);
 
   return (
-    <div className="max-w-5xl flex flex-col m-auto gap-6 h-full">
+    <div className="max-w-5xl flex flex-col m-auto lg:m-0 gap-5 lg:gap-6 h-full p-5">
       <header className="flex items-center justify-between w-full">
         <div className="flex flex-col gap-2">
           <ButtonBack />
@@ -92,8 +93,8 @@ export default function TicketDetails() {
         )}
       </header>
 
-      <div className="flex flex-col gap-4 lg:flex-row h-full">
-        <div className="flex flex-col gap-4">
+      <div className="flex flex-col items-center gap-4 xl:flex-row lg:items-start w-full">
+        <div className="flex flex-col gap-4 w-full items-center">
           <div className="max-w-[624px] lg:w-[624px] w-full border border-gray-500 rounded-lg p-8 max-h-fit flex flex-col gap-4">
             <div className="flex items-center justify-between gap-2">
               {loading ? (
@@ -204,14 +205,16 @@ export default function TicketDetails() {
                         <Skeleton className="w-10 h-8" />
                       </div>
                     ))
-                  : ticket?.subService?.map(item => (
+                  : ticket?.TicketSubService?.map(item => (
                       <div
                         className="flex items-center border-b order-gray-400/10 gap-4 pb-1"
-                        key={item.id}
+                        key={item.subService.id}
                       >
-                        <span className="font-bold flex-1">{item.title}</span>
+                        <span className="font-bold flex-1">
+                          {item.subService.title}
+                        </span>
 
-                        <span>{formatToBRL(item.value)}</span>
+                        <span>{formatToBRL(item.subService.value)}</span>
 
                         <Button variant="secondary">
                           <Trash size={20} className="text-red-400" />
@@ -220,7 +223,8 @@ export default function TicketDetails() {
                     ))}
 
                 {!loading &&
-                  (!ticket?.subService || ticket.subService.length === 0) && (
+                  (!ticket?.TicketSubService ||
+                    ticket.TicketSubService.length === 0) && (
                     <div className="flex items-center flex-col gap-2">
                       <h2 className="text-lg font-semibold">
                         Nenhum serviço adicional foi registrado
@@ -236,7 +240,7 @@ export default function TicketDetails() {
             )}
         </div>
 
-        <div className="max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex flex-col gap-4">
+        <div className="max-w-[624px] xl:max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex flex-col gap-4">
           <header className="flex flex-col gap-3">
             <h2 className="font-bold text-sm text-gray-400">
               Tecnico responsavel
@@ -282,7 +286,7 @@ export default function TicketDetails() {
             </div>
           </div>
 
-          {ticket?.subService && ticket?.subService?.length > 0 && (
+          {ticket?.TicketSubService && ticket?.TicketSubService?.length > 0 && (
             <div>
               <span className="text-sm text-gray-400">Adicionais</span>
 
@@ -296,14 +300,14 @@ export default function TicketDetails() {
                       <Skeleton className="w-20 h-7" />
                     </div>
                   ))
-                : ticket?.subService.map(item => (
+                : ticket?.TicketSubService.map(item => (
                     <div
                       className="flex items-center justify-between mb-1"
-                      key={item.id}
+                      key={item.subService.id}
                     >
-                      <span>{item.title}</span>
+                      <span>{item.subService.title}</span>
 
-                      <span>{formatToBRL(item.value)}</span>
+                      <span>{formatToBRL(item.subService.value)}</span>
                     </div>
                   ))}
             </div>

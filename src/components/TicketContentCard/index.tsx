@@ -21,7 +21,7 @@ export default function TicketContentCard({
     );
   }
   return (
-    <div className="max-w-7xl w-full h-fit flex flex-wrap gap-8 items-center justify-start overflow-x-hidden">
+    <div className="max-w-7xl w-full h-fit flex flex-wrap gap-8 items-center md:justify-start overflow-x-hidden">
       {tickets?.length !== 0 &&
         tickets?.map(ticket => (
           <TicketCard

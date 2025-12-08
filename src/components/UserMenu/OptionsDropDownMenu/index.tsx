@@ -22,7 +22,7 @@ export default function OptionsDropDownMenu({
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         side={isMobile ? "bottom" : "left"}
-        sideOffset={isMobile ? 38 : 20}
+        sideOffset={isMobile ? 10 : 20}
         className="w-48  bg-gray-100 flex flex-col gap-2 py-3 border-none mb-2"
       >
         <label className="uppercase text-gray-400/60 text-xs ml-2">

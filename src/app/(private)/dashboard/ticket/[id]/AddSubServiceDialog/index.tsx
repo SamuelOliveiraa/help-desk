@@ -49,14 +49,16 @@ export default function AddSubServiceDialog({
     try {
       setLoading(true);
 
-      const formattedValue = String(
-        parseFloat(data.value.toString().replace(/\./g, "").replace(",", ".")),
+      const formattedValue = parseFloat(
+        data.value.toString().replace(/\./g, "").replace(",", "."),
       );
 
       const payload = {
         ...data,
         value: formattedValue,
       };
+
+      console.log(payload);
 
       if (!id) return null;
 

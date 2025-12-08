@@ -18,7 +18,6 @@ export default function DashboardPage() {
     try {
       const data = await getAllTickets();
       if (data) setAllTickets(Array.isArray(data) ? data : []);
-      console.log(data);
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
     } finally {
@@ -40,7 +39,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="flex w-full h-full flex-col mb-10">
+    <div className="flex w-full h-full flex-col p-5 mb-10">
       <div className="flex items-center justify-between w-full">
         <h1 className="text-4xl text-black">Chamados</h1>
         <RefreshCcw

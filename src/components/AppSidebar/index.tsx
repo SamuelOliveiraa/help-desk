@@ -24,7 +24,7 @@ export default function AppSidebar() {
   }, []);
 
   return (
-    <Sidebar>
+    <Sidebar className="data-[state]:colapsed lg:data-[state]:expanded">
       <SidebarContent className="bg-gray-100">
         <SidebarGroup className="flex flex-col h-full gap-4 p-0">
           <SidebarGroupLabel className="flex py-4 px-3 border-b border-gray-400/10 rounded-none min-h-24">

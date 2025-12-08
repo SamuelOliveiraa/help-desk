@@ -36,7 +36,7 @@ export default function TicketStatus({
       ) : (
         <Clock8 size={18} />
       )}
-      <span className="hidden md:block text-base font-bold">
+      <span className=" text-base font-bold">
         {variant === "open"
           ? "Aberto"
           : variant === "finished"

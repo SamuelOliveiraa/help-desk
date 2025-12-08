@@ -105,7 +105,7 @@ export default function NewTicket() {
   }
 
   return (
-    <div className="max-w-5xl flex flex-col m-auto gap-6 h-full">
+    <div className="max-w-5xl flex flex-col m-auto gap-6 p-5 h-full">
       <header className="flex items-center justify-between w-full">
         <h2 className="text-2xl text-blue-400 font-bold">Novo Chamado</h2>
       </header>

@@ -27,7 +27,7 @@ export async function GET(
         user: true,
         technician: true,
         service: true,
-        subService: true,
+        TicketSubService: { include: { subService: true } },
       },
     });
 

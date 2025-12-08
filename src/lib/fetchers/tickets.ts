@@ -117,7 +117,7 @@ export async function updateTicketStatus(
 // PATCH adiciona um sub-serviço no ticket com base no id
 export async function createSubServiceOnTicket(
   id: string,
-  data: { title: string; value: string },
+  data: { title: string; value: number },
 ): Promise<{ message: string } | null> {
   try {
     if (!id || !data) return null;

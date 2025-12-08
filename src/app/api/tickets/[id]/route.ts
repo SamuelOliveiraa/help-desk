@@ -49,7 +49,7 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const data: { title: string; value: string } = await req.json();
+    const data: { title: string; value: number } = await req.json();
 
     if (!id || !data)
       return NextResponse.json({ message: "Dados inválidos" }, { status: 400 });
@@ -67,19 +67,48 @@ export async function PATCH(
       );
     }
 
-    const newAmount = parseFloat(data.value) + ticketBeforeUpdate.amount;
+    const isSubServiceExists = await prisma.ticketSubService.findFirst({
+      where: {
+        ticketId: id,
+        subService: {
+          title: data.title,
+        },
+      },
+    });
+
+    if (isSubServiceExists) {
+      return NextResponse.json(
+        {
+          message: "Serviço já adicionado ao chamado",
+        },
+        { status: 400 },
+      );
+    }
+
+    const sub = await prisma.subService.upsert({
+      where: { title: data.title },
+      update: {},
+      create: {
+        title: data.title,
+        value: data.value,
+      },
+    });
+
+    await prisma.ticketSubService.create({
+      data: {
+        ticketId: id,
+        subServiceId: sub.id,
+      },
+    });
+
+    const newAmount = data.value + ticketBeforeUpdate.amount;
 
     const ticket = await prisma.ticket.update({
       where: { id },
       data: {
         amount: newAmount,
-        subService: {
-          connectOrCreate: {
-            where: { title: data.title },
-            create: data,
-          },
-        },
       },
+      include: { TicketSubService: { include: { subService: true } } },
     });
 
     if (!ticket) {
