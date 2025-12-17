@@ -63,10 +63,11 @@ export default function ResetPasswordTokenPage() {
           password: data.password,
           confirmPassword: data.confirmPassword,
         };
-        const { message } = await updateUserPassword(updatePasswordData);
-        if (message) {
+        const response = await updateUserPassword(updatePasswordData);
+
+        if (response?.message) {
           router.push(`/login`);
-          toast.success(message);
+          toast.success(response.message);
         }
       }
     } catch (error) {
