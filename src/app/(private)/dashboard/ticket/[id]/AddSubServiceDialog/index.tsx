@@ -58,8 +58,6 @@ export default function AddSubServiceDialog({
         value: formattedValue,
       };
 
-      console.log(payload);
-
       if (!id) return null;
 
       const response = await createSubServiceOnTicket(id, payload);

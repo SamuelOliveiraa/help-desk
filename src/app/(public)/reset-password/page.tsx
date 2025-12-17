@@ -5,7 +5,6 @@ import ContentContainer from "@/app/(public)/components/ContentContainer";
 import InputForm from "@/components/InputForm";
 import { AxiosError } from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -23,8 +22,6 @@ export default function ResetPasswordPage() {
     formState: { errors },
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
-
-  const router = useRouter();
 
   async function handleSubmitForm(data: FormValues) {
     setLoading(true);

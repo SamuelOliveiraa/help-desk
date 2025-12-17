@@ -11,9 +11,10 @@ const roleLabels = {
 
 export default function HeaderLogo({ role }: { role?: Role | null }) {
   return (
-    <Link href={`/dashboard/${role}`} className="flex gap-3 items-center">
-      <Image src={"/logo.svg"} alt="Logo help desk" width={50} height={50} />
-      <div>
+    <Link href={`/dashboard/${role}`} className="flex items-center gap-2">
+      <Image src={"/logo.svg"} alt="Logo help desk" width={40} height={40} />
+
+      <div className="md:hidden xl:block">
         <h2 className="text-gray-600 text-xl">HelpDesk</h2>
         <span className="uppercase text-blue-100 text-xs">
           {role ? (

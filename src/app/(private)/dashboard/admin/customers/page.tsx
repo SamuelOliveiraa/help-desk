@@ -41,10 +41,10 @@ export default function CustomersPage() {
   }, [fetchUsers]);
 
   return (
-    <div className="flex flex-col w-full h-full gap-10 rounded-t-3xl rounded-b-none">
-      <h2 className="text-3xl text-blue-500 font-bold">Clientes</h2>
+    <div className="flex flex-col w-full h-full gap-5 md:gap-10 ">
+      <h2 className="text-3xl text-blue-500 font-bold p-5">Clientes</h2>
 
-      <div className="border rounded-lg">
+      <div className="border rounded-lg overflow-x-auto mx-3">
         <Table>
           <TableHeader className="rounded-lg">
             <TableRow className="h-12">

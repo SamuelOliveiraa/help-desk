@@ -18,7 +18,7 @@ export default function MenuMobile() {
   }, []);
 
   return (
-    <div className="w-full h-28 bg-gray-100 flex justify-between items-center px-8 md:hidden">
+    <div className="w-full h-28 bg-gray-100 flex justify-between items-center px-4 md:hidden">
       <div className="flex items-center gap-3">
         <MenuOptionsDropDown role={role}>
           <Button>

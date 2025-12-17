@@ -24,7 +24,7 @@ const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
-const SIDEBAR_WIDTH_ICON = "3rem";
+const SIDEBAR_WIDTH_ICON = "4rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
 type SidebarContextProps = {
@@ -89,6 +89,31 @@ const SidebarProvider = React.forwardRef<
       },
       [setOpenProp, open],
     );
+
+    // --- INÍCIO DA ALTERAÇÃO ---
+    // Adicione este useEffect para monitorar a largura da tela (800px)
+    React.useEffect(() => {
+      // Define a media query para max-width: 800px
+      const mediaQuery = window.matchMedia("(max-width: 800px)");
+
+      const handleResize = (event: MediaQueryListEvent | MediaQueryList) => {
+        // Se a tela for menor que 800px e não for mobile (para evitar conflito com Sheet),
+        // ou se você quiser forçar o fechamento mesmo no mobile:
+        if (event.matches) {
+          setOpen(false); // Força o estado "collapsed"
+        }
+      };
+
+      // Verifica o estado inicial ao carregar a página
+      handleResize(mediaQuery);
+
+      // Adiciona o listener para mudanças futuras de tamanho
+      mediaQuery.addEventListener("change", handleResize);
+
+      // Limpeza do evento
+      return () => mediaQuery.removeEventListener("change", handleResize);
+    }, [setOpen]);
+    // --- FIM DA ALTERAÇÃO ---
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
@@ -384,7 +409,7 @@ const SidebarFooter = React.forwardRef<
     <div
       ref={ref}
       data-sidebar="footer"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      className={cn("flex flex-col gap-2", className)}
       {...props}
     />
   );
@@ -451,7 +476,7 @@ const SidebarGroupLabel = React.forwardRef<
       data-sidebar="group-label"
       className={cn(
         "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
-        "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
+        "group-data-[collapsible=icon]:-mt-8 ",
         className,
       )}
       {...props}

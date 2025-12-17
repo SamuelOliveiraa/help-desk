@@ -3,13 +3,16 @@
 import Button from "@/components/Button";
 import ContentContainer from "@/app/(public)/components/ContentContainer";
 import InputForm from "@/components/InputForm";
-import { Axios, AxiosError } from "axios";
+import { AxiosError } from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { resetPasswordGetToken } from "@/lib/fetchers/reset_password";
+import {
+  resetPasswordGetToken,
+  updateUserPassword,
+} from "@/lib/fetchers/reset_password";
 import Container from "../../components/Container";
 
 type FormValues = {
@@ -55,12 +58,16 @@ export default function ResetPasswordTokenPage() {
     try {
       const isValid = await fetchTokenValidate();
       if (isValid) {
-        // const { message, tokenID } = await resetPasswordToken(data);
-        // if (message && tokenID) {
-        //   router.push(`/reset-password/${tokenID}`);
-        //   toast.success(message);
-        // }
-        console.log(data);
+        const updatePasswordData = {
+          id: tokenID,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        };
+        const { message } = await updateUserPassword(updatePasswordData);
+        if (message) {
+          router.push(`/login`);
+          toast.success(message);
+        }
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -133,7 +140,7 @@ export default function ResetPasswordTokenPage() {
             fullWidth
             variant="secondary"
             type="submit"
-            loading={loading}
+            loading={loading || isValidingToken}
             disabled={isValidingToken}
           >
             <span className="font-bold">Mudar senha</span>

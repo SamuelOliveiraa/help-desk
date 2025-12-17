@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getTicketByTechnicianID } from "@/lib/fetchers/tickets";
+import { getTicketByUserID } from "@/lib/fetchers/tickets";
 import type { Ticket } from "@/types/tickets";
 import TicketStatus from "@/components/TicketStatus";
 import TicketContentCard from "@/components/TicketContentCard";
@@ -18,7 +18,7 @@ export default function TechnicianPage() {
       setLoading(true);
       const technician = await getUserByToken();
       if (technician) {
-        const data = await getTicketByTechnicianID(technician.id);
+        const data = await getTicketByUserID(technician.id);
         if (data) setAllTickets(Array.isArray(data) ? data : []);
       }
     } catch (err) {
@@ -41,7 +41,7 @@ export default function TechnicianPage() {
   return (
     <div className="flex w-full h-full flex-col p-5 mb-10">
       <div className="flex items-center justify-between w-full">
-        <h1 className="text-4xl text-black">Meus Chamados</h1>
+        <h1 className="text-2xl md:text-4xl text-black">Meus Chamados</h1>
         <RefreshCcw
           size={24}
           onClick={() => !loading && fetchTickets()}

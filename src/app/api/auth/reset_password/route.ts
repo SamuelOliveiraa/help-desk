@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/mailjet";
 
+// Enviar e-mail com o token
 export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json();
@@ -25,8 +26,7 @@ export async function POST(req: NextRequest) {
     const token = Math.floor(100000 + Math.random() * 90000).toString();
 
     // Expira em 10 minutos
-    // const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
-    const expiresAt = new Date(Date.now() + 30 * 1000); // 30 segundos
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     // Caso exista tokens antigos do usuario, apagamos
     await prisma.passwordResetToken.deleteMany({
@@ -50,10 +50,10 @@ export async function POST(req: NextRequest) {
             <p>
               Se foi você, clique no botão abaixo para criar uma nova senha:
             </p>
-            
+
             <p style="margin: 20px 0; text-align: center;">
               <a
-                href="${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${newPasswordToken.id}" 
+                href="${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${newPasswordToken.id}"
                 style="background-color: #0070f3; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block;">
                 Redefinir minha senha
               </a>

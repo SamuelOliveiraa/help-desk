@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { Service, SubService } from "@/types/services";
 import type { Status, Ticket } from "@/types/tickets";
 import { authHeader } from "@/utils/client/auth";
 import { getToken } from "@/utils/client/cookies";
@@ -49,14 +48,14 @@ export async function getTicketByPublicID(
   }
 }
 
-// GET o ticket pelo ID do técnico
-export async function getTicketByTechnicianID(
-  technicianID: string,
+// GET o ticket pelo ID do usuário
+export async function getTicketByUserID(
+  userID: string,
 ): Promise<Ticket[] | null> {
   try {
-    if (!technicianID) return null;
+    if (!userID) return null;
 
-    const res = await axios.get<Ticket[]>(`/api/tickets/user/${technicianID}`, {
+    const res = await axios.get<Ticket[]>(`/api/tickets/user/${userID}`, {
       headers: await authHeader(),
     });
 

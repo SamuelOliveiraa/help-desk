@@ -42,8 +42,8 @@ export default function TechnicalsPage() {
   }, [fetchTechnicals]);
 
   return (
-    <div className="flex flex-col w-full h-full gap-10">
-      <div className="flex w-full items-center justify-between">
+    <div className="flex flex-col w-full h-full gap-5 md:gap-10">
+      <div className="flex w-full items-center justify-between p-5">
         <h2 className="text-3xl text-blue-500 font-bold">Técnicos</h2>
 
         <Button
@@ -93,21 +93,38 @@ export default function TechnicalsPage() {
                     <div className="flex flex-wrap gap-2">
                       {user?.workingHours.length !== 0 ? (
                         <>
+                          {/* 1. Primeiro Horário (Sempre Visível) */}
+                          <TagTime
+                            text={user.workingHours[0].time}
+                            selected={false}
+                          />
+
+                          {/* 2. Horários Adicionais (Slice 1 a 4)*/}
                           {user?.workingHours
                             .sort((a, b) => a.id - b.id)
-                            .slice(0, 5)
+                            .slice(1, 5)
                             .map(hour => (
-                              <TagTime
-                                key={hour.id}
-                                text={hour?.time}
-                                selected={false}
-                              />
+                              <div key={hour.id} className="hidden md:block">
+                                <TagTime text={hour.time} selected={false} />
+                              </div>
                             ))}
 
+                          {user.workingHours.length > 1 && (
+                            <div className="md:hidden">
+                              <TagTime
+                                text={`+${user.workingHours.length - 1}`}
+                                selected={false}
+                              />
+                            </div>
+                          )}
+
                           {user.workingHours.length > 5 && (
-                            <TagTime
-                              text={`+${user.workingHours.length - 5}`}
-                            />
+                            <div className="hidden md:block">
+                              <TagTime
+                                text={`+${user.workingHours.length - 5}`}
+                                selected={false}
+                              />
+                            </div>
                           )}
                         </>
                       ) : (

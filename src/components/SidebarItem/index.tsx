@@ -10,7 +10,7 @@ type SidebarItemProps = {
 };
 
 const sidebarItemLinkVariants = tv({
-  base: "p-3 rounded-lg w-full flex items-center gap-2 cursor-pointer hover:bg-blue-500 hover:text-gray-600",
+  base: "p-3 md:p-2 xl:p-3 rounded-lg md:rounded-full xl:rounded-lg w-full flex items-center md:justify-center xl:justify-start gap-2 md:gap-0 xl:gap-2 cursor-pointer hover:bg-blue-500 hover:text-gray-600",
   variants: {
     active: {
       true: "bg-blue-500 text-gray-600",
@@ -30,8 +30,8 @@ export default function SidebarItem({
 }: SidebarItemProps) {
   return (
     <Link href={href} className={sidebarItemLinkVariants({ active })}>
-      <Icon size={24} />
-      <span className="block">{title}</span>
+      <Icon size={22} />
+      <span className="block md:hidden xl:block">{title}</span>
     </Link>
   );
 }

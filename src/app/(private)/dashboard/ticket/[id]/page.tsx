@@ -34,7 +34,6 @@ export default function TicketDetails() {
       if (!Array.isArray(id) && id) {
         const data = await getTicketByPublicID(id);
         if (data) setTicket(data);
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -49,7 +48,7 @@ export default function TicketDetails() {
   }, [fetchTicket]);
 
   return (
-    <div className="max-w-5xl flex flex-col m-auto lg:m-0 gap-5 lg:gap-6 h-full p-5">
+    <div className="max-w-5xl flex flex-col m-auto lg:m-0 gap-5 lg:gap-6 h-full p-5 xl:p-0">
       <header className="flex items-center justify-between w-full">
         <div className="flex flex-col gap-2">
           <ButtonBack />
@@ -240,7 +239,7 @@ export default function TicketDetails() {
             )}
         </div>
 
-        <div className="max-w-[624px] xl:max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex flex-col gap-4">
+        <div className="flex self-center xl:self-start max-w-[624px] xl:max-w-96 w-full border border-gray-500 rounded-lg p-6 h-fit flex-col gap-4">
           <header className="flex flex-col gap-3">
             <h2 className="font-bold text-sm text-gray-400">
               Tecnico responsavel

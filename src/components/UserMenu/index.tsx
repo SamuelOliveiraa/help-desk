@@ -5,7 +5,13 @@ import Avatar from "../Avatar";
 import OptionsDropDownMenu from "./OptionsDropDownMenu";
 import { Skeleton } from "../ui/skeleton";
 
-export default function UserMenu({ isMobile }: { isMobile?: boolean }) {
+export default function UserMenu({
+  isMobile,
+  size,
+}: {
+  isMobile?: boolean;
+  size?: "sm" | "lg";
+}) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,15 +33,16 @@ export default function UserMenu({ isMobile }: { isMobile?: boolean }) {
 
   return (
     <OptionsDropDownMenu isMobile={isMobile} onConfirm={fetchUser}>
-      <div className="flex gap-3 h-full items-center cursor-pointer">
+      <div className="flex gap-3 h-full items-center justify-center cursor-pointer">
         <Avatar
+          size={size}
           loading={loading}
           name={user?.name || ""}
           avatar={user?.avatar || null}
         />
 
         {user ? (
-          <div className="hidden md:flex gap-1 flex-col flex-1 md:items-start max-w-40">
+          <div className="hidden xl:flex gap-1 flex-col flex-1 md:items-start max-w-40">
             <h2 className="text-gray-600 text-left truncate w-full">
               {user?.name}
             </h2>
@@ -44,7 +51,7 @@ export default function UserMenu({ isMobile }: { isMobile?: boolean }) {
             </span>
           </div>
         ) : (
-          <Skeleton className="flex flex-1 h-12" />
+          <Skeleton className="hidden xl:flex flex-1 h-12" />
         )}
       </div>
     </OptionsDropDownMenu>

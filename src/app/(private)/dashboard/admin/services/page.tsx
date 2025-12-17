@@ -41,8 +41,8 @@ export default function ServicesPage() {
   }, [fetchServices]);
 
   return (
-    <div className="flex flex-col w-full h-full gap-10">
-      <div className="flex w-full items-center justify-between">
+    <div className="flex flex-col w-full h-full gap-5 md:gap-10">
+      <div className="flex w-full items-center justify-between p-5">
         <h2 className="text-3xl text-blue-500 font-bold">Serviços</h2>
 
         <AddNewServiceModal

@@ -2,7 +2,7 @@ import { PasswordResetToken } from "@/types/passwordResetToken";
 import { handleAxiosError } from "@/utils/client/handleAxiosError";
 import axios, { AxiosError } from "axios";
 
-// POST resetar a senha
+// POST enviar e-mail com o token
 export async function resetPasswordToken(data: { email: string }) {
   try {
     const res = await axios.post<{
@@ -39,17 +39,18 @@ export async function resetPasswordGetToken(id: string) {
   }
 }
 
+// Atualizar senha do usuário
 export async function updateUserPassword(data: {
   id: string;
   password: string;
   confirmPassword: string;
 }) {
   try {
-    if (!data.password || data.confirmPassword) return null;
+    if (!data.password || !data.confirmPassword) return null;
 
     const res = await axios.patch<{
       message: string;
-    }>(`/api/auth/reset_password/token/${data.id}`, {
+    }>(`/api/auth/reset_password/user/${data.id}`, {
       password: data.password,
       confirmPassword: data.confirmPassword,
     });
