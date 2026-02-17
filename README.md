@@ -1,159 +1,159 @@
 # [Help Desk](https://help-desk-samuel.vercel.app/login)
 
-![Imagem do Projeto Help Desk](public/og-image.png)
+![Project Help Desk Image](public/og-image.png)
 
-Aplicação web construída com Next.js para centralizar o atendimento de suporte técnico. O sistema oferece portais distintos para administradores, usuários e técnicos, permitindo a abertura, o acompanhamento e a resolução de chamados com controle de acesso baseado em papéis.
+A web application built with Next.js to centralize technical support services. The system offers distinct portals for administrators, users, and technicians, allowing for the creation, tracking, and resolution of tickets with role-based access control.
 
-## Sumário
+## Table of Contents
 
-- [Visão Geral](#visão-geral)
-- [Principais Funcionalidades](#principais-funcionalidades)
-- [Tecnologias](#tecnologias)
-- [Pré-requisitos](#pré-requisitos)
-- [Configuração](#configuração)
-  - [Variáveis de Ambiente](#variáveis-de-ambiente)
-  - [Banco de Dados e Prisma](#banco-de-dados-e-prisma)
-  - [Executando o Projeto](#executando-o-projeto)
-- [Scripts Disponíveis](#scripts-disponíveis)
-- [Estrutura de Pastas](#estrutura-de-pastas)
-- [Autenticação e Autorização](#autenticação-e-autorização)
-- [Roadmap e Melhorias](#roadmap-e-melhorias)
-- [Licença](#licença)
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Technologies](#technologies)
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+  - [Environment Variables](#environment-variables)
+  - [Database and Prisma](#database-and-prisma)
+  - [Running the Project](#running-the-project)
+- [Available Scripts](#available-scripts)
+- [Folder Structure](#folder-structure)
+- [Authentication and Authorization](#authentication-and-authorization)
+- [Roadmap and Improvements](#roadmap-and-improvements)
+- [License](#license)
 
-## Visão Geral
+## Overview
 
-O Help Desk concentra a gestão completa do ciclo de vida de um chamado: criação, priorização, atribuição para técnicos, execução e encerramento. Todas as operações internas são protegidas por autenticação com JWT armazenado em cookies, enquanto o middleware do Next.js garante que cada usuário acesse apenas as rotas correspondentes ao seu papel.
+The Help Desk centralizes the complete lifecycle management of a support ticket: creation, prioritization, assignment to technicians, execution, and closure. All internal operations are protected by JWT authentication stored in cookies, while the Next.js middleware ensures that each user can only access routes corresponding to their role.
 
-## Principais Funcionalidades
+## Key Features
 
-- Autenticação com e-mail e senha e emissão de tokens JWT seguros.
-- Painéis exclusivos para `admin`, `user` e `technician` com redirecionamento automático após o login.
-- Abertura de chamados pelos usuários com seleção de serviços, cálculo automático do valor e resumo do pedido.
-- Gestão de tickets pelo administrador: visualização por status (`open`, `inProgress`, `finished`) e acesso aos detalhes.
-- Catálogo de serviços com possibilidade de ativação/desativação e definição de valores.
-- Integração com Prisma ORM para manipulação de usuários, serviços, subserviços e tickets em banco PostgreSQL.
-- UI responsiva construída com componentes Radix UI, Tailwind CSS e design system próprio.
+- Authentication with email and password and issuance of secure JWT tokens.
+- Exclusive dashboards for `admin`, `user`, and `technician` with automatic redirection after login.
+- Users can open tickets by selecting services, with automatic calculation of the cost and an order summary.
+- Ticket management by the administrator: view by status (`open`, `inProgress`, `finished`) and access to details.
+- Service catalog with the ability to activate/deactivate services and set prices.
+- Integration with Prisma ORM for managing users, services, sub-services, and tickets in a PostgreSQL database.
+- Responsive UI built with Radix UI components, Tailwind CSS, and a custom design system.
 
-## Tecnologias
+## Technologies
 
 - Next.js 15 (App Router)
-- React 19 com TypeScript
-- Tailwind CSS e Tailwind Merge
+- React 19 with TypeScript
+- Tailwind CSS and Tailwind Merge
 - Prisma ORM + PostgreSQL
 - Radix UI (Dialog, Dropdown, Select, Tooltip, etc.)
-- React Hook Form e React Hot Toast
-- Axios para integrações com as rotas internas de API
-- JSON Web Tokens com a biblioteca `jose`
+- React Hook Form and React Hot Toast
+- Axios for integrations with internal API routes
+- JSON Web Tokens with the `jose` library
 
-## Pré-requisitos
+## Prerequisites
 
-- Node.js 18 ou superior
-- NPM (ou Yarn/PNPM/Bun, se preferir)
-- Banco de dados PostgreSQL acessível
-- Conta com permissões para executar migrações Prisma no banco configurado
+- Node.js 18 or higher
+- NPM (or Yarn/PNPM/Bun, if you prefer)
+- Accessible PostgreSQL database
+- An account with permissions to run Prisma migrations on the configured database
 
-## Configuração
+## Setup
 
-1. Clone o repositório:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/seu-usuario/help-desk.git
+   git clone https://github.com/your-username/help-desk.git
    cd help-desk
    ```
-2. Instale as dependências:
+2. Install the dependencies:
    ```bash
    npm install
    ```
-   > Caso prefira outro gerenciador de pacotes, adapte os comandos (`yarn`, `pnpm`, `bun`).
+   > If you prefer another package manager, adapt the commands (`yarn`, `pnpm`, `bun`).
 
-### Variáveis de Ambiente
+### Environment Variables
 
-Crie um arquivo `.env` na raiz do projeto (ou `.env.local`, se preferir manter separado do versionamento) com as configurações abaixo:
+Create a `.env` file in the project root (or `.env.local`, if you prefer to keep it separate from version control) with the following settings:
 
 ```
-DATABASE_URL="postgresql://usuario:senha@host:5432/nome_do_banco"
-DIRECT_URL="postgresql://usuario:senha@host:5432/nome_do_banco"
-JWT_SECRET="uma_chave_bem_secreta_e_complexa"
+DATABASE_URL="postgresql://user:password@host:5432/database_name"
+DIRECT_URL="postgresql://user:password@host:5432/database_name"
+JWT_SECRET="a_very_secret_and_complex_key"
 ```
 
-- `DATABASE_URL`: utilizada pelo Prisma para conectar ao banco principal.
-- `DIRECT_URL`: conexão direta usada por ferramentas como Prisma Studio; pode ser igual à `DATABASE_URL`.
-- `JWT_SECRET`: chave usada para assinar e validar os tokens JWT. Altere para um valor robusto; o fallback presente no código serve apenas para desenvolvimento.
+- `DATABASE_URL`: used by Prisma to connect to the main database.
+- `DIRECT_URL`: direct connection used by tools like Prisma Studio; can be the same as `DATABASE_URL`.
+- `JWT_SECRET`: key used to sign and validate JWT tokens. Change this to a robust value; the fallback in the code is for development purposes only.
 
-### Banco de Dados e Prisma
+### Database and Prisma
 
-1. Aplique as migrações existentes ou crie novas:
+1. Apply existing migrations or create new ones:
    ```bash
    npx prisma migrate dev
    ```
-2. Gere o client Prisma:
+2. Generate the Prisma client:
    ```bash
    npx prisma generate
    ```
-3. (Opcional) Utilize o Prisma Studio para inspecionar os dados:
+3. (Optional) Use Prisma Studio to inspect the data:
    ```bash
    npx prisma studio
    ```
 
-As migrações atuais criam as tabelas de usuários, serviços, subserviços e tickets, além dos enums de papéis (`admin`, `user`, `technician`) e status de chamados.
+The current migrations create the tables for users, services, sub-services, and tickets, as well as enums for roles (`admin`, `user`, `technician`) and ticket statuses.
 
-### Executando o Projeto
+### Running the Project
 
-- Ambiente de desenvolvimento:
+- Development environment:
 
   ```bash
   npm run dev
   ```
 
-  A aplicação ficará disponível em `http://localhost:3000`.
+  The application will be available at `http://localhost:3000`.
 
-- Build de produção:
+- Production build:
   ```bash
   npm run build
   npm run start
   ```
 
-## Scripts Disponíveis
+## Available Scripts
 
-- `npm run dev`: inicia o servidor Next.js em modo de desenvolvimento.
-- `npm run build`: gera o client do Prisma, compila a aplicação e executa o type-check.
-- `npm run start`: inicia o servidor em modo de produção (requer build prévio).
-- `npm run lint`: executa o ESLint com as regras definidas pelo Next.js/TypeScript.
+- `npm run dev`: starts the Next.js server in development mode.
+- `npm run build`: generates the Prisma client, compiles the application, and runs a type-check.
+- `npm run start`: starts the server in production mode (requires a prior build).
+- `npm run lint`: runs ESLint with the rules defined by Next.js/TypeScript.
 
-## Estrutura de Pastas
+## Folder Structure
 
 ```
 .
-├── prisma/               # Schema do Prisma, migrações e base de dados local
-├── public/               # Assets estáticos (logos, favicon, imagens)
+├── prisma/               # Prisma schema, migrations, and local database
+├── public/               # Static assets (logos, favicon, images)
 └── src/
-    ├── app/              # Rotas públicas e privadas (App Router)
-    │   ├── api/          # Rotas de API (login, usuários, tickets, serviços)
-    │   ├── (public)/     # Páginas de autenticação (login e register)
-    │   └── (private)/    # Dashboards para admin, user e technician
-    ├── components/       # Design system e componentes compartilhados
-    ├── lib/              # Serviços de API, autenticação e utilitários Prisma
-    ├── types/            # Tipagens compartilhadas
-    └── utils/            # Helpers de formatação, cookies e autenticação
+    ├── app/              # Public and private routes (App Router)
+    │   ├── api/          # API routes (login, users, tickets, services)
+    │   ├── (public)/     # Authentication pages (login and register)
+    │   └── (private)/    # Dashboards for admin, user, and technician
+    ├── components/       # Design system and shared components
+    ├── lib/              # API services, authentication, and Prisma utilities
+    ├── types/            # Shared types
+    └── utils/            # Formatting helpers, cookies, and authentication
 ```
 
-## Autenticação e Autorização
+## Authentication and Authorization
 
-- O login gera um token JWT armazenado em cookie com validade de 3 dias.
-- O middleware (`src/middleware.ts`) intercepta todas as rotas privadas, validando o token.
-- Usuários sem token válido são redirecionados para `/login`.
-- Após a validação, o middleware redireciona automaticamente cada usuário para o dashboard correspondente ao papel:
+- Logging in generates a JWT token stored in a cookie with a 3-day validity.
+- The middleware (`src/middleware.ts`) intercepts all private routes, validating the token.
+- Users without a valid token are redirected to `/login`.
+- After validation, the middleware automatically redirects each user to the dashboard corresponding to their role:
   - `/dashboard/admin`
   - `/dashboard/user`
   - `/dashboard/technician`
 
-## Roadmap e Melhorias
+## Roadmap and Improvements
 
-- ✅ Cadastro e autenticação com controle de papéis.
-- ✅ Fluxo completo de abertura e acompanhamento de chamados.
-- 🔜 Implementar notificações por e-mail.
-- 🔜 Adicionar o react query no projeto para melhorar o desempenho e cache.
-- 🔜 Adicionar testes automatizados (unitários e e2e).
+- ✅ User registration and authentication with role control.
+- ✅ Complete flow for opening and tracking tickets.
+- 🔜 Implement email notifications.
+- 🔜 Add React Query to the project to improve performance and caching.
+- 🔜 Add automated tests (unit and e2e).
 
-## Licença
+## License
 
-Este projeto está licenciado sob os termos da [MIT License](LICENSE).
+This project is licensed under the terms of the [MIT License](LICENSE).
