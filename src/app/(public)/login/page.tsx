@@ -105,6 +105,19 @@ export default function Login() {
             <span className="font-bold">Entrar</span>
           </Button>
         </form>
+
+        <div className="w-full p-2 rounded-lg bg-gray-500 text-sm">
+          <span className="select-none">
+            Demo: Use{" "}
+            <span className="bg-gray-600 p-1 select-all rounded-sm">
+              juliana.oliveira@teste.com
+            </span>{" "}
+            e senha{" "}
+            <span className="bg-gray-600 p-1 select-all rounded-sm">
+              123456789
+            </span>
+          </span>
+        </div>
       </ContentContainer>
 
       <ContentContainer>
