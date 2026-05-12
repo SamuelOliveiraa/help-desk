@@ -76,9 +76,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Determina o limite de usuários para cada tipo de role. (Alterado para poucos por conta de contas fakes sendo criadas.)
     const roleLimits: Record<Role, number> = {
       admin: 1,
-      user: 7,
+      user: 2,
       technician: 3,
     };
 
