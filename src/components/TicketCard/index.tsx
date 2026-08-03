@@ -1,5 +1,5 @@
 import { Ticket } from "@/types/tickets";
-import Button from "../Button";
+import Button from "../common/Button";
 import { CheckCircle2, PencilLine } from "lucide-react";
 import TicketStatus from "../TicketStatus";
 import Avatar from "../Avatar";

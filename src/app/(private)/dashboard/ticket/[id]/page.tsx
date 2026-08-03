@@ -1,7 +1,7 @@
 "use client";
 
 import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import ButtonBack from "@/components/ButtonBack";
 import TicketStatus from "@/components/TicketStatus";
 import { Skeleton } from "@/components/ui/skeleton";

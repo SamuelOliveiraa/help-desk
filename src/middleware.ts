@@ -3,12 +3,17 @@ import { type NextRequest, NextResponse } from "next/server";
 import type { Role } from "@/types/user";
 import { JWT_SECRET } from "./utils/client/auth";
 
-const PUBLICK_PAGES = [
+const JWT_SECRET_KEY = new TextEncoder().encode(JWT_SECRET);
+
+const PUBLIC_PAGES = [
+  "/",
+  "/privacy-policy",
+  "/terms-of-use",
   "/login",
   "/register",
-  "/reset-password",
-  "/reset-password/*",
 ];
+
+const AUTH_PAGES = ["/login", "/register", "/reset-password"];
 
 export interface CustomJWTPayload extends JWTPayload {
   role: Role;
@@ -19,21 +24,19 @@ export interface CustomJWTPayload extends JWTPayload {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;
-  const JWT_SECRET_CONVERTED = new TextEncoder().encode(JWT_SECRET);
 
-  if (pathname === "/") {
-    return NextResponse.redirect(new URL("/login", req.url));
+  const isPublicPage = PUBLIC_PAGES.includes(pathname);
+  if (isPublicPage) {
+    return NextResponse.next();
   }
 
-  // Paginas publicas
-  if (
-    PUBLICK_PAGES.includes(pathname) ||
-    pathname === "/reset-password" ||
-    pathname.startsWith("/reset-password")
-  ) {
+  const isAuthPage =
+    AUTH_PAGES.includes(pathname) || pathname.startsWith("/reset-password/");
+
+  if (isAuthPage) {
     if (token) {
       try {
-        const { payload } = (await jwtVerify(token, JWT_SECRET_CONVERTED)) as {
+        const { payload } = (await jwtVerify(token, JWT_SECRET_KEY)) as {
           payload: CustomJWTPayload;
         };
         return NextResponse.redirect(
@@ -46,44 +49,29 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // sem token → redireciona para o login
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   try {
-    const isTicketDetails = pathname.startsWith("/dashboard/ticket");
-
-    const { payload } = (await jwtVerify(token, JWT_SECRET_CONVERTED)) as {
+    const { payload } = (await jwtVerify(token, JWT_SECRET_KEY)) as {
       payload: CustomJWTPayload;
     };
     const role = payload.role;
+    const isTicketDetails = pathname.startsWith("/dashboard/ticket");
 
-    if (
-      role === "admin" &&
-      !pathname.startsWith("/dashboard/admin") &&
-      !isTicketDetails
-    ) {
-      return NextResponse.redirect(new URL("/dashboard/admin", req.url));
-    }
-    if (
-      role === "user" &&
-      !pathname.startsWith("/dashboard/user") &&
-      !isTicketDetails
-    ) {
-      return NextResponse.redirect(new URL("/dashboard/user", req.url));
-    }
-    if (
-      role === "technician" &&
-      !pathname.startsWith("/dashboard/technician") &&
-      !isTicketDetails
-    ) {
-      return NextResponse.redirect(new URL("/dashboard/technician", req.url));
+    // Validação de acesso por Role
+    const targetDashboard = `/dashboard/${role}`;
+    const hasRoleAccess =
+      pathname.startsWith(targetDashboard) || isTicketDetails;
+
+    if (!hasRoleAccess) {
+      return NextResponse.redirect(new URL(targetDashboard, req.url));
     }
 
     return NextResponse.next();
   } catch (error) {
-    console.error(error);
+    console.error("JWT Verification failed:", error);
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }
@@ -95,6 +83,6 @@ export const config = {
     // - favicon
     // - arquivos estáticos
     // - rotas da API
-    "/((?!_next/static|_next/image|favicon.ico|api/.*|.*\\.(?:png|jpg|jpeg|svg|ico|gif|webp)).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|api/.*|.*\\.(?:png|jpg|jpeg|svg|ico|gif|webp)).*)",
   ],
 };

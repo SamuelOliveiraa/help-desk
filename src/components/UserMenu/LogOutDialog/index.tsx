@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import {
   Dialog,
   DialogContent,

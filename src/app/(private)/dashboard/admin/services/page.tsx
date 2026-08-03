@@ -2,7 +2,7 @@
 
 import { PenLine, Plus, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import ServiceStatus from "@/components/ServiceStatus";
 import {
   Table,

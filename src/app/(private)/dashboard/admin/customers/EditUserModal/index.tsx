@@ -2,8 +2,8 @@ import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Button from "@/components/Button";
-import InputForm from "@/components/InputForm";
+import Button from "@/components/common/Button";
+import InputForm from "@/components/common/InputForm";
 import {
   Dialog,
   DialogContent,

@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import Button from "@/components/Button";
-import InputForm from "@/components/InputForm";
+import Button from "@/components/common/Button";
+import InputForm from "@/components/common/InputForm";
 import {
   Dialog,
   DialogContent,

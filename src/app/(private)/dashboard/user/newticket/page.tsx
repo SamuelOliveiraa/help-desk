@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import InputForm from "@/components/InputForm";
+import InputForm from "@/components/common/InputForm";
 import { Service } from "@/types/services";
 import { getAllServicesActives } from "@/lib/fetchers/services";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import {
   Select,
   SelectContent,

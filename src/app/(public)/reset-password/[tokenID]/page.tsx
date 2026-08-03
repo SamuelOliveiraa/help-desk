@@ -1,8 +1,8 @@
 "use client";
 
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import ContentContainer from "@/app/(public)/components/ContentContainer";
-import InputForm from "@/components/InputForm";
+import InputForm from "@/components/common/InputForm";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";

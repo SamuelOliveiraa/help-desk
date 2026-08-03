@@ -3,7 +3,7 @@
 import { Loader2, PenLine, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import {
   Table,
   TableBody,

@@ -4,7 +4,7 @@ import { PenLine, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import TagTime from "@/components/TagTime";
 import {
   Table,

@@ -6,16 +6,17 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "link" | "delete";
   fullWidth?: boolean;
   loading?: boolean;
+  className?: string;
 };
 
 const buttonVariants = tv({
-  base: "flex items-center justify-center gap-3 rounded-md cursor-pointer transition-colors duration-200 min-h-10 disabled:cursor-not-allowed disabled:opacity-60",
+  base: "flex items-center justify-center gap-2 rounded-md cursor-pointer transition-colors duration-200 min-h-10 disabled:cursor-not-allowed disabled:opacity-60",
   variants: {
     variant: {
       primary: "bg-gray-200 text-gray-600 hover:bg-gray-100",
       secondary:
-        "bg-gray-500 text-gray-200 hover:bg-gray-400/40 hover:text-gray-100",
-      link: "bg-transparent text-gray-300 hover:bg-gray-500 hover:text-gray-100",
+        "bg-gray-500 text-gray-200 hover:bg-gray-400/40 hover:text-gray-100 border",
+      link: "bg-transparent text-gray-300 border hover:bg-gray-500 hover:text-gray-100",
       delete: "bg-red-500 text-gray-600",
     },
     loading: {
@@ -38,11 +39,12 @@ export default function Button({
   fullWidth,
   variant,
   loading,
+  className,
   ...rest
 }: ButtonProps) {
   return (
     <button
-      className={buttonVariants({ fullWidth, loading, variant })}
+      className={buttonVariants({ fullWidth, loading, variant, className })}
       disabled={loading}
       {...rest}
     >
